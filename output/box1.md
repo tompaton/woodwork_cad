@@ -3,8 +3,6 @@
 202.5 x 145 x 55
 sticks 12.5 x 20.0
 cube 202.5 x 145.0 x 55.0 area = 969.50 volume = 1614.94 aspect = 1.40
-
-
 ## Frame
 <svg width="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
 <rect x="10.0" y="20.0" width="550.0" height="100.0" style="fill: none; stroke: black; stroke-width: 1;" />
@@ -143,8 +141,6 @@ cube 202.5 x 145.0 x 55.0 area = 969.50 volume = 1614.94 aspect = 1.40
 <text style="" text-anchor="middle" x="97.5" y="963.75" fill="black">lid-right</text>
 </svg>
 
-
-
 ## Panels
 <svg width="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
 <rect x="10.0" y="20.0" width="550.0" height="100.0" style="fill: none; stroke: black; stroke-width: 1;" />
@@ -210,8 +206,6 @@ cube 202.5 x 145.0 x 55.0 area = 969.50 volume = 1614.94 aspect = 1.40
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="212.5,745.0 218.15685424949237,750.6568542494924 218.15685424949237,895.6568542494924" />
 <text style="" text-anchor="middle" x="111.25" y="817.5" fill="black">bottom</text>
 </svg>
-
-
 
 ## Final box
 <svg width="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">

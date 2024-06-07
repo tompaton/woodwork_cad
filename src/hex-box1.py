@@ -16,7 +16,7 @@ from woodwork_cad.board import (
     rip,
     waste,
 )
-from woodwork_cad.svg import SVGCanvas
+from woodwork_cad.svg import print_svg
 
 
 def draw_hex_box1() -> None:
@@ -44,11 +44,8 @@ def draw_hex_box1() -> None:
         rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=ZERO), waste
     )
 
-    # TODO: neater syntax for this
-    canvas = SVGCanvas()
-    with canvas.document(1100, (0, 0, 1100, 500)):
+    with print_svg(1100, 500) as canvas:
         draw_boards(canvas, Decimal(10), Decimal(20), rawboards)
-    print(canvas.result)
 
     print("## Join panels")
     print("4 boards")
@@ -57,10 +54,8 @@ def draw_hex_box1() -> None:
     joint2(panels, 3, 4, 5)
     joint2(panels, 0, 1, 2)
 
-    canvas = SVGCanvas()
-    with canvas.document(1100, (0, 0, 1100, 600)):
+    with print_svg(1100, 600) as canvas:
         draw_boards(canvas, Decimal(10), Decimal(20), panels)
-    print(canvas.result)
 
     print("## Cut sides")
     print("TODO: 6 sides")

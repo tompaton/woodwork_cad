@@ -14,7 +14,7 @@ from woodwork_cad.board import (
     rip,
     waste,
 )
-from woodwork_cad.svg import SVGCanvas
+from woodwork_cad.svg import print_svg
 
 
 def box1(boxL, boxW, boxH):
@@ -98,37 +98,22 @@ def draw_box1(boxH=Decimal(55)):
     net = [4, 0, 1, 2, 3, 5]
     cube = cube_net(panels2, *net)
 
-    canvas = SVGCanvas()
-
-    with canvas.document(1000, (0, 0, 1000, 1000)):
+    print("## Frame")
+    with print_svg(1000, 1000) as canvas:
         board1.draw_board(canvas, 10, 20)
 
         draw_boards(canvas, 10, 170, frame2)
 
-    print("\n")
-    print("## Frame")
-    print(canvas.result)
-
-    canvas = SVGCanvas()
-
-    with canvas.document(1000, (0, 0, 1000, 1000)):
+    print("## Panels")
+    with print_svg(1000, 1000) as canvas:
         board2.draw_board(canvas, 10, 20)
         board3.draw_board(canvas, 10, 170)
 
         draw_boards(canvas, 10, 300, panels2)
 
-    print("\n")
-    print("## Panels")
-    print(canvas.result)
-
-    canvas = SVGCanvas()
-
-    with canvas.document(1000, (0, 0, 1000, 1000)):
-        cube.draw_board(canvas, 10, 10)
-
-    print("\n")
     print("## Final box")
-    print(canvas.result)
+    with print_svg(1000, 1000) as canvas:
+        cube.draw_board(canvas, 10, 10)
 
 
 if __name__ == "__main__":

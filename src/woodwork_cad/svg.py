@@ -256,3 +256,11 @@ class SVGCanvas:
             transform=f"translate({_x(x2)-dx}, {_y(y2)-dy}) scale(1.5) rotate({degrees(angle)})",
             fill=colour,
         )
+
+
+@contextmanager
+def print_svg(width: int, height: int) -> Iterator[SVGCanvas]:
+    canvas = SVGCanvas()
+    with canvas.document(width, (0, 0, width, height)):
+        yield canvas
+    print(canvas.result)
