@@ -1,5 +1,6 @@
 # ruff: noqa: F401
 from decimal import Decimal
+from math import cos, radians, sin
 
 from woodwork_cad.board import (
     ZERO,
@@ -32,8 +33,10 @@ def draw_hex_box1() -> None:
     T = Decimal(13)
     raw_waste = Decimal(20)
 
-    L2a = Decimal(600)
-    L2b = L - Decimal(600) - 2 * raw_waste
+    R = Decimal(200)  # hexagon radius (outside)
+
+    L2a = 3 * R + 2 * Decimal(5)
+    L2b = L - L2a - 2 * raw_waste
 
     rawboards = [Board(L, W, T) for _ in range(6)]
 
@@ -63,21 +66,64 @@ def draw_hex_box1() -> None:
     with print_svg(1100, 600) as canvas:
         draw_boards(canvas, Decimal(10), Decimal(20), panels)
 
+    lid = panels.pop(0)
+    assert lid
+
     print("## Cut sides")
-    print("TODO: 6 sides")
+    print("6 sides")
+
+    sides = process_all(panels, cut(R), cut(R))
+    with print_svg(1100, 500) as canvas:
+        draw_boards(canvas, Decimal(10), Decimal(20), sides[:3])
+        draw_boards(canvas, Decimal(300), Decimal(20), sides[3:])
+
     print("TODO: mitre at 60 degrees")
 
-    print("## Dovetails")
-    print("TODO")
+    print("TODO: Dovetails")
 
     print("## Base")
     print("TODO")
+
+    # roughly check if there's enough lid/base to cut hex panel out of
+    dx = float(sides[0].L) * cos(radians(60))
+    dy = float(sides[0].L) * sin(radians(60))
+    # has to be a little more than half as big to fit?
+    hex_L = float(sides[0].L) + 2 * dx * 0.5
+    hex_W = 2 * dy * 0.5
+
+    lid2 = process(cut(Decimal(hex_L), kerf=ZERO), waste)(lid)[0]
+    lid2 = process(rip(Decimal(hex_W), kerf=ZERO), waste)(lid2)[0]
+
+    with print_svg(1100, 1100) as canvas:
+        draw_boards(canvas, Decimal(10), Decimal(20), [lid, lid2])
 
     print("## Lid")
     print("TODO")
 
     print("## Final box")
-    print("TODO")
+    print("TODO: side elevations")
+
+    # offset the point of rotation
+    # length is base + hypotenuse of 60 degree triangle with height equal to the
+    # board thickness
+    hyp = float(sides[0].T) / sin(radians(60))
+    offset_x = Decimal(hyp + hyp * cos(radians(60)))
+
+    with print_svg(500, 500, zoom=2) as canvas:
+        x, y = 150, 50
+        for side, angle in zip(sides, range(0, 360, 60)):
+            x, y = side.draw_plan(canvas, x, y, angle, offset_x=offset_x)
+            canvas.circle(x, y, 2, "red", stroke_width=1)
+
+    # TODO: calculate width/height of base/lid from the above
+    # use that to figure out how much of the panel is left over for sides
+    # and adjust the side length
+
+    # options:
+    # - framed lid (hexagonal frame with panel might need less jointed
+    #   panel than a single piece)
+    # - kumiko lid
+    # - plywood base
 
 
 if __name__ == "__main__":

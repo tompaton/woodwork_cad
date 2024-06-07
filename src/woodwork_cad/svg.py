@@ -259,8 +259,10 @@ class SVGCanvas:
 
 
 @contextmanager
-def print_svg(width: int, height: int) -> Iterator[SVGCanvas]:
+def print_svg(width: int, height: int, zoom: float = 1.0) -> Iterator[SVGCanvas]:
     canvas = SVGCanvas()
-    with canvas.document(width, (0, 0, width, height)):
+    with canvas.document(int(width * zoom), (0, 0, width, height)):
         yield canvas
+    print()
     print(canvas.result)
+    print()

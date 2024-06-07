@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from decimal import Decimal
+from math import cos, radians, sin
 from typing import Iterable, List, Optional, Tuple
 
 from .svg import SVGCanvas
@@ -185,6 +186,10 @@ class Board:
         ]
 
     def draw_board(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+        # to support mitred ends, maybe treat the board as a profile that
+        # is extruded along it's width?
+        # draw as polylines rather than rectangles
+
         canvas.rect(
             float(x), float(y), float(self.L), float(self.W), "black", stroke_width=1
         )
@@ -265,6 +270,38 @@ class Board:
 
         for defect in self.defects:
             defect.draw(canvas, x, y)
+
+    def draw_plan(
+        self,
+        canvas: SVGCanvas,
+        x: Decimal,
+        y: Decimal,
+        angle: Decimal,
+        offset_x: Decimal = ZERO,
+        offset_y: Decimal = ZERO,
+        colour: str = "black",
+    ) -> Tuple[float, float]:
+        points = [
+            (x1 - offset_x, y1 - offset_y)
+            for (x1, y1) in [
+                (ZERO, ZERO),
+                (self.L, ZERO),
+                (self.L, self.T),
+                (ZERO, self.T),
+                (ZERO, ZERO),
+            ]
+        ]
+        cos_a = cos(radians(angle))
+        sin_a = sin(radians(angle))
+        rotated = [
+            (
+                float(x) + float(x1) * cos_a - float(y1) * sin_a,
+                float(y) + float(x1) * sin_a + float(y1) * cos_a,
+            )
+            for (x1, y1) in points
+        ]
+        canvas.polyline(colour, rotated, stroke_width=1, stroke_dasharray="")
+        return rotated[2]
 
 
 def float_points(points: List[Tuple[Decimal, Decimal]]) -> List[Tuple[float, float]]:
