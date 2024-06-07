@@ -174,53 +174,6 @@ class SVGCanvas:
             **attrs,
         )
 
-    def image_rect(
-        self,
-        label: str,
-        colour: str,
-        colour_light: str,
-        size: Tuple[float, float, float, float],
-        align: str,
-        origin: bool = True,
-        center: bool = True,
-    ) -> None:
-        x, y, width, height = size
-
-        _x = self._x
-        _y = self._y
-
-        self.rect(
-            _x(x),
-            _y(y),
-            self._x(width) - self._x(0),
-            self._y(height) - self._y(0),
-            colour,
-        )
-
-        self.line(_x(x), _y(y), _x(x + width), _y(y + height), colour_light)
-        self.line(_x(x), _y(y + height), _x(x + width), _y(y), colour_light)
-
-        if align == "left":
-            x1 = _x(x) + 3
-            text_anchor = "start"
-        elif align == "center":
-            x1 = _x(x + width / 2)
-            text_anchor = "middle"
-        elif align == "right":
-            x1 = _x(x + width) - 3
-            text_anchor = "end"
-
-        self.text(
-            x1, _y(y + height) - 3, text_anchor=text_anchor, fill=colour, content=label
-        )
-
-        if origin:
-            self.circle(_x(x), _y(y), 1, colour)
-
-        if center:
-            cx, cy = self._center(*size)
-            self.circle(_x(cx), _y(cy), 1, colour)
-
     def dimension(
         self,
         label: str,

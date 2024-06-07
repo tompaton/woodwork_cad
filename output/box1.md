@@ -6,7 +6,7 @@ cube 202.5 x 145.0 x 55.0 area = 969.50 volume = 1614.94 aspect = 1.40
 
 
 ## Frame
-<svg width="1400" viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
 <rect x="10.0" y="20.0" width="550.0" height="100.0" style="fill: none; stroke: black; stroke-width: 1;" />
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="10.0,120.0 24.14213562373095,134.14213562373095 574.142135623731,134.14213562373095 574.142135623731,134.14213562373095 560.0,120.0" />
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="560.0,20.0 574.142135623731,34.14213562373095 574.142135623731,134.14213562373095" />
@@ -146,7 +146,7 @@ cube 202.5 x 145.0 x 55.0 area = 969.50 volume = 1614.94 aspect = 1.40
 
 
 ## Panels
-<svg width="1400" viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
 <rect x="10.0" y="20.0" width="550.0" height="100.0" style="fill: none; stroke: black; stroke-width: 1;" />
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="10.0,120.0 15.65685424949238,125.65685424949238 565.6568542494924,125.65685424949238 565.6568542494924,125.65685424949238 560.0,120.0" />
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="560.0,20.0 565.6568542494924,25.65685424949238 565.6568542494924,125.65685424949238" />
@@ -214,7 +214,7 @@ cube 202.5 x 145.0 x 55.0 area = 969.50 volume = 1614.94 aspect = 1.40
 
 
 ## Final box
-<svg width="1400" viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
 <rect x="10.0" y="10.0" width="202.5" height="145.0" style="fill: none; stroke: black; stroke-width: 1;" />
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="10.0,155.0 48.890872965260115,193.89087296526012 251.39087296526012,193.89087296526012 251.39087296526012,193.89087296526012 212.5,155.0" />
 <polyline fill="none" stroke-width="0.2" stroke-dasharray="" stroke="gray" points="212.5,10.0 251.39087296526012,48.890872965260115 251.39087296526012,193.89087296526012" />

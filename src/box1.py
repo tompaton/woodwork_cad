@@ -73,8 +73,8 @@ def box1(boxL, boxW, boxH):
         panels, "left", "front", "top2", "top1", "right", "back", "bottom2", "bottom1"
     )
 
-    joint2(panels, 6, 7, "top")
-    joint2(panels, 2, 3, "bottom")
+    joint2(panels, 6, 7, label="top")
+    joint2(panels, 2, 3, label="bottom")
 
     return board1, board2, board3, frame, panels
 
@@ -100,7 +100,7 @@ def draw_box1(boxH=Decimal(55)):
 
     canvas = SVGCanvas()
 
-    with canvas.document(1400, (0, 0, 1400, 1000)):
+    with canvas.document(1000, (0, 0, 1000, 1000)):
         board1.draw_board(canvas, 10, 20)
 
         draw_boards(canvas, 10, 170, frame2)
@@ -111,7 +111,7 @@ def draw_box1(boxH=Decimal(55)):
 
     canvas = SVGCanvas()
 
-    with canvas.document(1400, (0, 0, 1400, 1000)):
+    with canvas.document(1000, (0, 0, 1000, 1000)):
         board2.draw_board(canvas, 10, 20)
         board3.draw_board(canvas, 10, 170)
 
@@ -123,7 +123,7 @@ def draw_box1(boxH=Decimal(55)):
 
     canvas = SVGCanvas()
 
-    with canvas.document(1400, (0, 0, 1400, 1000)):
+    with canvas.document(1000, (0, 0, 1000, 1000)):
         cube.draw_board(canvas, 10, 10)
 
     print("\n")

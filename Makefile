@@ -6,3 +6,5 @@ woodwork_cad: src/woodwork_cad/svg.py src/woodwork_cad/board.py
 output/box1.md: src/box1.py woodwork_cad
 	python src/box1.py > output/box1.md
 
+output/hex-box1.md: src/hex-box1.py woodwork_cad
+	python src/hex-box1.py > output/hex-box1.md

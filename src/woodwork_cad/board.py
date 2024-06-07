@@ -8,6 +8,7 @@ __all__ = [
     "Board",
     "draw_boards",
     "cut",
+    "cut_waste",
     "rip",
     "waste",
     "process",
@@ -86,6 +87,12 @@ class Board:
     def waste(self):
         self.add_cut("waste", ZERO, ZERO, self.L, self.W)
         return []
+
+    def cut_waste(self, length: Decimal):
+        self.add_cut("cut_waste", ZERO, ZERO, length, self.W)
+        return [
+            Board(self.L - length, self.W, self.T, self, length, ZERO),
+        ]
 
     def draw_board(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
         canvas.rect(
@@ -195,10 +202,21 @@ def waste(board: Board):
     return board.waste()
 
 
-def joint(board1: Board, board2: Board, label: str = ""):
-    assert board1.L == board2.L
-    assert board1.T == board2.T
-    return Board(board1.L, board1.W + board2.W, board1.T, label=label)
+def cut_waste(length: Decimal):
+    def operation(board: Board):
+        return board.cut_waste(length)
+
+    return operation
+
+
+def joint(*boards: Board, label: str = ""):
+    assert all(
+        board1.L == board2.L and board1.T == board2.T
+        for board1, board2 in zip(boards, boards[1:])
+    )
+    return Board(
+        boards[0].L, Decimal(sum(board.W for board in boards)), boards[0].T, label=label
+    )
 
 
 def process(*operations):
@@ -227,11 +245,13 @@ def process_all(boards: list[Board], *operations):
     return result
 
 
-def joint2(boards: list[Board], index1: int, index2: int, label: str = ""):
-    assert index2 > index1
-    board2 = boards.pop(index2)
-    board1 = boards.pop(index1)
-    boards.append(joint(board1, board2, label))
+def joint2(boards: list[Board], *indexes: int, label: str = ""):
+    assert len(indexes) > 1
+    assert all(index2 > index1 for index1, index2 in zip(indexes, indexes[1:]))
+    boards2 = []
+    for index in reversed(indexes):
+        boards2.append(boards.pop(index))
+    boards.append(joint(*boards2, label=label))
 
 
 def label_all(boards: list[Board], *labels):
