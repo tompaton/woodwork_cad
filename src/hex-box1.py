@@ -4,6 +4,8 @@ from decimal import Decimal
 from woodwork_cad.board import (
     ZERO,
     Board,
+    Hole,
+    Notch,
     cube_net,
     cut,
     cut_waste,
@@ -35,10 +37,14 @@ def draw_hex_box1() -> None:
 
     rawboards = [Board(L, W, T) for _ in range(6)]
 
-    # TODO: mark areas to avoid
-    # Holes at 315, 350, 655, 690 (12 in from edge)
-    # Tear in bottom edge at 360-400
-    # Tear in top edge at 780-820
+    rawboards[2].add_defect(Notch(Decimal(360), W - Decimal(10), Decimal(400), W))
+    rawboards[1].add_defect(Notch(Decimal(780), ZERO, Decimal(820), Decimal(10)))
+
+    for rawboard in rawboards:
+        rawboard.add_defect(Hole(Decimal(315), Decimal(12)))
+        rawboard.add_defect(Hole(Decimal(350), W - Decimal(12)))
+        rawboard.add_defect(Hole(Decimal(655), Decimal(12)))
+        rawboard.add_defect(Hole(Decimal(690), W - Decimal(12)))
 
     panels = process_all(
         rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=ZERO), waste

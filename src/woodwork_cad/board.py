@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from decimal import Decimal
-from typing import List, Optional, Tuple
+from typing import Iterable, List, Optional, Tuple
 
 from .svg import SVGCanvas
 
@@ -22,6 +22,79 @@ __all__ = [
 ZERO = Decimal(0)
 
 
+class Defect:
+    def offset(self, offset_x: Decimal, offset_y: Decimal) -> "Defect":
+        raise NotImplementedError
+
+    def visible(
+        self, offset_x: Decimal, offset_y: Decimal, L: Decimal, W: Decimal
+    ) -> bool:
+        raise NotImplementedError
+
+    def draw(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+        raise NotImplementedError
+
+
+@dataclass
+class Hole(Defect):
+    x: Decimal
+    y: Decimal
+    r: Decimal = Decimal(5)
+
+    def offset(self, offset_x: Decimal, offset_y: Decimal) -> "Hole":
+        return Hole(self.x + offset_x, self.y + offset_y, self.r)
+
+    def visible(
+        self, offset_x: Decimal, offset_y: Decimal, L: Decimal, W: Decimal
+    ) -> bool:
+        return (offset_x < self.x < offset_x + L) and (offset_y < self.y < offset_y + W)
+
+    def draw(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+        canvas.circle(
+            float(x + self.x),
+            float(y + self.y),
+            float(self.r),
+            "orange",
+            stroke_width=1,
+        )
+
+
+@dataclass
+class Notch(Defect):
+    x1: Decimal
+    y1: Decimal
+    x2: Decimal
+    y2: Decimal
+
+    def offset(self, offset_x: Decimal, offset_y: Decimal) -> "Notch":
+        return Notch(
+            self.x1 + offset_x,
+            self.y1 + offset_y,
+            self.x2 + offset_x,
+            self.y2 + offset_y,
+        )
+
+    def visible(
+        self, offset_x: Decimal, offset_y: Decimal, L: Decimal, W: Decimal
+    ) -> bool:
+        return not (
+            self.x2 < offset_x
+            or self.x1 > offset_x + L
+            or self.y2 < offset_y
+            or self.y1 > offset_y + W
+        )
+
+    def draw(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+        canvas.rect(
+            float(x + self.x1),
+            float(y + self.y1),
+            float(self.x2 - self.x1),
+            float(self.y2 - self.y1),
+            "orange",
+            stroke_width=1,
+        )
+
+
 @dataclass
 class Board:
     L: Decimal
@@ -36,6 +109,8 @@ class Board:
         tuple[str, Decimal, Decimal, Decimal, Decimal, str, Decimal, Decimal]
     ] = field(default_factory=list)
 
+    _defects: list[Defect] = field(default_factory=list)
+
     label: str = ""
 
     @property
@@ -45,6 +120,21 @@ class Board:
     @property
     def aspect(self):
         return self.L / self.W
+
+    def add_defect(self, defect: Defect) -> None:
+        self._defects.append(defect)
+
+    @property
+    def defects(self) -> Iterable[Defect]:
+        yield from self._defects
+        if self.parent:
+            for defect in self.parent.defects:
+                if defect.visible(self.offset_x, self.offset_y, self.L, self.W):
+                    yield defect.offset(-self.offset_x, -self.offset_y)
+
+    def source_defects(self, offset_x: Decimal, offset_y: Decimal) -> Iterable[Defect]:
+        for defect in self.defects:
+            yield defect.offset(offset_x, offset_y)
 
     def add_cut(
         self,
@@ -173,6 +263,9 @@ class Board:
                 style="",
             )
 
+        for defect in self.defects:
+            defect.draw(canvas, x, y)
+
 
 def float_points(points: List[Tuple[Decimal, Decimal]]) -> List[Tuple[float, float]]:
     return [(float(x), float(y)) for x, y in points]
@@ -216,8 +309,18 @@ def joint(*boards: Board, label: str = ""):
     ):
         raise ValueError("Board length and thickness must match to be joined")
 
+    defects: List[Defect] = []
+    offset_y = ZERO
+    for board in boards:
+        defects.extend(board.source_defects(ZERO, offset_y))
+        offset_y += board.W
+
     return Board(
-        boards[0].L, Decimal(sum(board.W for board in boards)), boards[0].T, label=label
+        boards[0].L,
+        Decimal(sum(board.W for board in boards)),
+        boards[0].T,
+        label=label,
+        _defects=defects,
     )
 
 
