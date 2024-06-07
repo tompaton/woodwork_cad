@@ -210,10 +210,12 @@ def cut_waste(length: Decimal):
 
 
 def joint(*boards: Board, label: str = ""):
-    assert all(
+    if not all(
         board1.L == board2.L and board1.T == board2.T
         for board1, board2 in zip(boards, boards[1:])
-    )
+    ):
+        raise ValueError("Board length and thickness must match to be joined")
+
     return Board(
         boards[0].L, Decimal(sum(board.W for board in boards)), boards[0].T, label=label
     )
@@ -246,8 +248,10 @@ def process_all(boards: list[Board], *operations):
 
 
 def joint2(boards: list[Board], *indexes: int, label: str = ""):
-    assert len(indexes) > 1
-    assert all(index2 > index1 for index1, index2 in zip(indexes, indexes[1:]))
+    if len(indexes) < 2:
+        raise ValueError("Need 2 or more boards to join")
+    if not all(index2 > index1 for index1, index2 in zip(indexes, indexes[1:])):
+        raise ValueError("Boards must be joined in order")
     boards2 = []
     for index in reversed(indexes):
         boards2.append(boards.pop(index))
@@ -280,18 +284,28 @@ def cube_net(
     bottom: int,
 ):
     all_sides = [top, left, front, right, back, bottom]
-    assert len({boards[side].T for side in all_sides}) == 1
+    if not len({boards[side].T for side in all_sides}) == 1:
+        raise ValueError("Cube sides must have equal thickness")
 
-    assert boards[top].L == boards[front].L == boards[bottom].L == boards[back].L
-    assert boards[top].W == boards[left].L == boards[bottom].W == boards[right].L
-    assert boards[left].W == boards[front].W == boards[right].W == boards[back].W
+    if not boards[top].L == boards[front].L == boards[bottom].L == boards[back].L:
+        raise ValueError("Cube top, front, bottom and back must be the same length")
+    if not boards[top].W == boards[left].L == boards[bottom].W == boards[right].L:
+        raise ValueError("Cube top, bottom width must match left and right length")
+    if not boards[left].W == boards[front].W == boards[right].W == boards[back].W:
+        raise ValueError("Cube left, front, right and back must be the same width")
 
-    assert boards[top].label == "top"
-    assert boards[left].label == "left"
-    assert boards[front].label == "front"
-    assert boards[right].label == "right"
-    assert boards[back].label == "back"
-    assert boards[bottom].label == "bottom"
+    if not boards[top].label == "top":
+        raise ValueError(f"top label invalid: {boards[top].label}")
+    if not boards[left].label == "left":
+        raise ValueError(f"left label invalid: {boards[left].label}")
+    if not boards[front].label == "front":
+        raise ValueError(f"front label invalid: {boards[front].label}")
+    if not boards[right].label == "right":
+        raise ValueError(f"right label invalid: {boards[right].label}")
+    if not boards[back].label == "back":
+        raise ValueError(f"back label invalid: {boards[back].label}")
+    if not boards[bottom].label == "bottom":
+        raise ValueError(f"bottom label invalid: {boards[bottom].label}")
 
     area = sum(boards[side].area for side in all_sides)
     volume = boards[top].area * boards[front].W
