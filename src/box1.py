@@ -79,26 +79,6 @@ def box1(boxL, boxW, boxH):
     return board1, board2, board3, frame, panels
 
 
-def build_box(box, net):
-    board1, board2, board3, frame2, panels2 = box
-
-    cube = cube_net(panels2, *net)
-
-    canvas = SVGCanvas()
-
-    with canvas.document(1400, (0, 0, 1400, 1000)):
-        draw_boards(canvas, 10, 10, frame2)
-        draw_boards(canvas, 400, 10, panels2)
-
-        board1.draw_board(canvas, 700, 20)
-        board2.draw_board(canvas, 700, 170)
-        board3.draw_board(canvas, 700, 300)
-
-        cube.draw_board(canvas, 700, 500)
-
-    return canvas.result
-
-
 def box1_dimensions(boxH):
     boxW = Decimal(200) - boxH
     boxL = (Decimal(550) - boxW) / 2
@@ -107,11 +87,48 @@ def box1_dimensions(boxH):
 
 def draw_box1(boxH=Decimal(55)):
     boxL, boxW, boxH = box1_dimensions(boxH)
+
     print("# Framed box\n")
     print(f"{boxL} x {boxW} x {boxH}")
-    box_svg = build_box(box1(boxL, boxW, boxH), [4, 0, 1, 2, 3, 5])
+
+    # TODO: add dimensions etc.
+
+    board1, board2, board3, frame2, panels2 = box1(boxL, boxW, boxH)
+
+    net = [4, 0, 1, 2, 3, 5]
+    cube = cube_net(panels2, *net)
+
+    canvas = SVGCanvas()
+
+    with canvas.document(1400, (0, 0, 1400, 1000)):
+        board1.draw_board(canvas, 10, 20)
+
+        draw_boards(canvas, 10, 170, frame2)
+
     print("\n")
-    print(box_svg)
+    print("## Frame")
+    print(canvas.result)
+
+    canvas = SVGCanvas()
+
+    with canvas.document(1400, (0, 0, 1400, 1000)):
+        board2.draw_board(canvas, 10, 20)
+        board3.draw_board(canvas, 10, 170)
+
+        draw_boards(canvas, 10, 300, panels2)
+
+    print("\n")
+    print("## Panels")
+    print(canvas.result)
+
+    canvas = SVGCanvas()
+
+    with canvas.document(1400, (0, 0, 1400, 1000)):
+        cube.draw_board(canvas, 10, 10)
+
+    print("\n")
+    print("## Final box")
+    print(canvas.result)
 
 
 if __name__ == "__main__":
