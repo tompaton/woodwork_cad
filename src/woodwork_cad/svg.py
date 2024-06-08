@@ -162,10 +162,11 @@ class SVGCanvas:
         stroke_width: float = 0.2,
         stroke_dasharray: Any = 2,
         fill: str = "none",
+        closed: bool = False,
         **attrs: Any,
     ) -> None:
         self.write(
-            "polyline",
+            "polygon" if closed else "polyline",
             fill=fill,
             stroke_width=stroke_width,
             stroke_dasharray=stroke_dasharray,

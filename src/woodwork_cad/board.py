@@ -111,6 +111,7 @@ class Board:
     ] = field(default_factory=list)
 
     _defects: list[Defect] = field(default_factory=list)
+    _profile: List[Tuple[Decimal, Decimal]] = field(default_factory=list)
 
     label: str = ""
 
@@ -184,6 +185,33 @@ class Board:
         return [
             Board(self.L - length, self.W, self.T, self, length, ZERO),
         ]
+
+    @property
+    def profile(self) -> List[Tuple[Decimal, Decimal]]:
+        return self._profile or [
+            (ZERO, ZERO),
+            (self.L, ZERO),
+            (self.L, self.T),
+            (ZERO, self.T),
+        ]
+
+    def mitre(self, left: Decimal, right: Decimal) -> List["Board"]:
+        self._profile = self.profile
+
+        # offset the point of rotation
+        # length is base + hypotenuse of 60 degree triangle with height equal to the
+        # board thickness
+        hyp = float(self.T) / sin(radians(left))
+        offset_x = Decimal(hyp * cos(radians(left)))
+        x1, y1 = self._profile[0]
+        self._profile[0] = (x1 + offset_x, y1)
+
+        hyp = float(self.T) / sin(radians(right))
+        offset_x = Decimal(hyp * cos(radians(right)))
+        x1, y1 = self._profile[1]
+        self._profile[1] = (x1 - offset_x, y1)
+
+        return [self]
 
     def draw_board(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
         # to support mitred ends, maybe treat the board as a profile that
@@ -277,20 +305,10 @@ class Board:
         x: Decimal,
         y: Decimal,
         angle: Decimal,
-        offset_x: Decimal = ZERO,
-        offset_y: Decimal = ZERO,
         colour: str = "black",
-    ) -> Tuple[float, float]:
-        points = [
-            (x1 - offset_x, y1 - offset_y)
-            for (x1, y1) in [
-                (ZERO, ZERO),
-                (self.L, ZERO),
-                (self.L, self.T),
-                (ZERO, self.T),
-                (ZERO, ZERO),
-            ]
-        ]
+    ) -> Tuple[Decimal, Decimal]:
+        offset_x, offset_y = self.profile[0]
+        points = [(x1 - offset_x, y1 - offset_y) for (x1, y1) in self.profile]
         cos_a = cos(radians(angle))
         sin_a = sin(radians(angle))
         rotated = [
@@ -300,8 +318,10 @@ class Board:
             )
             for (x1, y1) in points
         ]
-        canvas.polyline(colour, rotated, stroke_width=1, stroke_dasharray="")
-        return rotated[2]
+        canvas.polyline(
+            colour, rotated, stroke_width=1, stroke_dasharray="", closed=True
+        )
+        return Decimal(rotated[1][0]), Decimal(rotated[1][1])
 
 
 def float_points(points: List[Tuple[Decimal, Decimal]]) -> List[Tuple[float, float]]:
@@ -324,6 +344,13 @@ def cut(length: Decimal, kerf: Decimal = Decimal(5)):
 def rip(width: Decimal, kerf: Decimal = Decimal(5)):
     def operation(board: Board):
         return board.rip(width, kerf)
+
+    return operation
+
+
+def mitre(left: Decimal, right: Decimal):
+    def operation(board: Board):
+        return board.mitre(left, right)
 
     return operation
 
