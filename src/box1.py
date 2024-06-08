@@ -1,7 +1,4 @@
-from decimal import Decimal
-
 from woodwork_cad.board import (
-    ZERO,
     Board,
     cube_net,
     cut,
@@ -18,18 +15,18 @@ from woodwork_cad.svg import print_svg
 
 
 def box1(boxL, boxW, boxH):
-    L = Decimal(550)
-    W = Decimal(100)
-    board1 = Board(L, W, Decimal(20))
-    board2 = Board(L, W, Decimal(8))
-    board3 = Board(L, W, Decimal(8))
+    L = 550
+    W = 100
+    board1 = Board(L, W, 20)
+    board2 = Board(L, W, 8)
+    board3 = Board(L, W, 8)
 
-    groove_depth = Decimal(5)
-    extra = Decimal(2) * (board1.T - groove_depth)
+    groove_depth = 5
+    extra = 2 * (board1.T - groove_depth)
 
     # width = board1.T
-    kerf = Decimal(5)
-    width = (board1.W - Decimal(5) * kerf) / Decimal(6)
+    kerf = 5
+    width = (board1.W - 5 * kerf) / 6
     print(f"sticks {width :.1f} x {board1.T :.1f}")
     sticks = process(rip(width), rip(width), rip(width), rip(width))(board1)
     sticks2 = process(rip(width), rip(width), waste)(sticks.pop())
@@ -63,9 +60,9 @@ def box1(boxL, boxW, boxH):
 
     panels = process_all(
         [board2, board3],
-        process_first(cut(boxW, kerf=ZERO), rip(boxH), waste),
-        process_first(cut(boxL, kerf=ZERO), rip(boxH, kerf=ZERO)),
-        cut(boxL, kerf=ZERO),
+        process_first(cut(boxW, kerf=0), rip(boxH), waste),
+        process_first(cut(boxL, kerf=0), rip(boxH, kerf=0)),
+        cut(boxL, kerf=0),
         waste,
     )
 
@@ -80,12 +77,12 @@ def box1(boxL, boxW, boxH):
 
 
 def box1_dimensions(boxH):
-    boxW = Decimal(200) - boxH
-    boxL = (Decimal(550) - boxW) / 2
+    boxW = 200 - boxH
+    boxL = (550 - boxW) / 2
     return (boxL, boxW, boxH)
 
 
-def draw_box1(boxH=Decimal(55)):
+def draw_box1(boxH=55):
     boxL, boxW, boxH = box1_dimensions(boxH)
 
     print("# Framed box\n")

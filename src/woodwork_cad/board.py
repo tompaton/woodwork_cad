@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
-from decimal import Decimal
-from math import cos, radians, sin
+from math import cos, radians, sin, sqrt
 from typing import Iterable, List, Optional, Tuple
 
 from .svg import SVGCanvas
@@ -20,54 +19,42 @@ __all__ = [
     "cube_net",
 ]
 
-ZERO = Decimal(0)
-
 
 class Defect:
-    def offset(self, offset_x: Decimal, offset_y: Decimal) -> "Defect":
+    def offset(self, offset_x: float, offset_y: float) -> "Defect":
         raise NotImplementedError
 
-    def visible(
-        self, offset_x: Decimal, offset_y: Decimal, L: Decimal, W: Decimal
-    ) -> bool:
+    def visible(self, offset_x: float, offset_y: float, L: float, W: float) -> bool:
         raise NotImplementedError
 
-    def draw(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+    def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
         raise NotImplementedError
 
 
 @dataclass
 class Hole(Defect):
-    x: Decimal
-    y: Decimal
-    r: Decimal = Decimal(5)
+    x: float
+    y: float
+    r: float = 5
 
-    def offset(self, offset_x: Decimal, offset_y: Decimal) -> "Hole":
+    def offset(self, offset_x: float, offset_y: float) -> "Hole":
         return Hole(self.x + offset_x, self.y + offset_y, self.r)
 
-    def visible(
-        self, offset_x: Decimal, offset_y: Decimal, L: Decimal, W: Decimal
-    ) -> bool:
+    def visible(self, offset_x: float, offset_y: float, L: float, W: float) -> bool:
         return (offset_x < self.x < offset_x + L) and (offset_y < self.y < offset_y + W)
 
-    def draw(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
-        canvas.circle(
-            float(x + self.x),
-            float(y + self.y),
-            float(self.r),
-            "orange",
-            stroke_width=1,
-        )
+    def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
+        canvas.circle(x + self.x, y + self.y, self.r, "orange", stroke_width=1)
 
 
 @dataclass
 class Notch(Defect):
-    x1: Decimal
-    y1: Decimal
-    x2: Decimal
-    y2: Decimal
+    x1: float
+    y1: float
+    x2: float
+    y2: float
 
-    def offset(self, offset_x: Decimal, offset_y: Decimal) -> "Notch":
+    def offset(self, offset_x: float, offset_y: float) -> "Notch":
         return Notch(
             self.x1 + offset_x,
             self.y1 + offset_y,
@@ -75,9 +62,7 @@ class Notch(Defect):
             self.y2 + offset_y,
         )
 
-    def visible(
-        self, offset_x: Decimal, offset_y: Decimal, L: Decimal, W: Decimal
-    ) -> bool:
+    def visible(self, offset_x: float, offset_y: float, L: float, W: float) -> bool:
         return not (
             self.x2 < offset_x
             or self.x1 > offset_x + L
@@ -85,12 +70,12 @@ class Notch(Defect):
             or self.y1 > offset_y + W
         )
 
-    def draw(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+    def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
         canvas.rect(
-            float(x + self.x1),
-            float(y + self.y1),
-            float(self.x2 - self.x1),
-            float(self.y2 - self.y1),
+            x + self.x1,
+            y + self.y1,
+            self.x2 - self.x1,
+            self.y2 - self.y1,
             "orange",
             stroke_width=1,
         )
@@ -98,20 +83,20 @@ class Notch(Defect):
 
 @dataclass
 class Board:
-    L: Decimal
-    W: Decimal
-    T: Decimal
+    L: float
+    W: float
+    T: float
 
     parent: Optional["Board"] = None
-    offset_x: Decimal = ZERO
-    offset_y: Decimal = ZERO
+    offset_x: float = 0
+    offset_y: float = 0
 
-    cuts: list[
-        tuple[str, Decimal, Decimal, Decimal, Decimal, str, Decimal, Decimal]
-    ] = field(default_factory=list)
+    cuts: list[tuple[str, float, float, float, float, str, float, float]] = field(
+        default_factory=list
+    )
 
     _defects: list[Defect] = field(default_factory=list)
-    _profile: List[Tuple[Decimal, Decimal]] = field(default_factory=list)
+    _profile: List[Tuple[float, float]] = field(default_factory=list)
 
     label: str = ""
 
@@ -134,20 +119,20 @@ class Board:
                 if defect.visible(self.offset_x, self.offset_y, self.L, self.W):
                     yield defect.offset(-self.offset_x, -self.offset_y)
 
-    def source_defects(self, offset_x: Decimal, offset_y: Decimal) -> Iterable[Defect]:
+    def source_defects(self, offset_x: float, offset_y: float) -> Iterable[Defect]:
         for defect in self.defects:
             yield defect.offset(offset_x, offset_y)
 
     def add_cut(
         self,
         op: str,
-        x1: Decimal,
-        y1: Decimal,
-        x2: Decimal,
-        y2: Decimal,
+        x1: float,
+        y1: float,
+        x2: float,
+        y2: float,
         label: str = "",
-        lx: Decimal = ZERO,
-        ly: Decimal = ZERO,
+        lx: float = 0,
+        ly: float = 0,
     ):
         self.cuts.append((op, x1, y1, x2, y2, label, lx, ly))
         if self.parent:
@@ -162,91 +147,85 @@ class Board:
                 ly + self.offset_y,
             )
 
-    def cut(self, length: Decimal, kerf: Decimal = Decimal(5)):
-        self.add_cut("cut", length, ZERO, length + kerf, self.W)
+    def cut(self, length: float, kerf: float = 5):
+        self.add_cut("cut", length, 0, length + kerf, self.W)
         return [
-            Board(length, self.W, self.T, self, ZERO, ZERO),
-            Board(self.L - length - kerf, self.W, self.T, self, length + kerf, ZERO),
+            Board(length, self.W, self.T, self, 0, 0),
+            Board(self.L - length - kerf, self.W, self.T, self, length + kerf, 0),
         ]
 
-    def rip(self, width: Decimal, kerf: Decimal = Decimal(5)):
-        self.add_cut("rip", ZERO, width, self.L, width + kerf)
+    def rip(self, width: float, kerf: float = 5):
+        self.add_cut("rip", 0, width, self.L, width + kerf)
         return [
-            Board(self.L, width, self.T, self, ZERO, ZERO),
-            Board(self.L, self.W - width - kerf, self.T, self, ZERO, width + kerf),
+            Board(self.L, width, self.T, self, 0, 0),
+            Board(self.L, self.W - width - kerf, self.T, self, 0, width + kerf),
         ]
 
     def waste(self):
-        self.add_cut("waste", ZERO, ZERO, self.L, self.W)
+        self.add_cut("waste", 0, 0, self.L, self.W)
         return []
 
-    def cut_waste(self, length: Decimal):
-        self.add_cut("cut_waste", ZERO, ZERO, length, self.W)
+    def cut_waste(self, length: float):
+        self.add_cut("cut_waste", 0, 0, length, self.W)
         return [
-            Board(self.L - length, self.W, self.T, self, length, ZERO),
+            Board(self.L - length, self.W, self.T, self, length, 0),
         ]
 
     @property
-    def profile(self) -> List[Tuple[Decimal, Decimal]]:
+    def profile(self) -> List[Tuple[float, float]]:
         return self._profile or [
-            (ZERO, ZERO),
-            (self.L, ZERO),
+            (0, 0),
+            (self.L, 0),
             (self.L, self.T),
-            (ZERO, self.T),
+            (0, self.T),
         ]
 
-    def mitre(self, left: Decimal, right: Decimal) -> List["Board"]:
+    def mitre(self, left: float, right: float) -> List["Board"]:
         self._profile = self.profile
 
         # offset the point of rotation
         # length is base + hypotenuse of 60 degree triangle with height equal to the
         # board thickness
-        hyp = float(self.T) / sin(radians(left))
-        offset_x = Decimal(hyp * cos(radians(left)))
+        hyp = self.T / sin(radians(left))
+        offset_x = hyp * cos(radians(left))
         x1, y1 = self._profile[0]
         self._profile[0] = (x1 + offset_x, y1)
 
-        hyp = float(self.T) / sin(radians(right))
-        offset_x = Decimal(hyp * cos(radians(right)))
+        hyp = self.T / sin(radians(right))
+        offset_x = hyp * cos(radians(right))
         x1, y1 = self._profile[1]
         self._profile[1] = (x1 - offset_x, y1)
 
         return [self]
 
-    def draw_board(self, canvas: SVGCanvas, x: Decimal, y: Decimal) -> None:
+    def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
         # to support mitred ends, maybe treat the board as a profile that
         # is extruded along it's width?
         # draw as polylines rather than rectangles
 
-        canvas.rect(
-            float(x), float(y), float(self.L), float(self.W), "black", stroke_width=1
-        )
+        canvas.rect(x, y, self.L, self.W, "black", stroke_width=1)
 
-        zx = self.T / Decimal(2).sqrt()
-        zy = self.T / Decimal(2).sqrt()
+        zx = self.T / sqrt(2)
+        zy = self.T / sqrt(2)
 
         canvas.polyline(
             "gray",
-            float_points(
-                [
-                    (x, y + self.W),
-                    (x + zx, y + self.W + zy),
-                    (x + zx + self.L, y + self.W + zy),
-                    (x + zx + self.L, y + self.W + zy),
-                    (x + self.L, y + self.W),
-                ]
-            ),
+            [
+                (x, y + self.W),
+                (x + zx, y + self.W + zy),
+                (x + zx + self.L, y + self.W + zy),
+                (x + zx + self.L, y + self.W + zy),
+                (x + self.L, y + self.W),
+            ],
             stroke_dasharray="",
         )
         canvas.polyline(
             "gray",
-            float_points(
-                [
-                    (x + self.L, y),
-                    (x + self.L + zx, y + zy),
-                    (x + self.L + zx, y + self.W + zy),
-                ]
-            ),
+            [
+                (x + self.L, y),
+                (x + self.L + zx, y + zy),
+                (x + self.L + zx, y + self.W + zy),
+            ],
             stroke_dasharray="",
         )
 
@@ -264,10 +243,10 @@ class Board:
                     fill = "rgba(255,0,0,0.25)"
 
                 canvas.rect(
-                    float(x + x1),
-                    float(y + y1),
-                    float(x2 - x1) + 1,
-                    float(y2 - y1) + 1,
+                    x + x1,
+                    y + y1,
+                    x2 - x1 + 1,
+                    y2 - y1 + 1,
                     colour,
                     fill=fill,
                     stroke_width=1,
@@ -276,22 +255,20 @@ class Board:
                 if op != "waste":
                     order += 1
                     canvas.text(
-                        float(x + x1) + 10,
-                        float(y + y1) + 10,
+                        x + x1 + 10,
+                        y + y1 + 10,
                         "left",
                         content=str(order),
                         style="",
                     )
 
             if label:
-                canvas.text(
-                    float(x + lx), float(y + ly), "start", content=label, style=""
-                )
+                canvas.text(x + lx, y + ly, "start", content=label, style="")
 
         if self.label:
             canvas.text(
-                float(x + self.L / Decimal(2)),
-                float(y + self.W / Decimal(2)),
+                x + self.L / 2,
+                y + self.W / 2,
                 content=self.label,
                 style="",
             )
@@ -302,53 +279,49 @@ class Board:
     def draw_plan(
         self,
         canvas: SVGCanvas,
-        x: Decimal,
-        y: Decimal,
-        angle: Decimal,
+        x: float,
+        y: float,
+        angle: float,
         colour: str = "black",
-    ) -> Tuple[Decimal, Decimal]:
+    ) -> Tuple[float, float]:
         offset_x, offset_y = self.profile[0]
         points = [(x1 - offset_x, y1 - offset_y) for (x1, y1) in self.profile]
         cos_a = cos(radians(angle))
         sin_a = sin(radians(angle))
         rotated = [
             (
-                float(x) + float(x1) * cos_a - float(y1) * sin_a,
-                float(y) + float(x1) * sin_a + float(y1) * cos_a,
+                x + x1 * cos_a - y1 * sin_a,
+                y + x1 * sin_a + y1 * cos_a,
             )
             for (x1, y1) in points
         ]
         canvas.polyline(
             colour, rotated, stroke_width=1, stroke_dasharray="", closed=True
         )
-        return Decimal(rotated[1][0]), Decimal(rotated[1][1])
+        return rotated[1]
 
 
-def float_points(points: List[Tuple[Decimal, Decimal]]) -> List[Tuple[float, float]]:
-    return [(float(x), float(y)) for x, y in points]
-
-
-def draw_boards(canvas: SVGCanvas, x: Decimal, y: Decimal, boards: list[Board]) -> None:
+def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> None:
     for board in boards:
         board.draw_board(canvas, x, y)
         y += board.W + 2 * board.T
 
 
-def cut(length: Decimal, kerf: Decimal = Decimal(5)):
+def cut(length: float, kerf: float = 5):
     def operation(board: Board):
         return board.cut(length, kerf)
 
     return operation
 
 
-def rip(width: Decimal, kerf: Decimal = Decimal(5)):
+def rip(width: float, kerf: float = 5):
     def operation(board: Board):
         return board.rip(width, kerf)
 
     return operation
 
 
-def mitre(left: Decimal, right: Decimal):
+def mitre(left: float, right: float):
     def operation(board: Board):
         return board.mitre(left, right)
 
@@ -359,7 +332,7 @@ def waste(board: Board):
     return board.waste()
 
 
-def cut_waste(length: Decimal):
+def cut_waste(length: float):
     def operation(board: Board):
         return board.cut_waste(length)
 
@@ -374,14 +347,14 @@ def joint(*boards: Board, label: str = ""):
         raise ValueError("Board length and thickness must match to be joined")
 
     defects: List[Defect] = []
-    offset_y = ZERO
+    offset_y = 0.0
     for board in boards:
-        defects.extend(board.source_defects(ZERO, offset_y))
+        defects.extend(board.source_defects(0, offset_y))
         offset_y += board.W
 
     return Board(
         boards[0].L,
-        Decimal(sum(board.W for board in boards)),
+        sum(board.W for board in boards),
         boards[0].T,
         label=label,
         _defects=defects,
@@ -431,8 +404,8 @@ def label_all(boards: list[Board], *labels):
         if board.parent:
             board.parent.add_cut(
                 "",
-                ZERO,
-                ZERO,
+                0,
+                0,
                 board.L,
                 board.W,
                 label,

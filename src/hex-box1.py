@@ -1,8 +1,5 @@
 # ruff: noqa: F401
-from decimal import Decimal
-
 from woodwork_cad.board import (
-    ZERO,
     Board,
     Hole,
     Notch,
@@ -27,33 +24,33 @@ def draw_hex_box1() -> None:
     print("## Stock")
     print("6 boards, trim waste, cut in half")
 
-    L = Decimal(1000)
-    W = Decimal(43)
-    T = Decimal(13)
-    raw_waste = Decimal(20)
+    L = 1000
+    W = 43
+    T = 13
+    raw_waste = 20
 
-    R = Decimal(160)  # hexagon radius (outside)
+    R = 150  # hexagon radius (outside)
 
-    L2a = 3 * R + 2 * Decimal(5)
+    L2a = 3 * R + 2 * 5
     L2b = L - L2a - 2 * raw_waste
 
     rawboards = [Board(L, W, T) for _ in range(6)]
 
-    rawboards[2].add_defect(Notch(Decimal(360), W - Decimal(10), Decimal(400), W))
-    rawboards[1].add_defect(Notch(Decimal(780), ZERO, Decimal(820), Decimal(10)))
+    rawboards[2].add_defect(Notch(360, W - 10, 400, W))
+    rawboards[1].add_defect(Notch(780, 0, 820, 10))
 
     for rawboard in rawboards:
-        rawboard.add_defect(Hole(Decimal(315), Decimal(12)))
-        rawboard.add_defect(Hole(Decimal(350), W - Decimal(12)))
-        rawboard.add_defect(Hole(Decimal(655), Decimal(12)))
-        rawboard.add_defect(Hole(Decimal(690), W - Decimal(12)))
+        rawboard.add_defect(Hole(315, 12))
+        rawboard.add_defect(Hole(350, W - 12))
+        rawboard.add_defect(Hole(655, 12))
+        rawboard.add_defect(Hole(690, W - 12))
 
     panels = process_all(
-        rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=ZERO), waste
+        rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=0), waste
     )
 
     with print_svg(1100, 500) as canvas:
-        draw_boards(canvas, Decimal(10), Decimal(20), rawboards)
+        draw_boards(canvas, 10, 20, rawboards)
 
     print("## Join panels")
     print("4 boards")
@@ -63,7 +60,7 @@ def draw_hex_box1() -> None:
     joint2(panels, 0, 1, 2)
 
     with print_svg(1100, 600) as canvas:
-        draw_boards(canvas, Decimal(10), Decimal(20), panels)
+        draw_boards(canvas, 10, 20, panels)
 
     lid = panels.pop(0)
     assert lid
@@ -73,13 +70,13 @@ def draw_hex_box1() -> None:
 
     sides = process_all(panels, cut(R), cut(R))
     with print_svg(1100, 500) as canvas:
-        draw_boards(canvas, Decimal(10), Decimal(20), sides[:3])
-        draw_boards(canvas, Decimal(300), Decimal(20), sides[3:])
+        draw_boards(canvas, 10, 20, sides[:3])
+        draw_boards(canvas, 300, 20, sides[3:])
 
     print("## Sides")
 
     print("mitre at 60 degrees")
-    sides = process_all(sides, mitre(Decimal(60), Decimal(60)))
+    sides = process_all(sides, mitre(60, 60))
 
     print("TODO: Dovetails")
 
@@ -101,11 +98,11 @@ def draw_hex_box1() -> None:
     print("TODO")
 
     # roughly check if there's enough lid/base to cut hex panel out of
-    lid2 = process(cut(Decimal(hex_L), kerf=ZERO), waste)(lid)[0]
-    lid2 = process(rip(Decimal(hex_W), kerf=ZERO), waste)(lid2)[0]
+    lid2 = process(cut(hex_L, kerf=0), waste)(lid)[0]
+    lid2 = process(rip(hex_W, kerf=0), waste)(lid2)[0]
 
     with print_svg(1100, 700) as canvas:
-        draw_boards(canvas, Decimal(10), Decimal(20), [lid, lid2])
+        draw_boards(canvas, 10, 20, [lid, lid2])
 
     print("## Lid")
     print("TODO")
