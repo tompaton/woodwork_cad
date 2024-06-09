@@ -29,7 +29,7 @@ def draw_hex_box1() -> None:
     T = 13
     raw_waste = 20
 
-    R = 150  # hexagon radius (outside)
+    R = 155  # hexagon radius (outside)
 
     L2a = 3 * R + 2 * 5
     L2b = L - L2a - 2 * raw_waste
@@ -55,15 +55,15 @@ def draw_hex_box1() -> None:
     print("## Join panels")
     print("4 boards")
 
-    joint2(panels, 1, 3, 5, 7, 9, 11)
+    joint2(panels, 7, 9, 11)
+    joint2(panels, 1, 3, 5)
     joint2(panels, 3, 4, 5)
     joint2(panels, 0, 1, 2)
 
     with print_svg(1100, 600) as canvas:
         draw_boards(canvas, 10, 20, panels)
 
-    lid = panels.pop(0)
-    assert lid
+    lid1, lid2 = panels.pop(0), panels.pop(0)
 
     print("## Cut sides")
     print("6 sides")
@@ -75,10 +75,10 @@ def draw_hex_box1() -> None:
 
     print("## Sides")
 
-    print("mitre at 60 degrees")
+    print("- mitre at 60 degrees")
     sides = process_all(sides, mitre(60, 60))
 
-    print("TODO: Dovetails")
+    print("- TODO: Dovetails")
 
     corners = []
     with print_svg(500, 400, zoom=1) as canvas:
@@ -89,23 +89,45 @@ def draw_hex_box1() -> None:
             angle += 60
             canvas.circle(x, y, 2, "red", stroke_width=1)
 
-    hex_L = max(x for x, y in corners) - min(x for x, y in corners)
-    hex_W = max(y for x, y in corners) - min(y for x, y in corners)
+    min_hex_x = min(x for x, y in corners)
+    min_hex_y = min(y for x, y in corners)
+    hex_L = max(x for x, y in corners) - min_hex_x
+    hex_W = max(y for x, y in corners) - min_hex_y
 
     print(f"Width = {hex_L:.1f}, Height = {hex_W:.1f}")
 
-    print("## Base")
-    print("TODO")
-
-    # roughly check if there's enough lid/base to cut hex panel out of
-    lid2 = process(cut(hex_L, kerf=0), waste)(lid)[0]
-    lid2 = process(rip(hex_W, kerf=0), waste)(lid2)[0]
+    print("## Base and Lid")
+    print("- Cut base and lid out of boards in 2 halves and join")
+    print("- these will be a little oversized if either is fitted into a groove")
 
     with print_svg(1100, 700) as canvas:
-        draw_boards(canvas, 10, 20, [lid, lid2])
-
-    print("## Lid")
-    print("TODO")
+        draw_boards(canvas, 10, 20, [lid1, lid2])
+        # draw hex over panel
+        canvas.polyline(
+            "blue",
+            [
+                (x - min_hex_x + 10, y - min_hex_y + 20 + lid1.W - hex_W / 2)
+                for x, y in corners
+                if y - min_hex_y <= lid1.W
+            ],
+            stroke_width=1,
+            stroke_dasharray=2,
+            closed=True,
+        )
+        canvas.polyline(
+            "blue",
+            [
+                (
+                    x - min_hex_x + 10 + hex_L - (hex_L - hex_W) * 2 + 5,
+                    y - min_hex_y + 20 - hex_W / 2,
+                )
+                for x, y in corners
+                if y - min_hex_y >= lid1.W / 2
+            ],
+            stroke_width=1,
+            stroke_dasharray=2,
+            closed=True,
+        )
 
     print("## Final box")
     print("TODO: side elevations")
