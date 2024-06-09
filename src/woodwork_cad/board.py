@@ -44,7 +44,7 @@ class Hole(Defect):
         return (offset_x < self.x < offset_x + L) and (offset_y < self.y < offset_y + W)
 
     def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
-        canvas.circle(x + self.x, y + self.y, self.r, "orange", stroke_width=1)
+        canvas.circle(x + self.x, y + self.y, self.r, "orange")
 
 
 @dataclass
@@ -72,12 +72,7 @@ class Notch(Defect):
 
     def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
         canvas.rect(
-            x + self.x1,
-            y + self.y1,
-            self.x2 - self.x1,
-            self.y2 - self.y1,
-            "orange",
-            stroke_width=1,
+            x + self.x1, y + self.y1, self.x2 - self.x1, self.y2 - self.y1, "orange"
         )
 
 
@@ -203,7 +198,7 @@ class Board:
         # is extruded along it's width?
         # draw as polylines rather than rectangles
 
-        canvas.rect(x, y, self.L, self.W, "black", stroke_width=1)
+        canvas.rect(x, y, self.L, self.W, "black")
 
         zx = self.T / sqrt(2)
         zy = self.T / sqrt(2)
@@ -217,7 +212,6 @@ class Board:
                 (x + zx + self.L, y + self.W + zy),
                 (x + self.L, y + self.W),
             ],
-            stroke_dasharray="",
         )
         canvas.polyline(
             "gray",
@@ -226,7 +220,6 @@ class Board:
                 (x + self.L + zx, y + zy),
                 (x + self.L + zx, y + self.W + zy),
             ],
-            stroke_dasharray="",
         )
 
         order = 0
@@ -249,7 +242,6 @@ class Board:
                     y2 - y1 + 1,
                     colour,
                     fill=fill,
-                    stroke_width=1,
                 )
 
                 if op != "waste":
@@ -295,9 +287,7 @@ class Board:
             )
             for (x1, y1) in points
         ]
-        canvas.polyline(
-            colour, rotated, stroke_width=1, stroke_dasharray="", closed=True
-        )
+        canvas.polyline(colour, rotated, closed=True)
         return rotated[1]
 
 

@@ -1,73 +1,25 @@
 from contextlib import contextmanager
-from math import atan2, cos, degrees, sin
-from typing import Any, Iterator, List, Tuple
+from typing import Any, Iterator, List, Optional, Tuple
 
 
 class SVGCanvas:
-    def __init__(
-        self,
-        maxx: int = 200,
-        maxy: int = 150,
-        w0: int = 200,
-        h0: int = 150,
-        pad: int = 20,
-    ) -> None:
-        # svg coords
-        self.pad = pad
-        self.w2 = w0 - 2 * self.pad
-        self.h2 = h0 - 2 * self.pad
-
-        # pixels
-        self.maxx = maxx
-        self.maxy = maxy
-        if self.maxx / self.maxy > w0 / h0:
-            self.w1: float = self.maxx
-            self.h1: float = h0 * self.w1 / w0
-        else:
-            self.h1 = self.maxy
-            self.w1 = w0 * self.h1 / h0
-
+    def __init__(self) -> None:
         self.result = ""
+        self.min_y: Optional[float] = None
+        self.max_y: Optional[float] = None
 
-    # document
-
-    def _write(self, xml: str) -> None:
-        self.result += xml + "\n"
+    def _min_max_y(self, *ys) -> None:
+        self.min_y = min(self.min_y or ys[0], *ys)
+        self.max_y = max(self.max_y or ys[0], *ys)
 
     def write(self, tag: str, content: str = "", **attrs: Any) -> None:
         attrs_str = " ".join(
             '{}="{}"'.format(k.replace("_", "-"), v) for k, v in attrs.items()
         )
         if content:
-            self._write(f"<{tag} {attrs_str}>{content}</{tag}>")
+            self.result += f"<{tag} {attrs_str}>{content}</{tag}>\n"
         else:
-            self._write(f"<{tag} {attrs_str} />")
-
-    @contextmanager
-    def document(
-        self,
-        width: int,
-        viewbox: Tuple[float, float, float, float],
-    ) -> Iterator[None]:
-        viewbox_str = " ".join(map(str, viewbox))
-        self._write(
-            f'<svg width="{width}" viewBox="{viewbox_str}" xmlns="http://www.w3.org/2000/svg">'
-        )
-        yield
-        self._write("</svg>")
-
-    # pixels to coords
-
-    def _x(self, x: float) -> float:
-        return self.pad + x * self.w2 / self.w1
-
-    def _y(self, y: float) -> float:
-        return self.pad + y * self.h2 / self.h1
-
-    def _center(
-        self, x: float, y: float, width: float, height: float
-    ) -> Tuple[float, float]:
-        return x + width / 2, y + height / 2
+            self.result += f"<{tag} {attrs_str} />\n"
 
     # drawing
 
@@ -78,7 +30,7 @@ class SVGCanvas:
         width: float,
         height: float,
         colour: str,
-        stroke_width: float = 0.4,
+        stroke_width: float = 1,
         fill: str = "none",
         **attrs: Any,
     ) -> None:
@@ -91,6 +43,7 @@ class SVGCanvas:
             style=f"fill: {fill}; stroke: {colour}; stroke-width: {stroke_width};",
             **attrs,
         )
+        self._min_max_y(y, y + height)
 
     def line(
         self,
@@ -99,7 +52,7 @@ class SVGCanvas:
         x2: float,
         y2: float,
         colour: str,
-        stroke_width: float = 0.2,
+        stroke_width: float = 1,
         **attrs: Any,
     ) -> None:
         self.write(
@@ -112,6 +65,7 @@ class SVGCanvas:
             stroke_width=stroke_width,
             **attrs,
         )
+        self._min_max_y(y1, y2)
 
     def circle(
         self,
@@ -120,7 +74,7 @@ class SVGCanvas:
         r: float,
         colour: str,
         fill: str = "white",
-        stroke_width: float = 0.2,
+        stroke_width: float = 1,
         **attrs: Any,
     ) -> None:
         self.write(
@@ -133,6 +87,7 @@ class SVGCanvas:
             stroke_width=stroke_width,
             **attrs,
         )
+        self._min_max_y(cy - r, cy + r)
 
     def text(
         self,
@@ -141,7 +96,7 @@ class SVGCanvas:
         text_anchor: str = "middle",
         fill: str = "black",
         content: str = "text",
-        style: str = "font-family: monospace; font-size: 4px",
+        style: str = "",
         **attrs: Any,
     ) -> None:
         self.write(
@@ -154,13 +109,14 @@ class SVGCanvas:
             content=content,
             **attrs,
         )
+        self._min_max_y(y)
 
     def polyline(
         self,
         colour: str,
         points: List[Tuple[float, float]],
-        stroke_width: float = 0.2,
-        stroke_dasharray: Any = 2,
+        stroke_width: float = 1,
+        stroke_dasharray: Any = "",
         fill: str = "none",
         closed: bool = False,
         **attrs: Any,
@@ -174,96 +130,20 @@ class SVGCanvas:
             points=" ".join("{},{}".format(*p) for p in points),
             **attrs,
         )
-
-    def dimension(
-        self,
-        label: str,
-        position: str,
-        colour: str,
-        start: float,
-        stop: float,
-    ) -> None:
-        _x = self._x
-        _y = self._y
-
-        if position == "top":
-            self._dimension(
-                label,
-                colour,
-                [(_x(start), 14), (_x(start), 15), (_x(stop), 15), (_x(stop), 14)],
-                x=_x((start + stop) / 2),
-                y=_y(0) - 7,
-            )
-
-        elif position == "left":
-            self._dimension(
-                label,
-                colour,
-                [(14, _y(start)), (15, _y(start)), (15, _y(stop)), (14, _y(stop))],
-                transform=f"rotate(-90) translate(-{_y((start+stop)/2)}, 12)",
-            )
-
-        elif position == "bottom":
-            self._dimension(
-                label,
-                colour,
-                [
-                    (_x(start), _y(self.maxy) + 5),
-                    (_x(start), _y(self.maxy) + 4),
-                    (_x(stop), _y(self.maxy) + 4),
-                    (_x(stop), _y(self.maxy) + 5),
-                ],
-                x=_x((start + stop) / 2),
-                y=_y(self.maxy) + 10,
-            )
-
-        elif position == "right":
-            self._dimension(
-                label,
-                colour,
-                [
-                    (_x(self.maxx) + 6, _y(start)),
-                    (_x(self.maxx) + 5, _y(start)),
-                    (_x(self.maxx) + 5, _y(stop)),
-                    (_x(self.maxx) + 6, _y(stop)),
-                ],
-                transform=(
-                    f"rotate(90) translate({_y((start+stop)/2)}, -{_x(self.maxx)+10})"
-                ),
-            )
-
-    def _dimension(
-        self,
-        label: str,
-        colour: str,
-        points: List[Tuple[float, float]],
-        x: float = 0,
-        y: float = 0,
-        transform: str = "",
-    ) -> None:
-        self.polyline(colour, points)
-        self.text(x, y, transform=transform, content=label)
-
-    def arrow(self, colour: str, x1: float, y1: float, x2: float, y2: float) -> None:
-        _x = self._x
-        _y = self._y
-        angle = atan2((y2 - y1), (x2 - x1))
-        dx, dy = cos(angle), sin(angle)
-        self.line(_x(x1), _y(y1), _x(x2), _y(y2), colour, stroke_dasharray=1)
-        self.polyline(
-            colour,
-            [(-1, -0.5), (0, 0), (-1, 0.5)],
-            stroke_dasharray="",
-            transform=f"translate({_x(x2)-dx}, {_y(y2)-dy}) scale(1.5) rotate({degrees(angle)})",
-            fill=colour,
-        )
+        self._min_max_y(*(y for x, y in points))
 
 
 @contextmanager
-def print_svg(width: int, height: int, zoom: float = 1.0) -> Iterator[SVGCanvas]:
+def print_svg(width: int, height: int = 0, zoom: float = 1.0) -> Iterator[SVGCanvas]:
     canvas = SVGCanvas()
-    with canvas.document(int(width * zoom), (0, 0, width, height)):
-        yield canvas
+    yield canvas
+    # auto calculate height
+    auto_height = (canvas.max_y or 0) + (canvas.min_y or 0)
+    viewbox_str = " ".join(map(str, (0, 0, width, height or auto_height)))
     print()
-    print(canvas.result)
+    print(
+        f'<svg width="{int(width * zoom)}" viewBox="{viewbox_str}" xmlns="http://www.w3.org/2000/svg">'
+    )
+    print(canvas.result + "</svg>")
+    print()
     print()

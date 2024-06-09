@@ -49,7 +49,7 @@ def draw_hex_box1() -> None:
         rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=0), waste
     )
 
-    with print_svg(1100, 500) as canvas:
+    with print_svg(1100) as canvas:
         draw_boards(canvas, 10, 20, rawboards)
 
     print("## Join panels")
@@ -60,7 +60,7 @@ def draw_hex_box1() -> None:
     joint2(panels, 3, 4, 5)
     joint2(panels, 0, 1, 2)
 
-    with print_svg(1100, 600) as canvas:
+    with print_svg(1100) as canvas:
         draw_boards(canvas, 10, 20, panels)
 
     lid1, lid2 = panels.pop(0), panels.pop(0)
@@ -69,7 +69,7 @@ def draw_hex_box1() -> None:
     print("6 sides")
 
     sides = process_all(panels, cut(R), cut(R))
-    with print_svg(1100, 500) as canvas:
+    with print_svg(1100) as canvas:
         draw_boards(canvas, 10, 20, sides[:3])
         draw_boards(canvas, 300, 20, sides[3:])
 
@@ -81,13 +81,13 @@ def draw_hex_box1() -> None:
     print("- TODO: Dovetails")
 
     corners = []
-    with print_svg(500, 400, zoom=1) as canvas:
+    with print_svg(550, zoom=2) as canvas:
         x, y, angle = 150, 50, 0
         for side in sides:
             x, y = side.draw_plan(canvas, x, y, angle)
             corners.append((x, y))
             angle += 60
-            canvas.circle(x, y, 2, "red", stroke_width=1)
+            canvas.circle(x, y, 2, "red")
 
     min_hex_x = min(x for x, y in corners)
     min_hex_y = min(y for x, y in corners)
@@ -100,7 +100,7 @@ def draw_hex_box1() -> None:
     print("- Cut base and lid out of boards in 2 halves and join")
     print("- these will be a little oversized if either is fitted into a groove")
 
-    with print_svg(1100, 700) as canvas:
+    with print_svg(1100) as canvas:
         draw_boards(canvas, 10, 20, [lid1, lid2])
         # draw hex over panel
         canvas.polyline(
@@ -110,7 +110,6 @@ def draw_hex_box1() -> None:
                 for x, y in corners
                 if y - min_hex_y <= lid1.W
             ],
-            stroke_width=1,
             stroke_dasharray=2,
             closed=True,
         )
@@ -124,7 +123,6 @@ def draw_hex_box1() -> None:
                 for x, y in corners
                 if y - min_hex_y >= lid1.W / 2
             ],
-            stroke_width=1,
             stroke_dasharray=2,
             closed=True,
         )

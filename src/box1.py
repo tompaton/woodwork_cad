@@ -96,20 +96,20 @@ def draw_box1(boxH=55):
     cube = cube_net(panels2, *net)
 
     print("## Frame")
-    with print_svg(1000, 1000) as canvas:
+    with print_svg(1000) as canvas:
         board1.draw_board(canvas, 10, 20)
 
         draw_boards(canvas, 10, 170, frame2)
 
     print("## Panels")
-    with print_svg(1000, 1000) as canvas:
+    with print_svg(1000) as canvas:
         board2.draw_board(canvas, 10, 20)
         board3.draw_board(canvas, 10, 170)
 
         draw_boards(canvas, 10, 300, panels2)
 
     print("## Final box")
-    with print_svg(1000, 1000) as canvas:
+    with print_svg(1000) as canvas:
         cube.draw_board(canvas, 10, 10)
 
 
