@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from math import cos, radians, sin, sqrt
 from typing import Iterable, List, Optional, Tuple
 
-from .svg import SVGCanvas
+from .svg import Points, SVGCanvas
 
 __all__ = [
     "Board",
@@ -94,6 +94,9 @@ class Board:
     _profile: List[Tuple[float, float]] = field(default_factory=list)
 
     label: str = ""
+
+    def __str__(self) -> str:
+        return f"{self.L} x {self.W} x {self.T}"
 
     @property
     def area(self):
@@ -291,10 +294,13 @@ class Board:
         return rotated[1]
 
 
-def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> None:
+def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> Points:
+    points = []
     for board in boards:
         board.draw_board(canvas, x, y)
+        points.append((x, y))
         y += board.W + 2 * board.T
+    return points
 
 
 def cut(length: float, kerf: float = 5):

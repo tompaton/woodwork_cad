@@ -15,7 +15,13 @@ from woodwork_cad.board import (
     rip,
     waste,
 )
-from woodwork_cad.svg import print_svg
+from woodwork_cad.svg import (
+    Points,
+    crop_points,
+    offset_points,
+    polyline_bounds,
+    print_svg,
+)
 
 
 def draw_hex_box1() -> None:
@@ -60,27 +66,34 @@ def draw_hex_box1() -> None:
     joint2(panels, 3, 4, 5)
     joint2(panels, 0, 1, 2)
 
-    with print_svg(1100) as canvas:
-        draw_boards(canvas, 10, 20, panels)
+    for panel in panels:
+        print(f"- {panel}")
 
     lid1, lid2 = panels.pop(0), panels.pop(0)
+    sides = process_all(panels, cut(R), cut(R))
+
+    with print_svg(1100) as canvas:
+        draw_boards(canvas, 10, 20, [lid1, lid2] + panels)
 
     print("## Cut sides")
     print("6 sides")
 
-    sides = process_all(panels, cut(R), cut(R))
+    print()
+    print(f"- {sides[0]}")
+    print("- mitre at 60 degrees")
+    print("- this is pessimistic as side mitres can overlap")
+
     with print_svg(1100) as canvas:
         draw_boards(canvas, 10, 20, sides[:3])
         draw_boards(canvas, 300, 20, sides[3:])
 
     print("## Sides")
 
-    print("- mitre at 60 degrees")
     sides = process_all(sides, mitre(60, 60))
 
     print("- TODO: Dovetails")
 
-    corners = []
+    corners: Points = []
     with print_svg(550, zoom=2) as canvas:
         x, y, angle = 150, 50, 0
         for side in sides:
@@ -89,10 +102,7 @@ def draw_hex_box1() -> None:
             angle += 60
             canvas.circle(x, y, 2, "red")
 
-    min_hex_x = min(x for x, y in corners)
-    min_hex_y = min(y for x, y in corners)
-    hex_L = max(x for x, y in corners) - min_hex_x
-    hex_W = max(y for x, y in corners) - min_hex_y
+    hex_L, hex_W, corners2 = polyline_bounds(corners)
 
     print(f"Width = {hex_L:.1f}, Height = {hex_W:.1f}")
 
@@ -100,30 +110,57 @@ def draw_hex_box1() -> None:
     print("- Cut base and lid out of boards in 2 halves and join")
     print("- these will be a little oversized if either is fitted into a groove")
 
+    hex_top = crop_points(offset_points(0, lid1.W - hex_W / 2, corners2), lid1.W)
+    hex_bottom = crop_points(
+        offset_points(0, -hex_W / 2, corners2),
+        lid1.W,
+    )
+
+    half = hex_L - (hex_L - hex_W) * 2
+
     with print_svg(1100) as canvas:
-        draw_boards(canvas, 10, 20, [lid1, lid2])
+        lid1_xy, lid2_xy = draw_boards(canvas, 10, 20, [lid1, lid2])
+
         # draw hex over panel
         canvas.polyline(
-            "blue",
-            [
-                (x - min_hex_x + 10, y - min_hex_y + 20 + lid1.W - hex_W / 2)
-                for x, y in corners
-                if y - min_hex_y <= lid1.W
-            ],
-            stroke_dasharray=2,
+            "green",
+            offset_points(
+                lid1_xy[0],
+                lid1_xy[1],
+                hex_top,
+            ),
+            stroke_dasharray=3,
             closed=True,
         )
         canvas.polyline(
-            "blue",
-            [
-                (
-                    x - min_hex_x + 10 + hex_L - (hex_L - hex_W) * 2 + 5,
-                    y - min_hex_y + 20 - hex_W / 2,
-                )
-                for x, y in corners
-                if y - min_hex_y >= lid1.W / 2
-            ],
-            stroke_dasharray=2,
+            "green",
+            offset_points(
+                lid1_xy[0] + 5 + half,
+                lid1_xy[1],
+                hex_bottom,
+            ),
+            stroke_dasharray=3,
+            closed=True,
+        )
+
+        canvas.polyline(
+            "green",
+            offset_points(
+                lid2_xy[0],
+                lid2_xy[1],
+                hex_bottom,
+            ),
+            stroke_dasharray=3,
+            closed=True,
+        )
+        canvas.polyline(
+            "green",
+            offset_points(
+                lid2_xy[0] + 5 + half,
+                lid2_xy[1],
+                hex_top,
+            ),
+            stroke_dasharray=3,
             closed=True,
         )
 

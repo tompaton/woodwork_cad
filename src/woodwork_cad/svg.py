@@ -1,6 +1,8 @@
 from contextlib import contextmanager
 from typing import Any, Iterator, List, Optional, Tuple
 
+Points = List[Tuple[float, float]]
+
 
 class SVGCanvas:
     def __init__(self) -> None:
@@ -114,7 +116,7 @@ class SVGCanvas:
     def polyline(
         self,
         colour: str,
-        points: List[Tuple[float, float]],
+        points: Points,
         stroke_width: float = 1,
         stroke_dasharray: Any = "",
         fill: str = "none",
@@ -147,3 +149,19 @@ def print_svg(width: int, height: int = 0, zoom: float = 1.0) -> Iterator[SVGCan
     print(canvas.result + "</svg>")
     print()
     print()
+
+
+def polyline_bounds(corners: Points) -> Tuple[float, float, Points]:
+    min_hex_x = min(x for x, y in corners)
+    min_hex_y = min(y for x, y in corners)
+    hex_L = max(x for x, y in corners) - min_hex_x
+    hex_W = max(y for x, y in corners) - min_hex_y
+    return hex_L, hex_W, offset_points(-min_hex_x, -min_hex_y, corners)
+
+
+def crop_points(points: Points, height: float) -> Points:
+    return [(x, y) for x, y in points if -1 <= y <= height + 1]
+
+
+def offset_points(offset_x: float, offset_y: float, points: Points) -> Points:
+    return [(x + offset_x, y + offset_y) for x, y in points]

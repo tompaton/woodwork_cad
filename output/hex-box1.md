@@ -94,6 +94,10 @@
 
 ## Join panels
 4 boards
+- 485 x 129 x 13
+- 485 x 129 x 13
+- 475 x 129 x 13
+- 475 x 129 x 13
 
 <svg width="1100" viewBox="0 0 1100 643.1923881554251" xmlns="http://www.w3.org/2000/svg">
 <rect x="10" y="20" width="485" height="129" style="fill: none; stroke: black; stroke-width: 1;" />
@@ -118,6 +122,10 @@
 <rect x="10" y="330" width="475" height="129" style="fill: none; stroke: black; stroke-width: 1;" />
 <polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="10,459 19.192388155425117,468.19238815542514 494.19238815542514,468.19238815542514 494.19238815542514,468.19238815542514 485,459" />
 <polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="485,330 494.19238815542514,339.19238815542514 494.19238815542514,468.19238815542514" />
+<rect x="165" y="330" width="6" height="130" style="fill: rgba(0,255,0,0.25); stroke: green; stroke-width: 1;" />
+<text style="" text-anchor="left" x="175" y="340" fill="black">1</text>
+<rect x="325" y="330" width="6" height="130" style="fill: rgba(0,255,0,0.25); stroke: green; stroke-width: 1;" />
+<text style="" text-anchor="left" x="335" y="340" fill="black">2</text>
 <circle cx="305" cy="342.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="340" cy="361.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="305" cy="385.0" r="5" stroke="orange" fill="white" stroke-width="1" />
@@ -127,6 +135,10 @@
 <rect x="10" y="485" width="475" height="129" style="fill: none; stroke: black; stroke-width: 1;" />
 <polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="10,614 19.192388155425117,623.1923881554251 494.19238815542514,623.1923881554251 494.19238815542514,623.1923881554251 485,614" />
 <polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="485,485 494.19238815542514,494.19238815542514 494.19238815542514,623.1923881554251" />
+<rect x="165" y="485" width="6" height="130" style="fill: rgba(0,255,0,0.25); stroke: green; stroke-width: 1;" />
+<text style="" text-anchor="left" x="175" y="495" fill="black">1</text>
+<rect x="325" y="485" width="6" height="130" style="fill: rgba(0,255,0,0.25); stroke: green; stroke-width: 1;" />
+<text style="" text-anchor="left" x="335" y="495" fill="black">2</text>
 <rect x="350" y="518.0" width="40" height="10.0" style="fill: none; stroke: orange; stroke-width: 1;" />
 <circle cx="305" cy="497.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="340" cy="516.0" r="5" stroke="orange" fill="white" stroke-width="1" />
@@ -139,6 +151,10 @@
 
 ## Cut sides
 6 sides
+
+- 155 x 129 x 13
+- mitre at 60 degrees
+- this is pessimistic as side mitres can overlap
 
 <svg width="1100" viewBox="0 0 1100 488.19238815542514" xmlns="http://www.w3.org/2000/svg">
 <rect x="10" y="20" width="155" height="129" style="fill: none; stroke: black; stroke-width: 1;" />
@@ -176,7 +192,6 @@
 
 
 ## Sides
-- mitre at 60 degrees
 - TODO: Dovetails
 
 <svg width="1100" viewBox="0 0 550 342.467875173176" xmlns="http://www.w3.org/2000/svg">
@@ -220,8 +235,10 @@ Width = 280.0, Height = 242.5
 <circle cx="200" cy="249.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="165" cy="273.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="200" cy="292.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="blue" points="219.9833395016047,27.766062413411987 289.97778600213957,149.0 10.0,149.00000000000006 79.99444650053488,27.766062413412044" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="blue" points="499.93575034635205,20.0 429.9413038458172,141.233937586588 289.9524108447474,141.233937586588 219.95796434421248,20.000000000000057" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="219.9833395016047,27.766062413411987 289.97778600213957,149.0 10.0,149.00000000000006 79.99444650053488,27.766062413412058" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="499.93575034635205,20.0 429.9413038458172,141.233937586588 289.9524108447474,141.233937586588 219.95796434421248,20.000000000000057" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="289.97778600213957,175.0 219.9833395016047,296.233937586588 79.99444650053493,296.233937586588 10.0,175.00000000000006" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="429.9413038458172,182.766062413412 499.93575034635205,304.0 219.95796434421248,304.00000000000006 289.95241084474736,182.76606241341204" />
 </svg>
 
 
