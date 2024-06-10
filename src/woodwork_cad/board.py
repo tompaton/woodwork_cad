@@ -178,6 +178,14 @@ class Board:
             (0, self.T),
         ]
 
+    def profile_length(self) -> Tuple[float, float]:
+        def length(x1: float, y1: float, x2: float, y2: float) -> float:
+            return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
+
+        return length(*self.profile[0], *self.profile[1]), length(
+            *self.profile[2], *self.profile[3]
+        )
+
     def mitre(self, left: float, right: float) -> List["Board"]:
         self._profile = self.profile
 
@@ -196,12 +204,22 @@ class Board:
 
         return [self]
 
+    def flip_profile(self) -> None:
+        a, b, c, d = self.profile
+        self._profile = [(d[0], a[1]), (c[0], b[1]), (b[0], c[1]), (a[0], d[1])]
+
+        self.L = self._profile[1][0] - self._profile[0][0]
+
     def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
         # to support mitred ends, maybe treat the board as a profile that
         # is extruded along it's width?
         # draw as polylines rather than rectangles
 
-        canvas.rect(x, y, self.L, self.W, "black")
+        profile = self.profile
+
+        canvas.rect(
+            x + profile[0][0], y, profile[1][0] - profile[0][0], self.W, "black"
+        )
 
         zx = self.T / sqrt(2)
         zy = self.T / sqrt(2)
@@ -209,19 +227,18 @@ class Board:
         canvas.polyline(
             "gray",
             [
-                (x, y + self.W),
-                (x + zx, y + self.W + zy),
-                (x + zx + self.L, y + self.W + zy),
-                (x + zx + self.L, y + self.W + zy),
-                (x + self.L, y + self.W),
+                (x + profile[0][0], y + self.W),
+                (x + profile[3][0] + zx, y + self.W + zy),
+                (x + profile[2][0] + zx, y + self.W + zy),
+                (x + profile[1][0], y + self.W),
             ],
         )
         canvas.polyline(
             "gray",
             [
-                (x + self.L, y),
-                (x + self.L + zx, y + zy),
-                (x + self.L + zx, y + self.W + zy),
+                (x + profile[1][0], y),
+                (x + profile[2][0] + zx, y + zy),
+                (x + profile[2][0] + zx, y + self.W + zy),
             ],
         )
 
