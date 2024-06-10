@@ -94,6 +94,7 @@ class Board:
     _profile: List[Tuple[float, float]] = field(default_factory=list)
 
     label: str = ""
+    _shade: List[tuple[float, float, str]] = field(default_factory=list)
 
     def __str__(self) -> str:
         return f"{self.L} x {self.W} x {self.T}"
@@ -120,6 +121,19 @@ class Board:
     def source_defects(self, offset_x: float, offset_y: float) -> Iterable[Defect]:
         for defect in self.defects:
             yield defect.offset(offset_x, offset_y)
+
+    def shade(self, colour: str) -> "Board":
+        self._shade.append((0, self.W, colour))
+        return self
+
+    def select_shade(
+        self, min_y: float, max_y: float, offset_y: float = 0
+    ) -> List[Tuple[float, float, str]]:
+        return [
+            (max(y1, min_y) + offset_y, min(y2, max_y) + offset_y, fill)
+            for (y1, y2, fill) in self._shade
+            if y1 < max_y and y2 > min_y
+        ]
 
     def add_cut(
         self,
@@ -148,15 +162,35 @@ class Board:
     def cut(self, length: float, kerf: float = 5):
         self.add_cut("cut", length, 0, length + kerf, self.W)
         return [
-            Board(length, self.W, self.T, self, 0, 0),
-            Board(self.L - length - kerf, self.W, self.T, self, length + kerf, 0),
+            Board(
+                length, self.W, self.T, self, 0, 0, _shade=self.select_shade(0, self.W)
+            ),
+            Board(
+                self.L - length - kerf,
+                self.W,
+                self.T,
+                self,
+                length + kerf,
+                0,
+                _shade=self.select_shade(0, self.W),
+            ),
         ]
 
     def rip(self, width: float, kerf: float = 5):
         self.add_cut("rip", 0, width, self.L, width + kerf)
         return [
-            Board(self.L, width, self.T, self, 0, 0),
-            Board(self.L, self.W - width - kerf, self.T, self, 0, width + kerf),
+            Board(
+                self.L, width, self.T, self, 0, 0, _shade=self.select_shade(0, width)
+            ),
+            Board(
+                self.L,
+                self.W - width - kerf,
+                self.T,
+                self,
+                0,
+                width + kerf,
+                _shade=self.select_shade(width + kerf, self.W),
+            ),
         ]
 
     def waste(self):
@@ -223,6 +257,28 @@ class Board:
 
         zx = self.T / sqrt(2)
         zy = self.T / sqrt(2)
+
+        for y1, y2, fill in self._shade:
+            canvas.rect(
+                x + profile[0][0],
+                y + y1,
+                profile[1][0] - profile[0][0],
+                y2 - y1,
+                "none",
+                fill=fill,
+            )
+            # extend shading around thickness
+            canvas.polyline(
+                "none",
+                [
+                    (x + profile[1][0], y + y1),
+                    (x + profile[2][0] + zx, y + y1 + zy),
+                    (x + profile[2][0] + zx, y + y2 + zy),
+                    (x + profile[1][0], y + y2),
+                ],
+                fill=fill,
+                closed=True,
+            )
 
         canvas.polyline(
             "gray",
@@ -360,9 +416,11 @@ def joint(*boards: Board, label: str = ""):
         raise ValueError("Board length and thickness must match to be joined")
 
     defects: List[Defect] = []
+    shade: List[Tuple[float, float, str]] = []
     offset_y = 0.0
     for board in boards:
         defects.extend(board.source_defects(0, offset_y))
+        shade.extend(board.select_shade(0, board.W, offset_y))
         offset_y += board.W
 
     return Board(
@@ -371,6 +429,7 @@ def joint(*boards: Board, label: str = ""):
         boards[0].T,
         label=label,
         _defects=defects,
+        _shade=shade,
     )
 
 

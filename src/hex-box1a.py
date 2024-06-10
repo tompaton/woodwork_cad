@@ -41,7 +41,9 @@ def draw_hex_box1() -> None:
     L2b = L - L2a - 2 * raw_waste
 
     rawboards = [Board(L, W, T) for _ in range(6)]
-    strips = [Board(L2a, 5, T) for _ in range(4)] + [Board(L2b, 5, T) for _ in range(4)]
+    strips = [Board(L2a, 5, T).shade("rgba(192,192,192,0.5)") for _ in range(4)] + [
+        Board(L2b, 5, T).shade("rgba(192,192,192,0.5)") for _ in range(4)
+    ]
 
     rawboards[2].add_defect(Notch(360, W - 10, 400, W))
     rawboards[1].add_defect(Notch(780, 0, 820, 10))
