@@ -133,7 +133,8 @@
 
 
 ## Join panels
-4 panels from 3 boards, insert contrasting 5mm strips between
+4 panels from 3 boards
+- insert contrasting 5mm strips between
 - 485 x 139 x 13
 - 485 x 139 x 13
 - 475 x 139 x 13

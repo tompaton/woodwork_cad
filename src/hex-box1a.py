@@ -30,6 +30,10 @@ def draw_hex_box1() -> None:
 
     print("## Stock")
 
+    # flags for design options
+    STRIPS = True  # contrasting strips
+    # TODO: overlapping mitres
+
     L = 1000
     W = 43
     T = 13
@@ -60,51 +64,67 @@ def draw_hex_box1() -> None:
     )
 
     with print_svg(1100) as canvas:
-        draw_boards(canvas, 10, 20, rawboards + short_strips + long_strips)
+        if STRIPS:
+            draw_boards(canvas, 10, 20, rawboards + short_strips + long_strips)
+        else:
+            draw_boards(canvas, 10, 20, rawboards)
 
     print("## Join panels")
-    print("4 panels from 3 boards, insert contrasting 5mm strips between")
+    print("4 panels from 3 boards")
+    if STRIPS:
+        print("- insert contrasting 5mm strips between")
 
     short_boards = cut_boards[::2]
     long_boards = cut_boards[1::2]
 
-    lid1 = joint(
-        long_boards.pop(),
-        long_strips.pop(),
-        long_boards.pop(),
-        long_strips.pop(),
-        long_boards.pop(),
-    )
-    lid2 = joint(
-        long_boards.pop(),
-        long_strips.pop(),
-        long_boards.pop(),
-        long_strips.pop(),
-        long_boards.pop(),
-    )
-    panels = [
-        lid1,
-        lid2,
-        joint(
-            short_boards.pop(),
-            short_strips.pop(),
-            short_boards.pop(),
-            short_strips.pop(),
-            short_boards.pop(),
-        ),
-        joint(
-            short_boards.pop(),
-            short_strips.pop(),
-            short_boards.pop(),
-            short_strips.pop(),
-            short_boards.pop(),
-        ),
-    ]
+    if STRIPS:
+        lid1 = joint(
+            long_boards.pop(),
+            long_strips.pop(),
+            long_boards.pop(),
+            long_strips.pop(),
+            long_boards.pop(),
+        )
+        lid2 = joint(
+            long_boards.pop(),
+            long_strips.pop(),
+            long_boards.pop(),
+            long_strips.pop(),
+            long_boards.pop(),
+        )
+        panels = [
+            lid1,
+            lid2,
+            joint(
+                short_boards.pop(),
+                short_strips.pop(),
+                short_boards.pop(),
+                short_strips.pop(),
+                short_boards.pop(),
+            ),
+            joint(
+                short_boards.pop(),
+                short_strips.pop(),
+                short_boards.pop(),
+                short_strips.pop(),
+                short_boards.pop(),
+            ),
+        ]
 
-    assert not long_boards
-    assert not short_boards
-    assert not short_strips
-    assert not long_strips
+        assert not long_boards
+        assert not short_boards
+        assert not short_strips
+        assert not long_strips
+
+    else:
+        lid1 = joint(*long_boards[:3])
+        lid2 = joint(*long_boards[3:])
+        panels = [
+            lid1,
+            lid2,
+            joint(*short_boards[:3]),
+            joint(*short_boards[3:]),
+        ]
 
     for panel in panels:
         print(f"- {panel}")
