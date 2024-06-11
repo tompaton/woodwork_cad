@@ -1,6 +1,6 @@
 # Hexagonal box
 ## Stock
-6 boards, trim waste, cut in half
+6 boards 1000 x 43 x 13, trim 20 from each end, cut at 475
 
 <svg width="1100" viewBox="0 0 1100 685.1923881554251" xmlns="http://www.w3.org/2000/svg">
 <rect x="10" y="20" width="1000" height="43" style="fill: none; stroke: black; stroke-width: 1;" />
@@ -133,7 +133,7 @@
 
 
 ## Join panels
-4 boards, insert contrasting 5mm strips between
+4 panels from 3 boards, insert contrasting 5mm strips between
 - 485 x 139 x 13
 - 485 x 139 x 13
 - 475 x 139 x 13
@@ -205,12 +205,12 @@
 </svg>
 
 
+## Cut grooves
+TODO
+- grooves for top and bottom
 ## Cut sides
-6 sides
-
-- 160 x 139 x 13
-- mitre at 60 degrees
-- this is pessimistic as side mitres can overlap
+- 6 sides 160 x 139 x 13
+- mitre at 60 degrees, overlapping so no waste
 - outside edge is 15mm shorter
 
 <svg width="1100" viewBox="0 0 1100 518.1923881554251" xmlns="http://www.w3.org/2000/svg">
@@ -272,8 +272,9 @@
 </svg>
 
 
+## Dovetails
+TODO
 ## Sides
-- TODO: Dovetails
 
 <svg width="1100" viewBox="0 0 550 351.1377481542538" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 294.98889300106975,50.0 302.4944465005349,63.0 142.49444650053488,63.0" />
@@ -288,17 +289,17 @@
 <circle cx="77.50555349946505" cy="175.56406460551025" r="2" stroke="red" fill="white" stroke-width="1" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.50555349946505,175.56406460551025 149.99999999999994,50.00000000000006 165.01110699893022,50.00000000000006 85.01110699893017,188.56406460551025" />
 <circle cx="149.99999999999994" cy="50.00000000000006" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="290.98634606671834,56.92833590916557 359.48611625573835,175.5734181833403 290.9916697508024,294.2095449239783 154.00254693435153,294.2094122450882 85.50277674533137,175.56432997091346 153.99722325026744,56.92820323027553" />
 </svg>
 
 
-Width = 290.0, Height = 251.1
-
-Inside length = 160.0, Outside length = 145.0
+- Final width = 290.0, Final height = 251.1
+- Inside length = 160.0, Outside length = 145.0
 ## Base and Lid
 - Cut base and lid out of boards in 2 halves and join
-- these will be a little oversized if either is fitted into a groove
+- lid/base width 237.3, side length 137.0
 
-<svg width="1100" viewBox="0 0 1100 353.1875786838085" xmlns="http://www.w3.org/2000/svg">
+<svg width="1100" viewBox="0 0 1100 353.18784404921166" xmlns="http://www.w3.org/2000/svg">
 <rect x="10" y="20" width="485" height="139" style="fill: none; stroke: black; stroke-width: 1;" />
 <rect x="10" y="63.0" width="485" height="5.0" style="fill: rgba(192,192,192,0.5); stroke: none; stroke-width: 1;" />
 <polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="495,63.0 504.19238815542514,72.19238815542512 504.19238815542514,77.19238815542512 495,68.0" />
@@ -326,10 +327,10 @@ Inside length = 160.0, Outside length = 145.0
 <circle cx="200" cy="264.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="165" cy="293.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="200" cy="312.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="227.4833395016047,33.43112592287309 299.9833395016047,159.00480947161668 10.0,158.99519052838335 82.49444650053489,33.43112592287315" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="512.2754963085076,20.00480947161668 439.78104980797275,145.5688740771269 294.792156806903,145.5688740771269 222.29215680690294,19.995190528383347" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="299.9833395016047,185.00480947161668 227.4888930010698,310.5688740771269 82.50000000000007,310.5688740771269 10.0,184.99519052838335" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="439.7754963085076,198.4311259228731 512.2754963085076,324.0048094716167 222.29215680690294,323.9951905283833 294.7866033074378,198.43112592287315" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="215.48356932138697,40.35946183203866 283.983339510407,159.0045441062134 10.0,158.99545589378656 78.49444650493606,40.35932915314862" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="484.5626833874055,20.004544106213388 416.0682368824695,138.64067084685138 279.07911406601863,138.64053816796127 210.5793438769985,19.995455893786556" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="283.983339510407,185.0045441062134 215.488893005471,303.6406708468514 78.49977018902015,303.64053816796127 10.0,184.99545589378656" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="416.06291319838544,205.35946183203868 484.5626833874055,324.0045441062134 210.5793438769985,323.9954558937866 279.0737903819346,205.35932915314862" />
 </svg>
 
 

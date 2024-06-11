@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from math import sqrt
 from typing import Any, Iterator, List, Optional, Tuple
 
 Points = List[Tuple[float, float]]
@@ -165,3 +166,15 @@ def crop_points(points: Points, height: float) -> Points:
 
 def offset_points(offset_x: float, offset_y: float, points: Points) -> Points:
     return [(x + offset_x, y + offset_y) for x, y in points]
+
+
+def shrink_points(corners: Points, delta: float) -> Tuple[float, float, Points]:
+    width, height = polyline_bounds(corners)[:2]
+    cx, cy = width / 2, height / 2
+    corners2: Points = []
+    for x, y in corners:
+        dx, dy = cx - x, cy - y
+        length = sqrt(dx * dx + dy * dy)
+        x1, y1 = dx / length, dy / length  # unit vector from corner to center
+        corners2.append((x + x1 * delta, y + y1 * delta))
+    return polyline_bounds(corners2)
