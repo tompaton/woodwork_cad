@@ -208,6 +208,7 @@
 ## Cut grooves
 TODO
 - grooves for top and bottom
+- this should be done before cutting sides, however that means that the mitres can't be overlapped as that alternates inside/outside faces.
 ## Cut sides
 - 6 sides 160 x 139 x 13
 - mitre at 60 degrees, overlapping so no waste

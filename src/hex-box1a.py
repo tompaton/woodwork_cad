@@ -6,7 +6,7 @@ from woodwork_cad.board import (
     cut,
     cut_waste,
     draw_boards,
-    joint2,
+    joint,
     label_all,
     mitre,
     process,
@@ -41,9 +41,8 @@ def draw_hex_box1() -> None:
     L2b = L - L2a - 2 * raw_waste
 
     rawboards = [Board(L, W, T) for _ in range(6)]
-    strips = [Board(L2a, 5, T).shade("rgba(192,192,192,0.5)") for _ in range(4)] + [
-        Board(L2b, 5, T).shade("rgba(192,192,192,0.5)") for _ in range(4)
-    ]
+    short_strips = [Board(L2a, 5, T).shade("rgba(192,192,192,0.5)") for _ in range(4)]
+    long_strips = [Board(L2b, 5, T).shade("rgba(192,192,192,0.5)") for _ in range(4)]
 
     print(f"6 boards {rawboards[0]}, trim {raw_waste} from each end, cut at {L2a}")
 
@@ -56,42 +55,73 @@ def draw_hex_box1() -> None:
         rawboard.add_defect(Hole(655, 12))
         rawboard.add_defect(Hole(690, W - 12))
 
-    panels = process_all(
+    cut_boards = process_all(
         rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=0), waste
     )
 
     with print_svg(1100) as canvas:
-        draw_boards(canvas, 10, 20, rawboards + strips)
+        draw_boards(canvas, 10, 20, rawboards + short_strips + long_strips)
 
     print("## Join panels")
     print("4 panels from 3 boards, insert contrasting 5mm strips between")
 
-    panels.insert(1, strips.pop(0))
-    panels.insert(3, strips.pop())
-    panels.insert(5, strips.pop(0))
-    panels.insert(7, strips.pop())
-    panels.insert(11, strips.pop(0))
-    panels.insert(13, strips.pop())
-    panels.insert(15, strips.pop(0))
-    panels.insert(17, strips.pop())
+    short_boards = cut_boards[::2]
+    long_boards = cut_boards[1::2]
 
-    joint2(panels, 12, 13, 16, 17, 19)
-    joint2(panels, 2, 3, 6, 7, 9)
-    joint2(panels, 5, 6, 7, 8, 9)
-    joint2(panels, 0, 1, 2, 3, 4)
+    lid1 = joint(
+        long_boards.pop(),
+        long_strips.pop(),
+        long_boards.pop(),
+        long_strips.pop(),
+        long_boards.pop(),
+    )
+    lid2 = joint(
+        long_boards.pop(),
+        long_strips.pop(),
+        long_boards.pop(),
+        long_strips.pop(),
+        long_boards.pop(),
+    )
+    panels = [
+        lid1,
+        lid2,
+        joint(
+            short_boards.pop(),
+            short_strips.pop(),
+            short_boards.pop(),
+            short_strips.pop(),
+            short_boards.pop(),
+        ),
+        joint(
+            short_boards.pop(),
+            short_strips.pop(),
+            short_boards.pop(),
+            short_strips.pop(),
+            short_boards.pop(),
+        ),
+    ]
+
+    assert not long_boards
+    assert not short_boards
+    assert not short_strips
+    assert not long_strips
 
     for panel in panels:
         print(f"- {panel}")
 
-    lid1, lid2 = panels.pop(0), panels.pop(0)
-    sides = process_all(panels, cut(R), cut(R - 15))
+    sides = process_all(panels[2:], cut(R), cut(R - 15))
 
     with print_svg(1100) as canvas:
-        draw_boards(canvas, 10, 20, [lid1, lid2] + panels)
+        draw_boards(canvas, 10, 20, panels)
 
     print("## Cut grooves")
     print("TODO")
     print("- grooves for top and bottom")
+    print(
+        "- this should be done before cutting sides, however that means that "
+        "the mitres can't be overlapped as that alternates inside/outside "
+        "faces."
+    )
 
     print("## Cut sides")
     print(f"- 6 sides {sides[0]}")
