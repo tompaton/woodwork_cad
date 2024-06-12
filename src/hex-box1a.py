@@ -1,4 +1,6 @@
 # ruff: noqa: F401
+import sys
+
 from woodwork_cad.board import (
     Board,
     Hole,
@@ -25,23 +27,26 @@ from woodwork_cad.svg import (
 )
 
 
-def draw_hex_box1() -> None:
+# flags for design options
+# STRIPS: alternate contrasting strips in panels
+# MITRE: overlapping mitres
+def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     print("# Hexagonal box")
 
     print("## Stock")
-
-    # flags for design options
-    STRIPS = True  # contrasting strips
-    # TODO: overlapping mitres
 
     L = 1000
     W = 43
     T = 13
     raw_waste = 20
 
-    R = 160  # hexagon radius (outside)
+    if MITRE:
+        R = 160  # hexagon radius (outside)
+        L2a = 3 * R + 2 * 5 - 15
+    else:
+        R = 160  # hexagon radius (outside)
+        L2a = 3 * R + 2 * 5
 
-    L2a = 3 * R + 2 * 5 - 15
     L2b = L - L2a - 2 * raw_waste
 
     rawboards = [Board(L, W, T) for _ in range(6)]
@@ -129,7 +134,10 @@ def draw_hex_box1() -> None:
     for panel in panels:
         print(f"- {panel}")
 
-    sides = process_all(panels[2:], cut(R), cut(R - 15))
+    if MITRE:
+        sides = process_all(panels[2:], cut(R), cut(R - 15))
+    else:
+        sides = process_all(panels[2:], cut(R), cut(R))
 
     with print_svg(1100) as canvas:
         draw_boards(canvas, 10, 20, panels)
@@ -137,23 +145,34 @@ def draw_hex_box1() -> None:
     print("## Cut grooves")
     print("TODO")
     print("- grooves for top and bottom")
-    print(
-        "- this should be done before cutting sides, however that means that "
-        "the mitres can't be overlapped as that alternates inside/outside "
-        "faces."
-    )
+    if MITRE:
+        print(
+            "- this should be done before cutting sides, however that means that "
+            "the mitres can't be overlapped as that alternates inside/outside "
+            "faces."
+        )
 
     print("## Cut sides")
     print(f"- 6 sides {sides[0]}")
-    print("- mitre at 60 degrees, overlapping so no waste")
+    if MITRE:
+        print("- mitre at 60 degrees, overlapping so no waste")
+    else:
+        print("- mitre at 60 degrees")
+
     print("- outside edge is 15mm shorter")
     sides[0].mitre(60, 60)
-    sides[1].mitre(-60, -60)
-    sides[1].flip_profile()
+    if MITRE:
+        sides[1].mitre(-60, -60)
+        sides[1].flip_profile()
+    else:
+        sides[1].mitre(60, 60)
     sides[2].mitre(60, 60)
     sides[3].mitre(60, 60)
-    sides[4].mitre(-60, -60)
-    sides[4].flip_profile()
+    if MITRE:
+        sides[4].mitre(-60, -60)
+        sides[4].flip_profile()
+    else:
+        sides[4].mitre(60, 60)
     sides[5].mitre(60, 60)
 
     with print_svg(1100) as canvas:
@@ -165,6 +184,7 @@ def draw_hex_box1() -> None:
 
     print("## Sides")
 
+    # TODO: factor out assemble function some how (separate from drawing...)
     corners: Points = []
     with print_svg(550, zoom=2) as canvas:
         x, y, angle = 150, 50, 0
@@ -268,4 +288,4 @@ def draw_hex_box1() -> None:
 
 
 if __name__ == "__main__":
-    draw_hex_box1()
+    draw_hex_box1(STRIPS="--strips" in sys.argv, MITRE="--mitre" in sys.argv)
