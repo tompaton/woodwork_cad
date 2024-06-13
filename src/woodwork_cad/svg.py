@@ -2,8 +2,10 @@ from contextlib import contextmanager
 from math import cos, radians, sin, sqrt
 from typing import Any, Iterator, List, Optional, Tuple
 
-Points = List[Tuple[float, float]]
-Points3d = List[Tuple[float, float, float]]
+Point = Tuple[float, float]
+Points = List[Point]
+Point3d = Tuple[float, float, float]
+Points3d = List[Point3d]
 
 
 class SVGCanvas:

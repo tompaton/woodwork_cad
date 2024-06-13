@@ -134,6 +134,11 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     for panel in panels:
         print(f"- {panel}")
 
+    panels[2].groove(5, T, 5, face=False)
+    panels[2].groove(panels[2].W - T - 5, T, 5, face=False)
+    panels[3].groove(5, T, 5, face=False)
+    panels[3].groove(panels[3].W - T - 5, T, 5, face=False)
+
     if MITRE:
         sides = process_all(panels[2:], cut(R), cut(R - 15))
     else:
@@ -143,8 +148,10 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         draw_boards(canvas, 10, 20, panels)
 
     print("## Cut grooves")
-    print("TODO")
     print("- grooves for top and bottom")
+    print(f"- {T}mm groove 5mm from top and bottom edges")
+    print("- groove on inside with defects/holes")
+
     if MITRE:
         print(
             "- this should be done before cutting sides, however that means that "
@@ -160,6 +167,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         print("- mitre at 60 degrees")
 
     print("- outside edge is 15mm shorter")
+    print("- defects/holes and groove go on longer side (inside)")
+
     sides[0].mitre(60, 60)
     if MITRE:
         sides[1].mitre(-60, -60)
@@ -224,6 +233,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     print("## Base and Lid")
     print("- Cut base and lid out of boards in 2 halves and join")
+    print("- TODO: rebates so groove for base can be smaller?")
 
     side_length = corners3[2][0] - corners3[3][0]
     print(f"- lid/base width {hex_W3:.1f}, side length {side_length:.1f}")

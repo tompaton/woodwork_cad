@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
+from itertools import pairwise
 from math import cos, radians, sin, sqrt
 from typing import Iterable, List, Optional, Tuple
 
-from .svg import Points, SVGCanvas
+from .svg import Point3d, Points, Points3d, SVGCanvas
 
 __all__ = [
     "Board",
@@ -95,6 +96,7 @@ class Board:
 
     label: str = ""
     _shade: List[tuple[float, float, str]] = field(default_factory=list)
+    _grooves: List[Tuple[float, float, float, bool]] = field(default_factory=list)
 
     def __str__(self) -> str:
         return f"{self.L} x {self.W} x {self.T}"
@@ -163,7 +165,14 @@ class Board:
         self.add_cut("cut", length, 0, length + kerf, self.W)
         return [
             Board(
-                length, self.W, self.T, self, 0, 0, _shade=self.select_shade(0, self.W)
+                length,
+                self.W,
+                self.T,
+                self,
+                0,
+                0,
+                _shade=self.select_shade(0, self.W),
+                _grooves=self.select_grooves(0, self.W),
             ),
             Board(
                 self.L - length - kerf,
@@ -173,6 +182,7 @@ class Board:
                 length + kerf,
                 0,
                 _shade=self.select_shade(0, self.W),
+                _grooves=self.select_grooves(0, self.W),
             ),
         ]
 
@@ -244,16 +254,72 @@ class Board:
 
         self.L = self._profile[1][0] - self._profile[0][0]
 
-    def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
-        # to support mitred ends, maybe treat the board as a profile that
-        # is extruded along it's width?
-        # draw as polylines rather than rectangles
+    def groove(self, y: float, height: float, depth: float, face: bool = True) -> None:
+        self._grooves.append((y, y + height, depth, face))
 
+    def select_grooves(
+        self, min_y: float, max_y: float, offset_y: float = 0
+    ) -> List[Tuple[float, float, float, bool]]:
+        return [
+            (max(y1, min_y) + offset_y, min(y2, max_y) + offset_y, depth, face)
+            for (y1, y2, depth, face) in self._grooves
+            if y1 < max_y and y2 > min_y
+        ]
+
+    @staticmethod
+    def _groove(
+        points: Points3d, y1: float, y2: float, depth: float
+    ) -> Iterable[Point3d]:
+        for point1, point2 in pairwise(points):
+            if point1[1] < y2 and point2[1] > y1:
+                # TODO: adjust x and z to take account of the profile
+                yield point1
+                yield (point1[0], y1, point1[2])
+                yield (point1[0], y1, point1[2] + depth)
+                yield (point2[0], y2, point2[2] + depth)
+                yield (point2[0], y2, point2[2])
+
+            elif point2[1] < y2 and point1[1] > y1:
+                yield point1
+                yield (point1[0], y2, point1[2])
+                yield (point1[0], y2, point1[2] + depth)
+                yield (point2[0], y1, point2[2] + depth)
+                yield (point2[0], y1, point2[2])
+
+            else:
+                yield point1
+
+        yield points[-1]
+
+    def dado(self, x: float, width: float, depth: float, face: bool = True) -> None:
+        raise NotImplementedError
+
+    def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
         profile = self.profile
 
-        canvas.rect(
-            x + profile[0][0], y, profile[1][0] - profile[0][0], self.W, "black"
-        )
+        x1 = x + profile[0][0]
+        x2 = x + profile[1][0]
+        y1 = y
+        y2 = y + self.W
+        points = [
+            (x1, y1, 0.0),
+            (x2, y1, 0.0),
+            (x2, y2, 0.0),
+            (x1, y2, 0.0),
+            (x1, y1, 0.0),
+        ]
+
+        for gy1, gy2, depth, face in self._grooves:
+            # TODO: the groove needs to be on the back...?
+            points = list(self._groove(points, y + gy1, y + gy2, depth))
+
+            # connect up sides of groove
+            # TODO: how to remove hidden lines? or just always draw front face and top of back face?
+            canvas.polyline3d("gray", [(x1, y + gy1, 0), (x2, y + gy1, 0)])
+            canvas.polyline3d("gray", [(x1, y + gy1, depth), (x2, y + gy1, depth)])
+            canvas.polyline3d("gray", [(x1, y + gy2, 0), (x2, y + gy2, 0)])
+
+        canvas.polyline3d("black", points)
 
         for y1, y2, fill in self._shade:
             canvas.rect(
