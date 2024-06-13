@@ -255,9 +255,6 @@ class Board:
             x + profile[0][0], y, profile[1][0] - profile[0][0], self.W, "black"
         )
 
-        zx = self.T / sqrt(2)
-        zy = self.T / sqrt(2)
-
         for y1, y2, fill in self._shade:
             canvas.rect(
                 x + profile[0][0],
@@ -268,33 +265,33 @@ class Board:
                 fill=fill,
             )
             # extend shading around thickness
-            canvas.polyline(
+            canvas.polyline3d(
                 "none",
                 [
-                    (x + profile[1][0], y + y1),
-                    (x + profile[2][0] + zx, y + y1 + zy),
-                    (x + profile[2][0] + zx, y + y2 + zy),
-                    (x + profile[1][0], y + y2),
+                    (x + profile[1][0], y + y1, 0),
+                    (x + profile[2][0], y + y1, self.T),
+                    (x + profile[2][0], y + y2, self.T),
+                    (x + profile[1][0], y + y2, 0),
                 ],
                 fill=fill,
                 closed=True,
             )
 
-        canvas.polyline(
+        canvas.polyline3d(
             "gray",
             [
-                (x + profile[0][0], y + self.W),
-                (x + profile[3][0] + zx, y + self.W + zy),
-                (x + profile[2][0] + zx, y + self.W + zy),
-                (x + profile[1][0], y + self.W),
+                (x + profile[0][0], y + self.W, 0),
+                (x + profile[3][0], y + self.W, self.T),
+                (x + profile[2][0], y + self.W, self.T),
+                (x + profile[1][0], y + self.W, 0),
             ],
         )
-        canvas.polyline(
+        canvas.polyline3d(
             "gray",
             [
-                (x + profile[1][0], y),
-                (x + profile[2][0] + zx, y + zy),
-                (x + profile[2][0] + zx, y + self.W + zy),
+                (x + profile[1][0], y, 0),
+                (x + profile[2][0], y, self.T),
+                (x + profile[2][0], y + self.W, self.T),
             ],
         )
 

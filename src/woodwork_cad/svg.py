@@ -1,8 +1,9 @@
 from contextlib import contextmanager
-from math import sqrt
+from math import cos, radians, sin, sqrt
 from typing import Any, Iterator, List, Optional, Tuple
 
 Points = List[Tuple[float, float]]
+Points3d = List[Tuple[float, float, float]]
 
 
 class SVGCanvas:
@@ -134,6 +135,13 @@ class SVGCanvas:
             **attrs,
         )
         self._min_max_y(*(y for x, y in points))
+
+    def polyline3d(self, colour: str, points: Points3d, **kwargs: Any) -> None:
+        zx = cos(radians(45))
+        zy = sin(radians(45))
+        return self.polyline(
+            colour, [(x + zx * z, y + zy * z) for x, y, z in points], **kwargs
+        )
 
 
 @contextmanager
