@@ -144,7 +144,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     else:
         sides = process_all(panels[2:], cut(R), cut(R))
 
-    with print_svg(1100) as canvas:
+    with print_svg(1100, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, panels)
 
     print("## Cut grooves")
@@ -184,7 +184,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         sides[4].mitre(60, 60)
     sides[5].mitre(60, 60)
 
-    with print_svg(1100) as canvas:
+    with print_svg(1100, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, sides[:3])
         draw_boards(canvas, 300, 20, sides[3:])
 
@@ -240,7 +240,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     half = hex_L3 - (hex_L3 - hex_W3) * 2
 
-    with print_svg(1100) as canvas:
+    with print_svg(1100, zoom=2) as canvas:
         lid1_xy, lid2_xy = draw_boards(canvas, 10, 20, [lid1, lid2])
 
         # draw hex over panel

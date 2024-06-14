@@ -1,9 +1,8 @@
 from dataclasses import dataclass, field
-from itertools import pairwise
 from math import cos, radians, sin, sqrt
-from typing import Iterable, List, Optional, Tuple
+from typing import Callable, Iterable, List, Optional, Tuple
 
-from .svg import Point3d, Points, Points3d, SVGCanvas
+from .svg import Points, Points3d, SVGCanvas
 
 __all__ = [
     "Board",
@@ -19,6 +18,59 @@ __all__ = [
     "label_all",
     "cube_net",
 ]
+
+Interpolator = Callable[[float], float]
+
+
+@dataclass
+class Cut:
+    op: str
+    x1: float
+    y1: float
+    x2: float
+    y2: float
+    label: str
+    lx: float
+    ly: float
+
+    @property
+    def colour(self) -> str:
+        if self.op == "cut":
+            return "green"
+        elif self.op == "rip":
+            return "blue"
+        else:
+            return "rgba(255,0,0,0.25)"
+
+    @property
+    def fill(self) -> str:
+        if self.op == "cut":
+            return "rgba(0,255,0,0.25)"
+        elif self.op == "rip":
+            return "rgba(0,0,255,0.25)"
+        else:
+            return "rgba(255,0,0,0.25)"
+
+
+@dataclass
+class Shade:
+    y1: float
+    y2: float
+    colour: str
+
+
+@dataclass
+class Groove:
+    y1: float
+    y2: float
+    depth: float
+    face: bool
+
+
+@dataclass
+class Profile:
+    x: float
+    z: float
 
 
 class Defect:
@@ -87,16 +139,14 @@ class Board:
     offset_x: float = 0
     offset_y: float = 0
 
-    cuts: list[tuple[str, float, float, float, float, str, float, float]] = field(
-        default_factory=list
-    )
+    cuts: list[Cut] = field(default_factory=list)
 
     _defects: list[Defect] = field(default_factory=list)
-    _profile: List[Tuple[float, float]] = field(default_factory=list)
+    _profile: List[Profile] = field(default_factory=list)
 
     label: str = ""
-    _shade: List[tuple[float, float, str]] = field(default_factory=list)
-    _grooves: List[Tuple[float, float, float, bool]] = field(default_factory=list)
+    _shade: List[Shade] = field(default_factory=list)
+    _grooves: List[Groove] = field(default_factory=list)
 
     def __str__(self) -> str:
         return f"{self.L} x {self.W} x {self.T}"
@@ -125,16 +175,16 @@ class Board:
             yield defect.offset(offset_x, offset_y)
 
     def shade(self, colour: str) -> "Board":
-        self._shade.append((0, self.W, colour))
+        self._shade.append(Shade(0, self.W, colour))
         return self
 
     def select_shade(
         self, min_y: float, max_y: float, offset_y: float = 0
-    ) -> List[Tuple[float, float, str]]:
+    ) -> List[Shade]:
         return [
-            (max(y1, min_y) + offset_y, min(y2, max_y) + offset_y, fill)
-            for (y1, y2, fill) in self._shade
-            if y1 < max_y and y2 > min_y
+            Shade(max(s.y1, min_y) + offset_y, min(s.y2, max_y) + offset_y, s.colour)
+            for s in self._shade
+            if s.y1 < max_y and s.y2 > min_y
         ]
 
     def add_cut(
@@ -148,7 +198,7 @@ class Board:
         lx: float = 0,
         ly: float = 0,
     ):
-        self.cuts.append((op, x1, y1, x2, y2, label, lx, ly))
+        self.cuts.append(Cut(op, x1, y1, x2, y2, label, lx, ly))
         if self.parent:
             self.parent.add_cut(
                 op,
@@ -214,20 +264,22 @@ class Board:
         ]
 
     @property
-    def profile(self) -> List[Tuple[float, float]]:
+    def profile(self) -> List[Profile]:
         return self._profile or [
-            (0, 0),
-            (self.L, 0),
-            (self.L, self.T),
-            (0, self.T),
+            Profile(0, 0),
+            Profile(self.L, 0),
+            Profile(self.L, self.T),
+            Profile(0, self.T),
         ]
 
     def profile_length(self) -> Tuple[float, float]:
         def length(x1: float, y1: float, x2: float, y2: float) -> float:
             return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
 
-        return length(*self.profile[0], *self.profile[1]), length(
-            *self.profile[2], *self.profile[3]
+        return length(
+            self.profile[0].x, self.profile[0].z, self.profile[1].x, self.profile[1].z
+        ), length(
+            self.profile[2].x, self.profile[2].z, self.profile[3].x, self.profile[3].z
         )
 
     def mitre(self, left: float, right: float) -> List["Board"]:
@@ -238,163 +290,113 @@ class Board:
         # board thickness
         hyp = self.T / sin(radians(left))
         offset_x = hyp * cos(radians(left))
-        x1, y1 = self._profile[0]
-        self._profile[0] = (x1 + offset_x, y1)
+        x1, y1 = self._profile[0].x, self._profile[1].z
+        self._profile[0] = Profile(x1 + offset_x, y1)
 
         hyp = self.T / sin(radians(right))
         offset_x = hyp * cos(radians(right))
-        x1, y1 = self._profile[1]
-        self._profile[1] = (x1 - offset_x, y1)
+        x1, y1 = self._profile[1].x, self._profile[1].z
+        self._profile[1] = Profile(x1 - offset_x, y1)
 
         return [self]
 
     def flip_profile(self) -> None:
         a, b, c, d = self.profile
-        self._profile = [(d[0], a[1]), (c[0], b[1]), (b[0], c[1]), (a[0], d[1])]
+        self._profile = [
+            Profile(d.x, a.z),
+            Profile(c.x, b.z),
+            Profile(b.x, c.z),
+            Profile(a.x, d.z),
+        ]
 
-        self.L = self._profile[1][0] - self._profile[0][0]
+        self.L = self._profile[1].x - self._profile[0].x
 
     def groove(self, y: float, height: float, depth: float, face: bool = True) -> None:
-        self._grooves.append((y, y + height, depth, face))
+        self._grooves.append(Groove(y, y + height, depth, face))
 
     def select_grooves(
         self, min_y: float, max_y: float, offset_y: float = 0
-    ) -> List[Tuple[float, float, float, bool]]:
+    ) -> List[Groove]:
         return [
-            (max(y1, min_y) + offset_y, min(y2, max_y) + offset_y, depth, face)
-            for (y1, y2, depth, face) in self._grooves
-            if y1 < max_y and y2 > min_y
+            Groove(
+                max(groove.y1, min_y) + offset_y,
+                min(groove.y2, max_y) + offset_y,
+                groove.depth,
+                groove.face,
+            )
+            for groove in self._grooves
+            if groove.y1 < max_y and groove.y2 > min_y
         ]
-
-    @staticmethod
-    def _groove(
-        points: Points3d, y1: float, y2: float, depth: float
-    ) -> Iterable[Point3d]:
-        for point1, point2 in pairwise(points):
-            if point1[1] < y2 and point2[1] > y1:
-                # TODO: adjust x and z to take account of the profile
-                yield point1
-                yield (point1[0], y1, point1[2])
-                yield (point1[0], y1, point1[2] + depth)
-                yield (point2[0], y2, point2[2] + depth)
-                yield (point2[0], y2, point2[2])
-
-            elif point2[1] < y2 and point1[1] > y1:
-                yield point1
-                yield (point1[0], y2, point1[2])
-                yield (point1[0], y2, point1[2] + depth)
-                yield (point2[0], y1, point2[2] + depth)
-                yield (point2[0], y1, point2[2])
-
-            else:
-                yield point1
-
-        yield points[-1]
 
     def dado(self, x: float, width: float, depth: float, face: bool = True) -> None:
         raise NotImplementedError
 
     def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
-        profile = self.profile
+        x1, x2 = self._interpolate_profile(self.profile)
 
-        x1 = x + profile[0][0]
-        x2 = x + profile[1][0]
-        y1 = y
-        y2 = y + self.W
-        points = [
-            (x1, y1, 0.0),
-            (x2, y1, 0.0),
-            (x2, y2, 0.0),
-            (x1, y2, 0.0),
-            (x1, y1, 0.0),
-        ]
+        # draw all faces separately from back to front to do basic hidden line removal
+        self._draw_top_bottom(canvas, x, y, x1, x2, 0.0, 0.0, self.T)
+        self._draw_back(canvas, x, y, x1, x2, grooves=False)
+        self._draw_left_right(canvas, x, y, x1)
+        for y1, z1, z2 in self._groove_sides(top=True, face=False):
+            self._draw_top_bottom(canvas, x, y, x1, x2, y1, z1, z2)
+        for y1, z1, z2 in self._groove_sides(top=False, face=False):
+            self._draw_top_bottom(canvas, x, y, x1, x2, y1, z1, z2)
+        self._draw_back(canvas, x, y, x1, x2, grooves=True)
+        self._draw_front(canvas, x, y, x1, x2, grooves=True)
+        for y1, z1, z2 in self._groove_sides(top=True, face=True):
+            self._draw_top_bottom(canvas, x, y, x1, x2, y1, z1, z2)
+        for y1, z1, z2 in self._groove_sides(top=False, face=True):
+            self._draw_top_bottom(canvas, x, y, x1, x2, y1, z1, z2)
+        self._draw_top_bottom(canvas, x, y, x1, x2, self.W, 0.0, self.T)
+        self._draw_left_right(canvas, x, y, x2)
+        self._draw_front(canvas, x, y, x1, x2, grooves=False)
 
-        for gy1, gy2, depth, face in self._grooves:
-            # TODO: the groove needs to be on the back...?
-            points = list(self._groove(points, y + gy1, y + gy2, depth))
+        self._draw_shade(canvas, x, y, x1, x2)
 
-            # connect up sides of groove
-            # TODO: how to remove hidden lines? or just always draw front face and top of back face?
-            canvas.polyline3d("gray", [(x1, y + gy1, 0), (x2, y + gy1, 0)])
-            canvas.polyline3d("gray", [(x1, y + gy1, depth), (x2, y + gy1, depth)])
-            canvas.polyline3d("gray", [(x1, y + gy2, 0), (x2, y + gy2, 0)])
+        for defect in self.defects:
+            defect.draw(canvas, x, y)
 
-        canvas.polyline3d("black", points)
+        self._draw_cuts(canvas, x, y)
 
-        for y1, y2, fill in self._shade:
-            canvas.rect(
-                x + profile[0][0],
-                y + y1,
-                profile[1][0] - profile[0][0],
-                y2 - y1,
-                "none",
-                fill=fill,
-            )
-            # extend shading around thickness
-            canvas.polyline3d(
-                "none",
-                [
-                    (x + profile[1][0], y + y1, 0),
-                    (x + profile[2][0], y + y1, self.T),
-                    (x + profile[2][0], y + y2, self.T),
-                    (x + profile[1][0], y + y2, 0),
-                ],
-                fill=fill,
-                closed=True,
-            )
-
-        canvas.polyline3d(
-            "gray",
-            [
-                (x + profile[0][0], y + self.W, 0),
-                (x + profile[3][0], y + self.W, self.T),
-                (x + profile[2][0], y + self.W, self.T),
-                (x + profile[1][0], y + self.W, 0),
-            ],
-        )
-        canvas.polyline3d(
-            "gray",
-            [
-                (x + profile[1][0], y, 0),
-                (x + profile[2][0], y, self.T),
-                (x + profile[2][0], y + self.W, self.T),
-            ],
-        )
-
+    def _draw_cuts(self, canvas: SVGCanvas, x: float, y: float) -> None:
         order = 0
-        for op, x1, y1, x2, y2, label, lx, ly in self.cuts:
-            if op:
-                if op == "cut":
-                    colour = "green"
-                    fill = "rgba(0,255,0,0.25)"
-                elif op == "rip":
-                    colour = "blue"
-                    fill = "rgba(0,0,255,0.25)"
+        for cut in self.cuts:
+            if cut.op:
+                if cut.y2 == self.W:
+                    points = [
+                        (x + cut.x1, y + cut.y1, 0),
+                        (x + cut.x2 + 1, y + cut.y1, 0),
+                        (x + cut.x2 + 1, y + cut.y2, 0),
+                        # continue around edge
+                        (x + cut.x2 + 1, y + cut.y2, self.T),
+                        (x + cut.x1, y + cut.y2, self.T),
+                        (x + cut.x1, y + cut.y2, 0),
+                    ]
                 else:
-                    colour = "rgba(255,0,0,0.25)"
-                    fill = "rgba(255,0,0,0.25)"
+                    points = [
+                        (x + cut.x1, y + cut.y1, 0),
+                        (x + cut.x2 + 1, y + cut.y1, 0),
+                        (x + cut.x2 + 1, y + cut.y2, 0),
+                        (x + cut.x1, y + cut.y2, 0),
+                    ]
 
-                canvas.rect(
-                    x + x1,
-                    y + y1,
-                    x2 - x1 + 1,
-                    y2 - y1 + 1,
-                    colour,
-                    fill=fill,
-                )
+                canvas.polyline3d(cut.colour, points, fill=cut.fill, closed=True)
 
-                if op != "waste":
+                if cut.op != "waste":
                     order += 1
                     canvas.text(
-                        x + x1 + 10,
-                        y + y1 + 10,
+                        x + cut.x1 + 10,
+                        y + cut.y1 + 10,
                         "left",
                         content=str(order),
                         style="",
                     )
 
-            if label:
-                canvas.text(x + lx, y + ly, "start", content=label, style="")
+            if cut.label:
+                canvas.text(
+                    x + cut.lx, y + cut.ly, "start", content=cut.label, style=""
+                )
 
         if self.label:
             canvas.text(
@@ -404,8 +406,160 @@ class Board:
                 style="",
             )
 
-        for defect in self.defects:
-            defect.draw(canvas, x, y)
+    def _groove_flats(self, face: bool) -> Iterable[Tuple[float, float, float]]:
+        y0 = 0.0
+        for groove in self._grooves:
+            if groove.face == face:
+                yield (0.0 if face else self.T, y0, groove.y1)
+                yield (
+                    groove.depth if face else self.T - groove.depth,
+                    groove.y1,
+                    groove.y2,
+                )
+                y0 = groove.y2
+        yield (0.0 if face else self.T, y0, self.W)
+
+    def _groove_sides(
+        self, top: bool, face: bool
+    ) -> Iterable[Tuple[float, float, float]]:
+        for groove in self._grooves:
+            if top:
+                if groove.face and face:
+                    yield (groove.y2, 0.0, groove.depth)
+                if not groove.face and not face:
+                    yield (groove.y2, self.T - groove.depth, self.T)
+            else:
+                if groove.face and face:
+                    yield (groove.y1, 0.0, groove.depth)
+                if not groove.face and not face:
+                    yield (groove.y1, self.T - groove.depth, self.T)
+
+    def _interpolate_profile(
+        self, profile: List[Profile]
+    ) -> Tuple[Interpolator, Interpolator]:
+        # interpolate x along profile
+        def x1(z: float) -> float:
+            return profile[0].x + z * (profile[3].x - profile[0].x) / self.T
+
+        def x2(z: float) -> float:
+            return profile[1].x + z * (profile[2].x - profile[1].x) / self.T
+
+        return x1, x2
+
+    def _draw_top_bottom(
+        self,
+        canvas: SVGCanvas,
+        x: float,
+        y: float,
+        x1: Interpolator,
+        x2: Interpolator,
+        y1: float,
+        z1: float,
+        z2: float,
+    ) -> None:
+        canvas.polyline3d(
+            "silver",
+            [
+                (x + x1(z1), y + y1, z1),
+                (x + x2(z1), y + y1, z1),
+                (x + x2(z2), y + y1, z2),
+                (x + x1(z2), y + y1, z2),
+                (x + x1(z1), y + y1, z1),
+            ],
+            fill="rgba(192,192,192,0.25)",
+        )
+
+    def _draw_left_right(
+        self, canvas: SVGCanvas, x: float, y: float, xz: Interpolator
+    ) -> None:
+        points: Points3d = []
+
+        for z, y1, y2 in self._groove_flats(True):
+            points.extend(
+                [
+                    (x + xz(z), y + y1, z),
+                    (x + xz(z), y + y2, z),
+                ]
+            )
+
+        for z, y1, y2 in reversed(list(self._groove_flats(False))):
+            points.extend(
+                [
+                    (x + xz(z), y + y2, z),
+                    (x + xz(z), y + y1, z),
+                ]
+            )
+
+        canvas.polyline3d("silver", points, fill="rgba(255,255,255,0.75)", closed=True)
+
+    def _draw_front(
+        self,
+        canvas: SVGCanvas,
+        x: float,
+        y: float,
+        x1: Interpolator,
+        x2: Interpolator,
+        grooves: bool,
+    ) -> None:
+        for z, y1, y2 in sorted(self._groove_flats(True), reverse=True):
+            if (grooves and z == 0.0) or (not grooves and z != 0.0):
+                continue
+
+            canvas.polyline3d(
+                "black",
+                [
+                    (x + x1(z), y + y1, z),
+                    (x + x2(z), y + y1, z),
+                    (x + x2(z), y + y2, z),
+                    (x + x1(z), y + y2, z),
+                    (x + x1(z), y + y1, z),
+                ],
+                fill="rgba(255,255,255,0.75)",
+            )
+
+    def _draw_back(
+        self,
+        canvas: SVGCanvas,
+        x: float,
+        y: float,
+        x1: Interpolator,
+        x2: Interpolator,
+        grooves: bool,
+    ) -> None:
+        for z, y1, y2 in sorted(self._groove_flats(False), reverse=True):
+            if (grooves and z == self.T) or (not grooves and z != self.T):
+                continue
+
+            canvas.polyline3d(
+                "silver",
+                [
+                    (x + x1(z), y + y1, z),
+                    (x + x2(z), y + y1, z),
+                    (x + x2(z), y + y2, z),
+                    (x + x1(z), y + y2, z),
+                    (x + x1(z), y + y1, z),
+                ],
+                fill="rgba(192,192,192,0.25)",
+            )
+
+    def _draw_shade(
+        self, canvas: SVGCanvas, x: float, y: float, x1: Interpolator, x2: Interpolator
+    ) -> None:
+        for shade in self._shade:
+            canvas.polyline3d(
+                "none",
+                [
+                    (x + x1(0), y + shade.y1, 0),
+                    (x + x2(0), y + shade.y1, 0),
+                    # extend shading around thickness
+                    (x + x2(self.T), y + shade.y1, self.T),
+                    (x + x2(self.T), y + shade.y2, self.T),
+                    (x + x2(0), y + shade.y2, 0),
+                    (x + x1(0), y + shade.y2, 0),
+                ],
+                fill=shade.colour,
+                closed=True,
+            )
 
     def draw_plan(
         self,
@@ -415,8 +569,8 @@ class Board:
         angle: float,
         colour: str = "black",
     ) -> Tuple[float, float]:
-        offset_x, offset_y = self.profile[0]
-        points = [(x1 - offset_x, y1 - offset_y) for (x1, y1) in self.profile]
+        offset = self.profile[0]
+        points = [(p.x - offset.x, p.z - offset.z) for p in self.profile]
         cos_a = cos(radians(angle))
         sin_a = sin(radians(angle))
         rotated = [
@@ -479,7 +633,7 @@ def joint(*boards: Board, label: str = ""):
         raise ValueError("Board length and thickness must match to be joined")
 
     defects: List[Defect] = []
-    shade: List[Tuple[float, float, str]] = []
+    shade: List[Shade] = []
     offset_y = 0.0
     for board in boards:
         defects.extend(board.source_defects(0, offset_y))
