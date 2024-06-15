@@ -143,6 +143,14 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     else:
         sides = process_all(panels[2:], cut(R), cut(R))
 
+    # show the grooves on the panel face for better visibility
+    panels[2].grooves._grooves.clear()
+    panels[3].grooves._grooves.clear()
+    panels[2].grooves.add(5, T, 5, face=True)
+    panels[2].grooves.add(panels[2].W - T - 5, T, 5, face=True)
+    panels[3].grooves.add(5, T, 5, face=True)
+    panels[3].grooves.add(panels[3].W - T - 5, T, 5, face=True)
+
     with print_svg(1100, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, panels)
 
