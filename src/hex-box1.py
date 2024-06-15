@@ -10,7 +10,6 @@ from woodwork_cad.board import (
     draw_boards,
     joint,
     label_all,
-    mitre,
     process,
     process_all,
     process_first,
@@ -55,14 +54,14 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     print(f"6 boards {rawboards[0]}, trim {raw_waste} from each end, cut at {L2a}")
 
-    rawboards[2].add_defect(Notch(360, W - 10, 400, W))
-    rawboards[1].add_defect(Notch(780, 0, 820, 10))
+    rawboards[2].defects.add(Notch(360, W - 10, 400, W))
+    rawboards[1].defects.add(Notch(780, 0, 820, 10))
 
     for rawboard in rawboards:
-        rawboard.add_defect(Hole(315, 12))
-        rawboard.add_defect(Hole(350, W - 12))
-        rawboard.add_defect(Hole(655, 12))
-        rawboard.add_defect(Hole(690, W - 12))
+        rawboard.defects.add(Hole(315, 12))
+        rawboard.defects.add(Hole(350, W - 12))
+        rawboard.defects.add(Hole(655, 12))
+        rawboard.defects.add(Hole(690, W - 12))
 
     cut_boards = process_all(
         rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=0), waste
@@ -134,10 +133,10 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     for panel in panels:
         print(f"- {panel}")
 
-    panels[2].groove(5, T, 5, face=False)
-    panels[2].groove(panels[2].W - T - 5, T, 5, face=False)
-    panels[3].groove(5, T, 5, face=False)
-    panels[3].groove(panels[3].W - T - 5, T, 5, face=False)
+    panels[2].grooves.add(5, T, 5, face=False)
+    panels[2].grooves.add(panels[2].W - T - 5, T, 5, face=False)
+    panels[3].grooves.add(5, T, 5, face=False)
+    panels[3].grooves.add(panels[3].W - T - 5, T, 5, face=False)
 
     if MITRE:
         sides = process_all(panels[2:], cut(R), cut(R - 15))
@@ -204,7 +203,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
             canvas.circle(x, y, 2, "red")
 
         hex_L, hex_W, corners2 = polyline_bounds(corners)
-        length_outside, length_inside = sides[0].profile_length()
+        length_outside, length_inside = sides[0].profile.length()
 
         # shrink these a bit as they will be set in a groove
         hex_L3, hex_W3, corners3 = shrink_points(corners2, T - 5)
