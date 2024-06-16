@@ -313,6 +313,21 @@ class Notch(Defect):
 
 
 @dataclass
+class Face:
+    points: Points3d
+    colour: str
+    fill: str
+
+    def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
+        canvas.polyline3d(
+            self.colour,
+            [(x + offset_x, y + offset_y, z) for x, y, z in self.points],
+            fill=self.fill,
+            closed=True,
+        )
+
+
+@dataclass
 class Board:
     L: float
     W: float
@@ -454,22 +469,8 @@ class Board:
         x1, x2 = self.profile.interpolate(self.T)
 
         # draw all faces separately from back to front to do basic hidden line removal
-        self._draw_top_bottom(canvas, x, y, x1, x2, Grooves.Side(0.0, 0.0, self.T))
-        self._draw_back(canvas, x, y, x1, x2, grooves=False)
-        self._draw_left_right(canvas, x, y, x1)
-        for side in self.grooves.sides(self.T, top=True, face=False):
-            self._draw_top_bottom(canvas, x, y, x1, x2, side)
-        for side in self.grooves.sides(self.T, top=False, face=False):
-            self._draw_top_bottom(canvas, x, y, x1, x2, side)
-        self._draw_back(canvas, x, y, x1, x2, grooves=True)
-        self._draw_front(canvas, x, y, x1, x2, grooves=True)
-        for side in self.grooves.sides(self.T, top=True, face=True):
-            self._draw_top_bottom(canvas, x, y, x1, x2, side)
-        for side in self.grooves.sides(self.T, top=False, face=True):
-            self._draw_top_bottom(canvas, x, y, x1, x2, side)
-        self._draw_top_bottom(canvas, x, y, x1, x2, Grooves.Side(self.W, 0.0, self.T))
-        self._draw_left_right(canvas, x, y, x2)
-        self._draw_front(canvas, x, y, x1, x2, grooves=False)
+        for face in self._get_faces(x1, x2):
+            face.draw(canvas, x, y)
 
         self._draw_shade(canvas, x, y, x1, x2)
 
@@ -477,6 +478,176 @@ class Board:
             defect.draw(canvas, x, y)
 
         self._draw_cuts(canvas, x, y)
+
+    def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
+        yield self._get_top_bottom(
+            x1,
+            x2,
+            Grooves.Side(0.0, 0.0, self.T),
+            "silver",
+            "rgba(192,192,192,0.25)",
+        )
+
+        yield from self._get_back(
+            x1,
+            x2,
+            "silver",
+            "rgba(192,192,192,0.25)",
+            grooves=False,
+        )
+
+        yield self._get_left_right(x1, "silver", "rgba(255,255,255,0.75)")
+        for side in self.grooves.sides(self.T, top=True, face=False):
+            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+
+        for side in self.grooves.sides(self.T, top=False, face=False):
+            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+
+        yield from self._get_back(
+            x1,
+            x2,
+            "silver",
+            "rgba(192,192,192,0.25)",
+            grooves=True,
+        )
+
+        yield from self._get_front(
+            x1,
+            x2,
+            "black",
+            "rgba(255,255,255,0.75)",
+            grooves=True,
+        )
+
+        for side in self.grooves.sides(self.T, top=True, face=True):
+            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+
+        for side in self.grooves.sides(self.T, top=False, face=True):
+            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+
+        yield self._get_top_bottom(
+            x1,
+            x2,
+            Grooves.Side(self.W, 0.0, self.T),
+            "silver",
+            "rgba(192,192,192,0.25)",
+        )
+
+        yield self._get_left_right(x2, "silver", "rgba(255,255,255,0.75)")
+        yield from self._get_front(
+            x1,
+            x2,
+            "black",
+            "rgba(255,255,255,0.75)",
+            grooves=False,
+        )
+
+    def _get_top_bottom(
+        self,
+        x1: Interpolator,
+        x2: Interpolator,
+        side: Grooves.Side,
+        colour: str,
+        fill: str,
+    ) -> Face:
+        return Face(
+            [
+                (x1(side.z1), side.y, side.z1),
+                (x2(side.z1), side.y, side.z1),
+                (x2(side.z2), side.y, side.z2),
+                (x1(side.z2), side.y, side.z2),
+            ],
+            colour,
+            fill,
+        )
+
+    def _get_left_right(self, xz: Interpolator, colour: str, fill: str) -> Face:
+        points: Points3d = []
+
+        for flat in self.grooves.flats(self.W, self.T, face=True):
+            points.extend(
+                [
+                    (xz(flat.z), flat.y1, flat.z),
+                    (xz(flat.z), flat.y2, flat.z),
+                ]
+            )
+
+        for flat in reversed(list(self.grooves.flats(self.W, self.T, face=False))):
+            points.extend(
+                [
+                    (xz(flat.z), flat.y2, flat.z),
+                    (xz(flat.z), flat.y1, flat.z),
+                ]
+            )
+
+        return Face(points, colour, fill)
+
+    def _get_front(
+        self,
+        x1: Interpolator,
+        x2: Interpolator,
+        colour: str,
+        fill: str,
+        grooves: bool,
+    ) -> Iterable[Face]:
+        for flat in sorted(self.grooves.flats(self.W, self.T, face=True), reverse=True):
+            if (grooves and flat.z == 0.0) or (not grooves and flat.z != 0.0):
+                continue
+
+            yield Face(
+                [
+                    (x1(flat.z), flat.y1, flat.z),
+                    (x2(flat.z), flat.y1, flat.z),
+                    (x2(flat.z), flat.y2, flat.z),
+                    (x1(flat.z), flat.y2, flat.z),
+                ],
+                colour,
+                fill,
+            )
+
+    def _get_back(
+        self,
+        x1: Interpolator,
+        x2: Interpolator,
+        colour: str,
+        fill: str,
+        grooves: bool,
+    ) -> Iterable[Face]:
+        for flat in sorted(
+            self.grooves.flats(self.W, self.T, face=False), reverse=True
+        ):
+            if (grooves and flat.z == self.T) or (not grooves and flat.z != self.T):
+                continue
+
+            yield Face(
+                [
+                    (x1(flat.z), flat.y1, flat.z),
+                    (x2(flat.z), flat.y1, flat.z),
+                    (x2(flat.z), flat.y2, flat.z),
+                    (x1(flat.z), flat.y2, flat.z),
+                ],
+                colour,
+                fill,
+            )
+
+    def _draw_shade(
+        self, canvas: SVGCanvas, x: float, y: float, x1: Interpolator, x2: Interpolator
+    ) -> None:
+        for shade in self.shades:
+            canvas.polyline3d(
+                "none",
+                [
+                    (x + x1(0), y + shade.y1, 0),
+                    (x + x2(0), y + shade.y1, 0),
+                    # extend shading around thickness
+                    (x + x2(self.T), y + shade.y1, self.T),
+                    (x + x2(self.T), y + shade.y2, self.T),
+                    (x + x2(0), y + shade.y2, 0),
+                    (x + x1(0), y + shade.y2, 0),
+                ],
+                fill=shade.colour,
+                closed=True,
+            )
 
     def _draw_cuts(self, canvas: SVGCanvas, x: float, y: float) -> None:
         order = 0
@@ -523,121 +694,6 @@ class Board:
                 y + self.W / 2,
                 content=self.label,
                 style="",
-            )
-
-    def _draw_top_bottom(
-        self,
-        canvas: SVGCanvas,
-        x: float,
-        y: float,
-        x1: Interpolator,
-        x2: Interpolator,
-        side: Grooves.Side,
-    ) -> None:
-        canvas.polyline3d(
-            "silver",
-            [
-                (x + x1(side.z1), y + side.y, side.z1),
-                (x + x2(side.z1), y + side.y, side.z1),
-                (x + x2(side.z2), y + side.y, side.z2),
-                (x + x1(side.z2), y + side.y, side.z2),
-                (x + x1(side.z1), y + side.y, side.z1),
-            ],
-            fill="rgba(192,192,192,0.25)",
-        )
-
-    def _draw_left_right(
-        self, canvas: SVGCanvas, x: float, y: float, xz: Interpolator
-    ) -> None:
-        points: Points3d = []
-
-        for flat in self.grooves.flats(self.W, self.T, face=True):
-            points.extend(
-                [
-                    (x + xz(flat.z), y + flat.y1, flat.z),
-                    (x + xz(flat.z), y + flat.y2, flat.z),
-                ]
-            )
-
-        for flat in reversed(list(self.grooves.flats(self.W, self.T, face=False))):
-            points.extend(
-                [
-                    (x + xz(flat.z), y + flat.y2, flat.z),
-                    (x + xz(flat.z), y + flat.y1, flat.z),
-                ]
-            )
-
-        canvas.polyline3d("silver", points, fill="rgba(255,255,255,0.75)", closed=True)
-
-    def _draw_front(
-        self,
-        canvas: SVGCanvas,
-        x: float,
-        y: float,
-        x1: Interpolator,
-        x2: Interpolator,
-        grooves: bool,
-    ) -> None:
-        for flat in sorted(self.grooves.flats(self.W, self.T, face=True), reverse=True):
-            if (grooves and flat.z == 0.0) or (not grooves and flat.z != 0.0):
-                continue
-
-            canvas.polyline3d(
-                "black",
-                [
-                    (x + x1(flat.z), y + flat.y1, flat.z),
-                    (x + x2(flat.z), y + flat.y1, flat.z),
-                    (x + x2(flat.z), y + flat.y2, flat.z),
-                    (x + x1(flat.z), y + flat.y2, flat.z),
-                    (x + x1(flat.z), y + flat.y1, flat.z),
-                ],
-                fill="rgba(255,255,255,0.75)",
-            )
-
-    def _draw_back(
-        self,
-        canvas: SVGCanvas,
-        x: float,
-        y: float,
-        x1: Interpolator,
-        x2: Interpolator,
-        grooves: bool,
-    ) -> None:
-        for flat in sorted(
-            self.grooves.flats(self.W, self.T, face=False), reverse=True
-        ):
-            if (grooves and flat.z == self.T) or (not grooves and flat.z != self.T):
-                continue
-
-            canvas.polyline3d(
-                "silver",
-                [
-                    (x + x1(flat.z), y + flat.y1, flat.z),
-                    (x + x2(flat.z), y + flat.y1, flat.z),
-                    (x + x2(flat.z), y + flat.y2, flat.z),
-                    (x + x1(flat.z), y + flat.y2, flat.z),
-                    (x + x1(flat.z), y + flat.y1, flat.z),
-                ],
-                fill="rgba(192,192,192,0.25)",
-            )
-
-    def _draw_shade(
-        self, canvas: SVGCanvas, x: float, y: float, x1: Interpolator, x2: Interpolator
-    ) -> None:
-        for shade in self.shades:
-            canvas.polyline3d(
-                "none",
-                [
-                    (x + x1(0), y + shade.y1, 0),
-                    (x + x2(0), y + shade.y1, 0),
-                    # extend shading around thickness
-                    (x + x2(self.T), y + shade.y1, self.T),
-                    (x + x2(self.T), y + shade.y2, self.T),
-                    (x + x2(0), y + shade.y2, 0),
-                    (x + x1(0), y + shade.y2, 0),
-                ],
-                fill=shade.colour,
-                closed=True,
             )
 
     def draw_plan(
