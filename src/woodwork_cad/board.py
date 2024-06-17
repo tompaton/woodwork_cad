@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from math import cos, radians, sin, sqrt
-from typing import Callable, Iterable, Iterator, List, Optional, Tuple
+from typing import Any, Callable, Iterable, Iterator, List, Optional, Tuple
 
 from .svg import Point3d, Points, Points3d, SVGCanvas
 
@@ -353,6 +353,14 @@ class Face:
         self.points.reverse()
         return self
 
+    def __lt__(self, other: Any) -> bool:
+        # z-order (reversed), then top to bottom, left to right
+        center = self.centroid
+        key = (-center[2], center[0], center[1])
+        other_center = other.centroid
+        other_key = (-other_center[2], other_center[0], other_center[1])
+        return key < other_key
+
     def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
         a = subtract(self.points[1], self.points[0])
         b = subtract(self.points[2], self.points[1])
@@ -557,7 +565,7 @@ class Board:
         x1, x2 = self.profile.interpolate(self.T)
 
         # draw all faces separately from back to front to do basic hidden line removal
-        for face in self._get_faces(x1, x2):
+        for face in sorted(self._get_faces(x1, x2)):
             face.draw(canvas, x, y)
 
         self._draw_shade(canvas, x, y, x1, x2)
@@ -569,30 +577,27 @@ class Board:
 
     def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
         yield self._get_top_bottom(x1, x2, Grooves.Side(0.0, 0.0, self.T)).reverse()
+        yield self._get_top_bottom(x1, x2, Grooves.Side(self.W, 0.0, self.T))
 
+        yield from self._get_front(x1, x2, grooves=False)
+        yield from self._get_front(x1, x2, grooves=True)
         yield from self._get_back(x1, x2, grooves=False)
+        yield from self._get_back(x1, x2, grooves=True)
 
         yield self._get_left_right(x1)
+        yield self._get_left_right(x2).reverse()
+
         for side in self.grooves.sides(self.T, top=True, face=False):
             yield self._get_top_bottom(x1, x2, side).reverse()
 
         for side in self.grooves.sides(self.T, top=False, face=False):
             yield self._get_top_bottom(x1, x2, side)
 
-        yield from self._get_back(x1, x2, grooves=True)
-
-        yield from self._get_front(x1, x2, grooves=True)
-
         for side in self.grooves.sides(self.T, top=True, face=True):
             yield self._get_top_bottom(x1, x2, side).reverse()
 
         for side in self.grooves.sides(self.T, top=False, face=True):
             yield self._get_top_bottom(x1, x2, side)
-
-        yield self._get_top_bottom(x1, x2, Grooves.Side(self.W, 0.0, self.T))
-
-        yield self._get_left_right(x2).reverse()
-        yield from self._get_front(x1, x2, grooves=False)
 
     def _get_top_bottom(
         self,

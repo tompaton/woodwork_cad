@@ -196,7 +196,13 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         draw_boards(canvas, 300, 20, sides[3:])
 
     print("## Dovetails")
-    print("TODO")
+    print("- 2 tails")
+    print("- mitre over groove")
+    print("- each side has tails at one end, pins at the other")
+
+    length_outside, length_inside = sides[0].profile.length()
+    dovetail_base = length_inside - length_outside
+    print(f"- baseline is {dovetail_base:.1f} from end")
 
     print("## Sides")
 
@@ -211,7 +217,6 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
             canvas.circle(x, y, 2, "red")
 
         hex_L, hex_W, corners2 = polyline_bounds(corners)
-        length_outside, length_inside = sides[0].profile.length()
 
         # shrink these a bit as they will be set in a groove
         hex_L3, hex_W3, corners3 = shrink_points(corners2, T - 5)
