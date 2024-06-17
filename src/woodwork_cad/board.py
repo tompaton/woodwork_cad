@@ -2,13 +2,46 @@ from dataclasses import dataclass, field
 from math import cos, radians, sin, sqrt
 from typing import Callable, Iterable, Iterator, List, Optional, Tuple
 
-from .svg import Points, Points3d, SVGCanvas
+from .svg import Point3d, Points, Points3d, SVGCanvas
+
+DEBUG = False
 
 Interpolator = Callable[[float], float]
 
+Vector3d = Tuple[float, float, float]
 
-def length(x1: float, y1: float, x2: float, y2: float) -> float:
-    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
+
+def length(a: Vector3d) -> float:
+    return sqrt(sum(a1 * a2 for a1, a2 in zip(a, a)))
+
+
+def normalize(a: Vector3d) -> Vector3d:
+    r = length(a)
+    return (a[0] / r, a[1] / r, a[2] / r)
+
+
+CAMERA: Vector3d = normalize((1.0, 1.0, -1.0))
+LIGHT: Vector3d = normalize((1.0, -1.0, -1.0))
+
+
+def line_length(x1: float, y1: float, x2: float, y2: float) -> float:
+    return length((x2 - x1, y2 - y1, 0))
+
+
+def subtract(p1: Point3d, p2: Point3d) -> Vector3d:
+    return (p1[0] - p2[0], p1[1] - p2[1], p1[2] - p2[2])
+
+
+def cross(a: Vector3d, b: Vector3d) -> Vector3d:
+    return (
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0],
+    )
+
+
+def dotproduct(a: Vector3d, b: Vector3d) -> float:
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
 
 
 class Cuts:
@@ -207,9 +240,9 @@ class Profile:
         ]
 
     def length(self) -> Tuple[float, float]:
-        return length(
+        return line_length(
             self._points[0].x, self._points[0].z, self._points[1].x, self._points[1].z
-        ), length(
+        ), line_length(
             self._points[2].x, self._points[2].z, self._points[3].x, self._points[3].z
         )
 
@@ -315,16 +348,71 @@ class Notch(Defect):
 @dataclass
 class Face:
     points: Points3d
-    colour: str
-    fill: str
+
+    def reverse(self) -> "Face":
+        self.points.reverse()
+        return self
 
     def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
+        a = subtract(self.points[1], self.points[0])
+        b = subtract(self.points[2], self.points[1])
+        normal = normalize(cross(a, b))
+
+        dash = ""
+
+        camera = dotproduct(normal, CAMERA)
+        light = dotproduct(normal, LIGHT)
+
+        # check angle with camera to find back faces
+        if camera > 0:
+            dash = "2"
+            colour = "gray"
+            fill = "none"
+        else:
+            # angle with camera to determine line colour
+            if camera < -0.5:
+                colour = "black"
+            else:
+                colour = "silver"
+
+            # angle with light determine to colour
+            if light < 0.5:
+                fill = "rgba(255,255,255,0.75)"
+            else:
+                fill = "rgba(192,192,192,0.75)"
+
         canvas.polyline3d(
-            self.colour,
+            colour,
             [(x + offset_x, y + offset_y, z) for x, y, z in self.points],
-            fill=self.fill,
+            fill=fill,
             closed=True,
+            stroke_dasharray=dash,
         )
+        if DEBUG:
+            # draw normal from face centroid
+            x, y, z = self.centroid
+            canvas.polyline3d(
+                "red",
+                [
+                    (x + offset_x, y + offset_y, z),
+                    (
+                        x + offset_x - 15 * normal[0],
+                        y + offset_y - 15 * normal[1],
+                        z - 15 * normal[2],
+                    ),
+                ],
+                fill="none",
+            )
+
+    @property
+    def centroid(self) -> Vector3d:
+        min_x = min(x for x, y, z in self.points)
+        max_x = max(x for x, y, z in self.points)
+        min_y = min(y for x, y, z in self.points)
+        max_y = max(y for x, y, z in self.points)
+        min_z = min(z for x, y, z in self.points)
+        max_z = max(z for x, y, z in self.points)
+        return ((max_x + min_x) / 2, (max_y + min_y) / 2, (max_z + min_z) / 2)
 
 
 @dataclass
@@ -480,75 +568,37 @@ class Board:
         self._draw_cuts(canvas, x, y)
 
     def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
-        yield self._get_top_bottom(
-            x1,
-            x2,
-            Grooves.Side(0.0, 0.0, self.T),
-            "silver",
-            "rgba(192,192,192,0.25)",
-        )
+        yield self._get_top_bottom(x1, x2, Grooves.Side(0.0, 0.0, self.T)).reverse()
 
-        yield from self._get_back(
-            x1,
-            x2,
-            "silver",
-            "rgba(192,192,192,0.25)",
-            grooves=False,
-        )
+        yield from self._get_back(x1, x2, grooves=False)
 
-        yield self._get_left_right(x1, "silver", "rgba(255,255,255,0.75)")
+        yield self._get_left_right(x1)
         for side in self.grooves.sides(self.T, top=True, face=False):
-            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+            yield self._get_top_bottom(x1, x2, side).reverse()
 
         for side in self.grooves.sides(self.T, top=False, face=False):
-            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+            yield self._get_top_bottom(x1, x2, side)
 
-        yield from self._get_back(
-            x1,
-            x2,
-            "silver",
-            "rgba(192,192,192,0.25)",
-            grooves=True,
-        )
+        yield from self._get_back(x1, x2, grooves=True)
 
-        yield from self._get_front(
-            x1,
-            x2,
-            "black",
-            "rgba(255,255,255,0.75)",
-            grooves=True,
-        )
+        yield from self._get_front(x1, x2, grooves=True)
 
         for side in self.grooves.sides(self.T, top=True, face=True):
-            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+            yield self._get_top_bottom(x1, x2, side).reverse()
 
         for side in self.grooves.sides(self.T, top=False, face=True):
-            yield self._get_top_bottom(x1, x2, side, "silver", "rgba(192,192,192,0.25)")
+            yield self._get_top_bottom(x1, x2, side)
 
-        yield self._get_top_bottom(
-            x1,
-            x2,
-            Grooves.Side(self.W, 0.0, self.T),
-            "silver",
-            "rgba(192,192,192,0.25)",
-        )
+        yield self._get_top_bottom(x1, x2, Grooves.Side(self.W, 0.0, self.T))
 
-        yield self._get_left_right(x2, "silver", "rgba(255,255,255,0.75)")
-        yield from self._get_front(
-            x1,
-            x2,
-            "black",
-            "rgba(255,255,255,0.75)",
-            grooves=False,
-        )
+        yield self._get_left_right(x2).reverse()
+        yield from self._get_front(x1, x2, grooves=False)
 
     def _get_top_bottom(
         self,
         x1: Interpolator,
         x2: Interpolator,
         side: Grooves.Side,
-        colour: str,
-        fill: str,
     ) -> Face:
         return Face(
             [
@@ -557,11 +607,9 @@ class Board:
                 (x2(side.z2), side.y, side.z2),
                 (x1(side.z2), side.y, side.z2),
             ],
-            colour,
-            fill,
         )
 
-    def _get_left_right(self, xz: Interpolator, colour: str, fill: str) -> Face:
+    def _get_left_right(self, xz: Interpolator) -> Face:
         points: Points3d = []
 
         for flat in self.grooves.flats(self.W, self.T, face=True):
@@ -580,14 +628,12 @@ class Board:
                 ]
             )
 
-        return Face(points, colour, fill)
+        return Face(points)
 
     def _get_front(
         self,
         x1: Interpolator,
         x2: Interpolator,
-        colour: str,
-        fill: str,
         grooves: bool,
     ) -> Iterable[Face]:
         for flat in sorted(self.grooves.flats(self.W, self.T, face=True), reverse=True):
@@ -601,16 +647,12 @@ class Board:
                     (x2(flat.z), flat.y2, flat.z),
                     (x1(flat.z), flat.y2, flat.z),
                 ],
-                colour,
-                fill,
             )
 
     def _get_back(
         self,
         x1: Interpolator,
         x2: Interpolator,
-        colour: str,
-        fill: str,
         grooves: bool,
     ) -> Iterable[Face]:
         for flat in sorted(
@@ -622,12 +664,10 @@ class Board:
             yield Face(
                 [
                     (x1(flat.z), flat.y1, flat.z),
-                    (x2(flat.z), flat.y1, flat.z),
-                    (x2(flat.z), flat.y2, flat.z),
                     (x1(flat.z), flat.y2, flat.z),
+                    (x2(flat.z), flat.y2, flat.z),
+                    (x2(flat.z), flat.y1, flat.z),
                 ],
-                colour,
-                fill,
             )
 
     def _draw_shade(
