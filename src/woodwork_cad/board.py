@@ -6,7 +6,7 @@ from .geometry import (
     Points,
     Points3d,
     Vector3d,
-    clip_polygon,
+    clip_polygon2,
     cross,
     dotproduct,
     line_length,
@@ -249,7 +249,28 @@ class Dovetails:
         def get_face(
             self, x1: Interpolator, x2: Interpolator, z: float
         ) -> Optional["Face"]:
-            return None
+            if self.points:
+                # clip polygon needs to be offset from board by a tiny amount to avoid
+                # issues with "degenerate" polygons when clipping
+                e = -0.01
+
+                xz = x2 if self.right else x1
+                d = -1 if self.right else 1
+                return Face(
+                    [
+                        (d * self.base + xz(z), y, z)
+                        for y, zz in self.points
+                        if (zz == 0 and z == 0) or (zz != 0 and z != 0)
+                    ]
+                    + [
+                        (xz(z) + e, y, z)
+                        for y, zz in reversed(self.points)
+                        if (zz == 0 and z == 0) or (zz != 0 and z != 0)
+                    ],
+                    colour="red",
+                )
+            else:
+                return None
 
     def __init__(self) -> None:
         self._pin_x: List[Dovetails.PinX] = []
@@ -309,8 +330,8 @@ class Dovetails:
             Dovetails.PinX(
                 right,
                 [
-                    (x + e, y),
-                    (x + base, y),
+                    (x + e, y + e),
+                    (x + base, y + e),
                     (x + base, y + pin_width0 + flare),
                     (x + e, y + pin_width0),
                 ],
@@ -338,8 +359,8 @@ class Dovetails:
                 [
                     (x + e, y),
                     (x + base, y - flare),
-                    (x + base, y + pin_width0),
-                    (x + e, y + pin_width0),
+                    (x + base, y + pin_width0 - e),
+                    (x + e, y + pin_width0 - e),
                 ],
             )
         )
@@ -370,10 +391,10 @@ class Dovetails:
                     right,
                     base,
                     [
-                        (y, 1),
-                        (y + flare, 0),
-                        (y + tail_width - flare, 0),
-                        (y + tail_width, 1),
+                        (y + flare, 1),
+                        (y, 0),
+                        (y + tail_width, 0),
+                        (y + tail_width - flare, 1),
                     ],
                 )
             )
@@ -655,7 +676,30 @@ class Face:
         max_z = max(z for x, y, z in self.points)
         return ((max_x + min_x) / 2, (max_y + min_y) / 2, (max_z + min_z) / 2)
 
-    def remove(self, x: Any) -> "Face":
+    def remove(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
+        # clip the dovetail regions out of the face
+        z = self.points[0][2]
+        clipped = False
+        result_poly = self.points[:]
+        for region in clip_regions(z):
+            clipped = True
+            clip_poly = [(x, y) for x, y, z in region.points]
+            result_poly = [
+                (x, y, z)
+                for x, y in clip_polygon2(
+                    clip_poly,
+                    [(x, y) for x, y, z in result_poly],
+                )[0]
+            ]
+
+        if clipped:
+            # make sure normal isn't altered
+            result = Face(result_poly)
+            if result.normal != self.normal:
+                return result.reverse()
+            else:
+                return result
+
         return self
 
 
@@ -833,7 +877,7 @@ class Board:
         for face in sorted(self._get_faces(x1, x2)):
             face.draw(canvas, x, y)
 
-        self.dovetails.draw(canvas, x, y, x1, x2, self.T)
+        # self.dovetails.draw(canvas, x, y, x1, x2, self.T)
 
         self._draw_shade(canvas, x, y, x1, x2)
 
@@ -845,11 +889,13 @@ class Board:
     def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
         yield self._get_top_bottom(x1, x2, Grooves.Side(0.0, 0.0, self.T)).reverse()
         yield self._get_top_bottom(x1, x2, Grooves.Side(self.W, 0.0, self.T))
+        # punch dovetail out of top & bottom faces and side
+        for grooves in [False, True]:
+            for face in self._get_front(x1, x2, grooves=grooves):
+                yield face.remove(self.dovetails.faces(x1, x2))
 
-        yield from self._get_front(x1, x2, grooves=False)
-        yield from self._get_front(x1, x2, grooves=True)
-        yield from self._get_back(x1, x2, grooves=False)
-        yield from self._get_back(x1, x2, grooves=True)
+            for face in self._get_back(x1, x2, grooves=grooves):
+                yield face.remove(self.dovetails.faces(x1, x2))
 
         yield self._get_left_right(x1)
         yield self._get_left_right(x2).reverse()

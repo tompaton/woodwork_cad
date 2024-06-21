@@ -108,7 +108,7 @@ def clip_polygon(clipping_polygon: Points, subject_polygon: Points) -> Points:
 
 
 def clip_polygon2(
-    clipping_polygon: Points, subject_polygon: Points, operation: str = "intersection"
-) -> Points:
+    clipping_polygon: Points, subject_polygon: Points, operation: str = "difference"
+) -> List[Points]:
     result = _clip_polygon(subject_polygon, clipping_polygon, operation)
     return [poly.points for poly in result]
