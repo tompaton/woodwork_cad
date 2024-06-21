@@ -1,47 +1,26 @@
 from dataclasses import dataclass, field
-from math import cos, radians, sin, sqrt
-from typing import Any, Callable, Iterable, Iterator, List, Optional, Tuple
+from math import cos, radians, sin
+from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
-from .svg import Point3d, Points, Points3d, SVGCanvas
+from .geometry import (
+    Points,
+    Points3d,
+    Vector3d,
+    clip_polygon,
+    cross,
+    dotproduct,
+    line_length,
+    normalize,
+    subtract,
+)
+from .svg import SVGCanvas
 
 DEBUG = False
 
 Interpolator = Callable[[float], float]
 
-Vector3d = Tuple[float, float, float]
-
-
-def length(a: Vector3d) -> float:
-    return sqrt(sum(a1 * a2 for a1, a2 in zip(a, a)))
-
-
-def normalize(a: Vector3d) -> Vector3d:
-    r = length(a)
-    return (a[0] / r, a[1] / r, a[2] / r)
-
-
-CAMERA: Vector3d = normalize((1.0, 1.0, -1.0))
-LIGHT: Vector3d = normalize((1.0, -1.0, -1.0))
-
-
-def line_length(x1: float, y1: float, x2: float, y2: float) -> float:
-    return length((x2 - x1, y2 - y1, 0))
-
-
-def subtract(p1: Point3d, p2: Point3d) -> Vector3d:
-    return (p1[0] - p2[0], p1[1] - p2[1], p1[2] - p2[2])
-
-
-def cross(a: Vector3d, b: Vector3d) -> Vector3d:
-    return (
-        a[1] * b[2] - a[2] * b[1],
-        a[2] * b[0] - a[0] * b[2],
-        a[0] * b[1] - a[1] * b[0],
-    )
-
-
-def dotproduct(a: Vector3d, b: Vector3d) -> float:
-    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
+LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))
 
 
 class Cuts:
@@ -222,6 +201,19 @@ class Dovetails:
                     closed=True,
                 )
 
+        def get_face(
+            self, x1: Interpolator, x2: Interpolator, z: float
+        ) -> Optional["Face"]:
+            if self.points:
+                xz = x2 if self.right else x1
+                d = -1 if self.right else 1
+                return Face(
+                    [(d * x + xz(z), y, z) for x, y in self.points],
+                    colour="red",
+                )
+            else:
+                return None
+
     @dataclass
     class TailX:
         right: bool
@@ -254,6 +246,11 @@ class Dovetails:
                     closed=True,
                 )
 
+        def get_face(
+            self, x1: Interpolator, x2: Interpolator, z: float
+        ) -> Optional["Face"]:
+            return None
+
     def __init__(self) -> None:
         self._pin_x: List[Dovetails.PinX] = []
         self._tail_x: List[Dovetails.TailX] = []
@@ -272,6 +269,19 @@ class Dovetails:
         for tail in self._tail_x:
             tail.draw(canvas, x, y, x1, x2, T)
 
+    def faces(
+        self, x1: Interpolator, x2: Interpolator
+    ) -> Callable[[float], Iterable["Face"]]:
+        def inner(z: float) -> Iterable["Face"]:
+            for pin in self._pin_x:
+                if face := pin.get_face(x1, x2, z):
+                    yield face
+            for tail in self._tail_x:
+                if face := tail.get_face(x1, x2, z):
+                    yield face
+
+        return inner
+
     def add_tails(
         self,
         tails: int,
@@ -279,6 +289,7 @@ class Dovetails:
         base: float,
         pin_width: float,
         angle: float,
+        length: float,
         height: float,
         right: bool,
     ) -> None:
@@ -527,6 +538,7 @@ class Notch(Defect):
 @dataclass
 class Face:
     points: Points3d
+    colour: str = ""
 
     def reverse(self) -> "Face":
         self.points.reverse()
@@ -541,10 +553,62 @@ class Face:
         return key < other_key
 
     def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
-        a = subtract(self.points[1], self.points[0])
-        b = subtract(self.points[2], self.points[1])
-        normal = normalize(cross(a, b))
+        normal = self.normal
 
+        if self.colour:
+            colour = self.colour
+            styles: Dict[str, Any] = {}
+        else:
+            colour, styles = self.get_style(normal)
+
+        canvas.polyline3d(
+            colour,
+            [(x + offset_x, y + offset_y, z) for x, y, z in self.points],
+            closed=True,
+            **styles,
+        )
+
+        if DEBUG:
+            x, y, z = self.points[0]
+            dx, dy, dz = normalize(subtract(self.points[1], self.points[0]))
+            canvas.polyline3d(
+                self.colour or "orange",
+                [
+                    (x + offset_x - 3, y + offset_y - 5, z),
+                    (
+                        x + offset_x - 3 + 15 * dx,
+                        y + offset_y + 15 * dy - 5,
+                        z + 15 * dz,
+                    ),
+                    (
+                        x + offset_x - 3 + 10 * dx - 2,
+                        y + offset_y + 15 * dy - 5 - 2,
+                        z + 15 * dz,
+                    ),
+                ],
+                fill="none",
+            )
+            # draw normal from face centroid
+            x, y, z = self.centroid
+            canvas.polyline3d(
+                self.colour or "orange",
+                [
+                    (x + offset_x, y + offset_y, z),
+                    (
+                        x + offset_x + 15 * normal[0],
+                        y + offset_y + 15 * normal[1],
+                        z + 15 * normal[2],
+                    ),
+                    (
+                        x + offset_x + 15 * normal[0] - 2,
+                        y + offset_y + 15 * normal[1],
+                        z + 10 * normal[2],
+                    ),
+                ],
+                fill="none",
+            )
+
+    def get_style(self, normal: Vector3d) -> Tuple[str, Dict[str, Any]]:
         dash = ""
 
         camera = dotproduct(normal, CAMERA)
@@ -568,28 +632,18 @@ class Face:
             else:
                 fill = "rgba(192,192,192,0.75)"
 
-        canvas.polyline3d(
-            colour,
-            [(x + offset_x, y + offset_y, z) for x, y, z in self.points],
-            fill=fill,
-            closed=True,
-            stroke_dasharray=dash,
-        )
-        if DEBUG:
-            # draw normal from face centroid
-            x, y, z = self.centroid
-            canvas.polyline3d(
-                "red",
-                [
-                    (x + offset_x, y + offset_y, z),
-                    (
-                        x + offset_x - 15 * normal[0],
-                        y + offset_y - 15 * normal[1],
-                        z - 15 * normal[2],
-                    ),
-                ],
-                fill="none",
-            )
+        return colour, dict(stroke_dasharray=dash, fill=fill)
+
+    @property
+    def normal(self) -> Vector3d:
+        i = 0
+        while True:
+            try:
+                a = subtract(self.points[i + 1], self.points[i + 0])
+                b = subtract(self.points[i + 2], self.points[i + 1])
+                return normalize(cross(b, a))
+            except ZeroDivisionError:
+                i += 1
 
     @property
     def centroid(self) -> Vector3d:
@@ -600,6 +654,9 @@ class Face:
         min_z = min(z for x, y, z in self.points)
         max_z = max(z for x, y, z in self.points)
         return ((max_x + min_x) / 2, (max_y + min_y) / 2, (max_z + min_z) / 2)
+
+    def remove(self, x: Any) -> "Face":
+        return self
 
 
 @dataclass
@@ -750,7 +807,7 @@ class Board:
         right: bool = False,
     ) -> None:
         x = 0
-        self.dovetails.add_tails(tails, x, base, width, angle, self.W, right)
+        self.dovetails.add_tails(tails, x, base, width, angle, self.L, self.W, right)
 
     def dovetail_pins(
         self,

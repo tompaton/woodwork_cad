@@ -7,6 +7,7 @@ all: woodwork_cad
 	python src/hex-box1.py --strips > output/hex-box1-strips.md
 	python src/hex-box1.py --strips --mitre > output/hex-box1-strips-overlap-mitre.md
 
-woodwork_cad: src/woodwork_cad/svg.py src/woodwork_cad/board.py
+woodwork_cad:
 	ruff check . && mypy .
+	python src/geometry_test.py > output/geometry_test.md
 

@@ -1,11 +1,8 @@
 from contextlib import contextmanager
-from math import cos, radians, sin, sqrt
-from typing import Any, Iterator, List, Optional, Tuple
+from math import sqrt
+from typing import Any, Iterator, Optional, Tuple
 
-Point = Tuple[float, float]
-Points = List[Point]
-Point3d = Tuple[float, float, float]
-Points3d = List[Point3d]
+from .geometry import Points, Points3d, to2d
 
 
 class SVGCanvas:
@@ -15,8 +12,9 @@ class SVGCanvas:
         self.max_y: Optional[float] = None
 
     def _min_max_y(self, *ys) -> None:
-        self.min_y = min(self.min_y or ys[0], *ys)
-        self.max_y = max(self.max_y or ys[0], *ys)
+        if ys:
+            self.min_y = min(self.min_y or ys[0], *ys)
+            self.max_y = max(self.max_y or ys[0], *ys)
 
     def write(self, tag: str, content: str = "", **attrs: Any) -> None:
         attrs_str = " ".join(
@@ -139,11 +137,7 @@ class SVGCanvas:
         self._min_max_y(*(y for x, y in points))
 
     def polyline3d(self, colour: str, points: Points3d, **kwargs: Any) -> None:
-        zx = cos(radians(45))
-        zy = sin(radians(45))
-        return self.polyline(
-            colour, [(x + zx * z, y + zy * z) for x, y, z in points], **kwargs
-        )
+        return self.polyline(colour, [to2d(p) for p in points], **kwargs)
 
 
 @contextmanager
