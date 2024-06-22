@@ -351,7 +351,7 @@
 ## clip_polygon (sutherland-hodgman)
 this fails when the clip polygon is not convex
 
-<svg width="1000" viewBox="0 0 500 422" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 500 569.5" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="30.0,60.0 30,30 60,30 60.0,60.0" />
@@ -366,16 +366,170 @@ this fails when the clip polygon is not convex
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,190.0 36.66666666666667,180.0 60.0,180.0 60.0,228.57142857142856 30.0,220.0 30.0,220.0 60.0,211.42857142857144" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="174,174 204,174 209,159 214,174 219,174 239,209 229,249 219,239 214,229 179,219 214,209 219,199 209,189" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,171 261,171 261,211 171,211" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="324,174 354,174 359,159 364,174 369,174 389,209 379,249 369,239 364,229 329,219 364,209 369,199 359,189" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="331,181 361,181 361,261 331,261" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,334 39,329 39,359 19,354" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="18,334 39,329 39,359 18,354" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,321 111,321 111,411 21,411" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.0,355.0 20.0,335.0 40.0,330.0 40.0,360.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="169,319 259,319 259,409 169,409 169,354 189,359 189,329 169,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.0,355.23809523809524 20.0,334.76190476190476 40.0,330.0 40.0,360.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="168,318 260,318 260,410 168,410 168,354 189,359 189,329 168,334" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,321 261,321 261,411 171,411" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="70.48387096774192,534.758064516129 55.0,494.5 88.29670329670331,497.8296703296703 87.78225806451613,502.4596774193548 70.0,505.0 74.0,533.0" />
+</svg>
+
+
+## clip_polygon2 - union (Greiner and Hormann)
+
+<svg width="1000" viewBox="0 0 500 568.5" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 60,110 30,110 30.0,60.0 20,60 20,20 110,20 110,60 60.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="179,29 209,29 209,109 179,109" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,21 261,21 261,61 171,61" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="210.0,60.0 260,60 260,20 170,20 170,60 180.0,60.0 180,110 210,110 210.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="319,19 409,19 409,59 319,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="326,26 356,26 361,11 366,26 371,26 391,61 381,101 371,91 366,81 331,71 366,61 371,51 361,41" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="356.6666666666667,20.0 360,10 363.3333333333333,20.0 410,20 410,60 320,60 320,20 356.6666666666667,20.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="29,179 59,179 59,259 29,259" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="26,176 56,176 61,161 66,176 71,176 91,211 81,251 71,241 66,231 31,221 66,211 71,201 61,191" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,228.57142857142856 65,230 70,240 80,250 90,210 70,175 65,175 60,160 55,175 25,175 36.66666666666667,180.0 30,180 30,260 60,260 60.0,228.57142857142856" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,211.42857142857144 65,210 70,200 60,190 36.66666666666667,180.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="174,174 204,174 209,159 214,174 219,174 239,209 229,249 219,239 214,229 179,219 214,209 219,199 209,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,171 261,171 261,211 171,211" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="206.66666666666666,170.0 170,170 170,210 260,210 260,170 213.33333333333331,170.0 210,160 206.66666666666666,170.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="324,174 354,174 359,159 364,174 369,174 389,209 379,249 369,239 364,229 329,219 364,209 369,199 359,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="331,181 361,181 361,261 331,261" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="336.6666666666667,180.0 330,180 330,260 360,260 360.0,228.57142857142856 365,230 370,240 380,250 390,210 370,175 365,175 360,160 355,175 325,175 336.6666666666667,180.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="360.0,211.42857142857144 360.0,228.57142857142856" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="18,334 39,329 39,359 18,354" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,321 111,321 111,411 21,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.0,355.23809523809524 20,410 110,410 110,320 20,320 20.0,334.76190476190476 19,335 19,355 20.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="168,318 260,318 260,410 168,410 168,354 189,359 189,329 168,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,321 261,321 261,411 171,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="170.0,355.23809523809524 170.0,334.76190476190476 169,335 169,319 261,319 261,411 169,411 169,355 170.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 320.0,334.76190476190476 319,335 319,319 411,319 411,411 319,411 319,355 320.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 32.5,479.5 40.30612244897959,493.03061224489795 10.0,490.0 32.5,512.5 25.0,520.0 55.0,542.5 65.74626865671641,537.1268656716418 77.5,557.5 74.0,533.0 85.0,527.5 87.78225806451613,502.4596774193548 122.5,497.5 89.07608695652175,490.8152173913044 92.5,460.0 47.5,475.0 50.625,483.125" />
+</svg>
+
+
+## clip_polygon2 - difference (Greiner and Hormann)
+this is now the simplest, but clip polygon still can't be coincident...
+
+<svg width="1000" viewBox="0 0 500 568.5" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 60,110 30,110 30.0,60.0 60.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="179,29 209,29 209,109 179,109" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,21 261,21 261,61 171,61" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="210.0,60.0 260,60 260,20 170,20 170,60 180.0,60.0 180,30 210,30 210.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="319,19 409,19 409,59 319,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="326,26 356,26 361,11 366,26 371,26 391,61 381,101 371,91 366,81 331,71 366,61 371,51 361,41" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="356.6666666666667,20.0 360,10 363.3333333333333,20.0 356.6666666666667,20.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="29,179 59,179 59,259 29,259" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="26,176 56,176 61,161 66,176 71,176 91,211 81,251 71,241 66,231 31,221 66,211 71,201 61,191" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,228.57142857142856 65,230 70,240 80,250 90,210 70,175 65,175 60,160 55,175 25,175 36.66666666666667,180.0 60,180 60.0,211.42857142857144 65,210 70,200 60,190 36.66666666666667,180.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="174,174 204,174 209,159 214,174 219,174 239,209 229,249 219,239 214,229 179,219 214,209 219,199 209,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,171 261,171 261,211 171,211" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="206.66666666666666,170.0 170,170 170,210 260,210 260,170 213.33333333333331,170.0 215,175 220,175 240,210 230,250 220,240 215,230 180,220 215,210 220,200 210,190 175,175 205,175 206.66666666666666,170.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="324,174 354,174 359,159 364,174 369,174 389,209 379,249 369,239 364,229 329,219 364,209 369,199 359,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="331,181 361,181 361,261 331,261" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="336.6666666666667,180.0 330,180 330,260 360,260 360.0,228.57142857142856 330,220 360.0,211.42857142857144 360.0,228.57142857142856" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="18,334 39,329 39,359 18,354" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,321 111,321 111,411 21,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.0,355.23809523809524 20,410 110,410 110,320 20,320 20.0,334.76190476190476 40,330 40,360 20.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="168,318 260,318 260,410 168,410 168,354 189,359 189,329 168,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,321 261,321 261,411 171,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="170.0,355.23809523809524 170.0,334.76190476190476 190,330 190,360 170.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 320.0,334.76190476190476 340,330 340,360 320.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 32.5,479.5 40.30612244897959,493.03061224489795 55.0,494.5 50.625,483.125" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="89.07608695652175,490.8152173913044 122.5,497.5 87.78225806451613,502.4596774193548 89.07608695652175,490.8152173913044" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="74.0,533.0 77.5,557.5 65.74626865671641,537.1268656716418 74.0,533.0" />
+</svg>
+
+
+## clip_polygon2 - reversed-diff (Greiner and Hormann)
+
+<svg width="1000" viewBox="0 0 500 569.5" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 110,60 110,20 20,20 20,60 30.0,60.0 30,30 60,30 60.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="179,29 209,29 209,109 179,109" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,21 261,21 261,61 171,61" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="210.0,60.0 210,110 180,110 180.0,60.0 210.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="319,19 409,19 409,59 319,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="326,26 356,26 361,11 366,26 371,26 391,61 381,101 371,91 366,81 331,71 366,61 371,51 361,41" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="356.6666666666667,20.0 320,20 320,60 410,60 410,20 363.3333333333333,20.0 365,25 370,25 390,60 380,100 370,90 365,80 330,70 365,60 370,50 360,40 325,25 355,25 356.6666666666667,20.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="29,179 59,179 59,259 29,259" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="26,176 56,176 61,161 66,176 71,176 91,211 81,251 71,241 66,231 31,221 66,211 71,201 61,191" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="36.666666666666664,180.0 30,180 30,260 60,260 60.0,228.57142857142856 30,220 60.0,211.42857142857144 60.0,228.57142857142856" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="174,174 204,174 209,159 214,174 219,174 239,209 229,249 219,239 214,229 179,219 214,209 219,199 209,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,171 261,171 261,211 171,211" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="206.66666666666666,170.0 210,160 213.33333333333334,170.0 206.66666666666666,170.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="324,174 354,174 359,159 364,174 369,174 389,209 379,249 369,239 364,229 329,219 364,209 369,199 359,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="331,181 361,181 361,261 331,261" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="360.0,228.57142857142856 365,230 370,240 380,250 390,210 370,175 365,175 360,160 355,175 325,175 336.6666666666667,180.0 360,180 360.0,211.42857142857144 365,210 370,200 360,190 336.6666666666667,180.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="18,334 39,329 39,359 18,354" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,321 111,321 111,411 21,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.0,334.76190476190476 19,335 19,355 20.0,355.23809523809524 20.0,334.76190476190476" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="168,318 260,318 260,410 168,410 168,354 189,359 189,329 168,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,321 261,321 261,411 171,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="170.0,355.23809523809524 169,355 169,411 261,411 261,319 169,319 169,335 170.0,334.76190476190476 170,320 260,320 260,410 170,410 170.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 319,355 319,411 411,411 411,319 319,319 319,335 320.0,334.76190476190476 320,320 410,320 410,410 320,410 320,395 340,400 340,370 320,375 320.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="74.0,533.0 85.0,527.5 87.78225806451613,502.4596774193548 70.0,505.0 74.0,533.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="65.74626865671642,537.1268656716418 55.0,542.5 25.0,520.0 32.5,512.5 10.0,490.0 40.30612244897959,493.03061224489795 65.74626865671642,537.1268656716418" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 47.5,475.0 92.5,460.0 89.07608695652173,490.8152173913044 50.625,483.125" />
+</svg>
+
+
+## clip_polygon2 - intersection (Greiner and Hormann)
+polygons can't be coincident, so make clip region a little larger and it works
+
+<svg width="1000" viewBox="0 0 500 569.5" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 60,30 30,30 30.0,60.0 60.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="179,29 209,29 209,109 179,109" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,21 261,21 261,61 171,61" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="210.0,60.0 180.0,60.0 180,30 210,30 210.0,60.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="319,19 409,19 409,59 319,59" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="326,26 356,26 361,11 366,26 371,26 391,61 381,101 371,91 366,81 331,71 366,61 371,51 361,41" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="356.6666666666667,20.0 355,25 325,25 360,40 370,50 365,60 330,70 365,80 370,90 380,100 390,60 370,25 365,25 363.3333333333333,20.0 356.6666666666667,20.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="29,179 59,179 59,259 29,259" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="26,176 56,176 61,161 66,176 71,176 91,211 81,251 71,241 66,231 31,221 66,211 71,201 61,191" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,228.57142857142856 30,220 60.0,211.42857142857144 60,180 36.66666666666667,180.0 25,175 55,175 60,160 65,175 70,175 90,210 80,250 70,240 65,230 60.0,228.57142857142856" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="174,174 204,174 209,159 214,174 219,174 239,209 229,249 219,239 214,229 179,219 214,209 219,199 209,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,171 261,171 261,211 171,211" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="206.66666666666666,170.0 213.33333333333331,170.0 215,175 220,175 240,210 230,250 220,240 215,230 180,220 215,210 220,200 210,190 175,175 205,175 206.66666666666666,170.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="324,174 354,174 359,159 364,174 369,174 389,209 379,249 369,239 364,229 329,219 364,209 369,199 359,189" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="331,181 361,181 361,261 331,261" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="336.6666666666667,180.0 360,180 360.0,211.42857142857144 330,220 360.0,228.57142857142856 360,260 330,260 330,180 336.6666666666667,180.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="18,334 39,329 39,359 18,354" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,321 111,321 111,411 21,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.0,355.23809523809524 20.0,334.76190476190476 40,330 40,360 20.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="168,318 260,318 260,410 168,410 168,354 189,359 189,329 168,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,321 261,321 261,411 171,411" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="170.0,355.23809523809524 170,410 260,410 260,320 170,320 170.0,334.76190476190476 190,330 190,360 170.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 320,375 340,370 340,400 320,395 320,410 410,410 410,320 320,320 320.0,334.76190476190476 340,330 340,360 320.0,355.23809523809524" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 89.07608695652175,490.8152173913044 87.78225806451613,502.4596774193548 70.0,505.0 74.0,533.0 65.74626865671641,537.1268656716418 40.30612244897959,493.03061224489795 55.0,494.5 50.625,483.125" />
 </svg>
 
 

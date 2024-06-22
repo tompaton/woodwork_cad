@@ -1,5 +1,8 @@
+from functools import partial
+
 from woodwork_cad.geometry import (
     clip_polygon,
+    clip_polygon2,
     cross,
     dotproduct,
     is_inside,
@@ -53,12 +56,29 @@ def test_sutherland_hodgman_intuition(canvas, offset, edge, *to_add):
         canvas.circle(x + x4, y + y4, 4, "red", fill="none")
 
 
-def test_clip_polygon(canvas, offset, clip_poly, target_poly):
+def test_clip_polygon1(canvas, offset, clip_poly, target_poly):
+    return _test_clip_polygon(clip_polygon, canvas, offset, clip_poly, target_poly)
+
+
+def test_clip_polygon2(canvas, offset, clip_poly, target_poly, operation):
+    return _test_clip_polygon(
+        partial(clip_polygon2, operation=operation),
+        canvas,
+        offset,
+        clip_poly,
+        target_poly,
+    )
+
+
+def _test_clip_polygon(algo, canvas, offset, clip_poly, target_poly):
     x, y = offset
     canvas.polyline("blue", offset_points(x - 1, y - 1, clip_poly), closed=True)
     canvas.polyline("green", offset_points(x + 1, y + 1, target_poly), closed=True)
-    poly3 = clip_polygon(clip_poly, target_poly)
-    canvas.polyline("red", offset_points(x, y, poly3), closed=True)
+    poly3a = algo(clip_poly, target_poly)
+    if poly3a and not isinstance(poly3a[0], list):
+        poly3a = [poly3a]
+    for poly3 in poly3a:
+        canvas.polyline("red", offset_points(x, y, poly3), closed=True)
 
 
 def test_cross_product(canvas, offset, v1, v2):
@@ -154,49 +174,107 @@ def geometry_test():
         ]:
             test_sutherland_hodgman_intuition(canvas, next(grid), edge, *to_add)
 
-    print("## clip_polygon (sutherland-hodgman)")
-    print("this fails when the clip polygon is not convex")
-    with print_svg(500, zoom=2) as canvas:
-        grid = xy_grid(150)
-        poly1 = [(10, 10), (100, 10), (100, 50), (10, 50)]
-        poly2 = [(20, 20), (50, 20), (50, 100), (20, 100)]
-        poly3 = [
-            (15, 15),
-            (45, 15),
-            (50, 0),
-            (55, 15),
-            (60, 15),
-            (80, 50),
-            (70, 90),
-            (60, 80),
-            (55, 70),
-            (20, 60),
-            (55, 50),
-            (60, 40),
-            (50, 30),
-        ]
-        test_clip_polygon(canvas, next(grid), poly1, poly2)
-        test_clip_polygon(canvas, next(grid), poly2, poly1)
-        test_clip_polygon(canvas, next(grid), poly1, poly3)
-        test_clip_polygon(canvas, next(grid), poly2, poly3)
-        test_clip_polygon(canvas, next(grid), poly3, poly1)
-        test_clip_polygon(canvas, next(grid), poly3, poly2)
+    for title, test_clip_polygon in [
+        (
+            "## clip_polygon (sutherland-hodgman)\n"
+            "this fails when the clip polygon is not convex",
+            test_clip_polygon1,
+        ),
+        (
+            "## clip_polygon2 - union (Greiner and Hormann)",
+            partial(test_clip_polygon2, operation="union"),
+        ),
+        (
+            "## clip_polygon2 - difference (Greiner and Hormann)\n"
+            "this is now the simplest, but clip polygon still can't be coincident...",
+            partial(test_clip_polygon2, operation="difference"),
+        ),
+        (
+            "## clip_polygon2 - reversed-diff (Greiner and Hormann)",
+            partial(test_clip_polygon2, operation="reversed-diff"),
+        ),
+        (
+            "## clip_polygon2 - intersection (Greiner and Hormann)\n"
+            "polygons can't be coincident, so make clip region a little larger and it works",
+            partial(test_clip_polygon2, operation="intersection"),
+        ),
+    ]:
+        print(title)
+        with print_svg(500, zoom=2) as canvas:
+            grid = xy_grid(150)
+            poly1 = [(10, 10), (100, 10), (100, 50), (10, 50)]
+            poly2 = [(20, 20), (50, 20), (50, 100), (20, 100)]
+            poly3 = [
+                (15, 15),
+                (45, 15),
+                (50, 0),
+                (55, 15),
+                (60, 15),
+                (80, 50),
+                (70, 90),
+                (60, 80),
+                (55, 70),
+                (20, 60),
+                (55, 50),
+                (60, 40),
+                (50, 30),
+            ]
+            test_clip_polygon(canvas, next(grid), poly1, poly2)
+            test_clip_polygon(canvas, next(grid), poly2, poly1)
+            test_clip_polygon(canvas, next(grid), poly1, poly3)
+            test_clip_polygon(canvas, next(grid), poly2, poly3)
+            test_clip_polygon(canvas, next(grid), poly3, poly1)
+            test_clip_polygon(canvas, next(grid), poly3, poly2)
 
-        dovetail = [(10, 25), (30, 20), (30, 50), (10, 45)]
-        panel = [(10, 10), (100, 10), (100, 100), (10, 100)]
-        test_clip_polygon(canvas, next(grid), dovetail, panel)
+            dovetail = [(10 - 1, 25), (30, 20), (30, 50), (10 - 1, 45)]
+            panel = [(10, 10), (100, 10), (100, 100), (10, 100)]
+            test_clip_polygon(canvas, next(grid), dovetail, panel)
 
-        dovetail2 = [
-            (10, 10),
-            (100, 10),
-            (100, 100),
-            (10, 100),
-            (10, 45),
-            (30, 50),
-            (30, 20),
-            (10, 25),
-        ]
-        test_clip_polygon(canvas, next(grid), dovetail2, panel)
+            dovetail2 = [
+                (10 - 1, 10 - 1),
+                (100 + 1, 10 - 1),
+                (100 + 1, 100 + 1),
+                (10 - 1, 100 + 1),
+                (10 - 1, 45),
+                (30, 50),
+                (30, 20),
+                (10 - 1, 25),
+            ]
+            test_clip_polygon(canvas, next(grid), dovetail2, panel)
+            panel2 = [
+                (10, 10),
+                (100, 10),
+                (100, 100),
+                (10, 100),
+                (10, 85),
+                (30, 90),
+                (30, 60),
+                (10, 65),
+            ]
+            test_clip_polygon(canvas, next(grid), dovetail2, panel2)
+
+            # subject polygon
+            spoly = [
+                (u * 15, v * 15)
+                for u, v in [(1.5, 1.3), (7.5, 2.5), (4.0, 3.0), (4.5, 6.5)]
+            ]
+
+            # clip polygon
+            cpoly = [
+                (u * 15, v * 15)
+                for u, v in [
+                    (5.0, 4.5),
+                    (3.0, 5.5),
+                    (1.0, 4.0),
+                    (1.5, 3.5),
+                    (0.0, 2.0),
+                    (3.0, 2.3),
+                    (2.5, 1.0),
+                    (5.5, 0.0),
+                ]
+            ]
+
+            test_clip_polygon(canvas, next(grid), cpoly, spoly)
 
     print("## dot product, cross product")
     with print_svg(500, zoom=2) as canvas:
@@ -210,6 +288,8 @@ def geometry_test():
             ((0, 0, 1), (0, 1, 0)),
         ]:
             test_cross_product(canvas, next(grid), v1, v2)
+
+    # TODO: tests for normals
 
 
 if __name__ == "__main__":

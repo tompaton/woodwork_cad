@@ -2,6 +2,8 @@ from itertools import pairwise
 from math import cos, radians, sin, sqrt
 from typing import List, Optional, Tuple
 
+from .polygon import clip_polygon as _clip_polygon
+
 Point = Tuple[float, float]
 Points = List[Point]
 Point3d = Tuple[float, float, float]
@@ -103,3 +105,10 @@ def clip_polygon(clipping_polygon: Points, subject_polygon: Points) -> Points:
                     result.append(point)
 
     return result
+
+
+def clip_polygon2(
+    clipping_polygon: Points, subject_polygon: Points, operation: str = "intersection"
+) -> Points:
+    result = _clip_polygon(subject_polygon, clipping_polygon, operation)
+    return [poly.points for poly in result]
