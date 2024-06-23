@@ -190,6 +190,185 @@ class Grooves:
                     yield Grooves.Side(groove.y1, T - groove.depth, T)
 
 
+class Dovetails:
+    @dataclass
+    class PinX:
+        right: bool
+        points: Points = field(default_factory=list)  # x, y
+
+        def draw(
+            self,
+            canvas: SVGCanvas,
+            offset_x: float,
+            offset_y: float,
+            x1: Interpolator,
+            x2: Interpolator,
+            T: float,
+        ) -> None:
+            if self.points:
+                # extend around the front face and back face
+                xz = x2 if self.right else x1
+                d = -1 if self.right else 1
+                canvas.polyline3d(
+                    "red",
+                    [
+                        (offset_x + d * x + xz(0), offset_y + y, 0)
+                        for x, y in self.points
+                    ]
+                    + [
+                        (offset_x + d * x + xz(T), offset_y + y, T)
+                        for x, y in reversed(self.points)
+                    ],
+                    closed=True,
+                )
+
+    @dataclass
+    class TailX:
+        right: bool
+        base: float
+        points: Points = field(default_factory=list)  # y, z
+
+        def draw(
+            self,
+            canvas: SVGCanvas,
+            offset_x: float,
+            offset_y: float,
+            x1: Interpolator,
+            x2: Interpolator,
+            T: float,
+        ) -> None:
+            if self.points:
+                # extend around the front face and back face
+                xz = x2 if self.right else x1
+                d = -1 if self.right else 1
+                canvas.polyline3d(
+                    "magenta",
+                    [
+                        (offset_x + d * self.base + xz(z * T), offset_y + y, z * T)
+                        for y, z in self.points
+                    ]
+                    + [
+                        (offset_x + xz(z * T), offset_y + y, z * T)
+                        for y, z in reversed(self.points)
+                    ],
+                    closed=True,
+                )
+
+    def __init__(self) -> None:
+        self._pin_x: List[Dovetails.PinX] = []
+        self._tail_x: List[Dovetails.TailX] = []
+
+    def draw(
+        self,
+        canvas: SVGCanvas,
+        x: float,
+        y: float,
+        x1: Interpolator,
+        x2: Interpolator,
+        T: float,
+    ) -> None:
+        for pin in self._pin_x:
+            pin.draw(canvas, x, y, x1, x2, T)
+        for tail in self._tail_x:
+            tail.draw(canvas, x, y, x1, x2, T)
+
+    def add_tails(
+        self,
+        tails: int,
+        x: float,
+        base: float,
+        pin_width: float,
+        angle: float,
+        height: float,
+        right: bool,
+    ) -> None:
+        y = 0.0
+
+        # pin_width = height / (tails * 2 + 1)
+        pin_width0 = 2 * pin_width
+        tail_width = (height - 2 * pin_width0 - pin_width * (tails - 1)) / tails
+
+        flare = abs(base) * sin(radians(angle))
+
+        # clip polygon needs to be offset from board by a tiny amount to avoid
+        # issues with "degenerate" polygons when clipping
+        e = -0.01
+
+        self._pin_x.append(
+            Dovetails.PinX(
+                right,
+                [
+                    (x + e, y),
+                    (x + base, y),
+                    (x + base, y + pin_width0 + flare),
+                    (x + e, y + pin_width0),
+                ],
+            )
+        )
+        y += pin_width0 + tail_width
+
+        for i in range(tails - 1):
+            self._pin_x.append(
+                Dovetails.PinX(
+                    right,
+                    [
+                        (x + e, y),
+                        (x + base, y - flare),
+                        (x + base, y + pin_width + flare),
+                        (x + e, y + pin_width),
+                    ],
+                )
+            )
+            y += pin_width + tail_width
+
+        self._pin_x.append(
+            Dovetails.PinX(
+                right,
+                [
+                    (x + e, y),
+                    (x + base, y - flare),
+                    (x + base, y + pin_width0),
+                    (x + e, y + pin_width0),
+                ],
+            )
+        )
+
+    def add_pins(
+        self,
+        tails: int,
+        x: float,
+        base: float,
+        pin_width: float,
+        angle: float,
+        height: float,
+        right: bool,
+    ) -> None:
+        y = 0.0
+
+        # pin_width = height / (tails * 2 + 1)
+        pin_width0 = 2 * pin_width
+        tail_width = (height - 2 * pin_width0 - pin_width * (tails - 1)) / tails
+
+        flare = abs(base) * sin(radians(angle))
+
+        y += pin_width0
+
+        for i in range(tails):
+            self._tail_x.append(
+                Dovetails.TailX(
+                    right,
+                    base,
+                    [
+                        (y, 1),
+                        (y + flare, 0),
+                        (y + tail_width - flare, 0),
+                        (y + tail_width, 1),
+                    ],
+                )
+            )
+            y += tail_width + pin_width
+
+
 class Profile:
     @dataclass
     class Point:
@@ -441,6 +620,7 @@ class Board:
     label: str = ""
     shades: Shades = field(default_factory=Shades)
     grooves: Grooves = field(default_factory=Grooves)
+    dovetails: Dovetails = field(default_factory=Dovetails)
 
     def __str__(self) -> str:
         return f"{self.L} x {self.W} x {self.T}"
@@ -561,12 +741,42 @@ class Board:
     def dado(self, x: float, width: float, depth: float, face: bool = True) -> None:
         raise NotImplementedError
 
+    def dovetail_tails(
+        self,
+        tails: int = 3,
+        base: float = 10.0,
+        width: float = 20.0,
+        angle: float = 15.0,
+        right: bool = False,
+    ) -> None:
+        x = 0
+        self.dovetails.add_tails(tails, x, base, width, angle, self.W, right)
+
+    def dovetail_pins(
+        self,
+        tails: int = 3,
+        base: float = 10.0,
+        width: float = 20.0,
+        angle: float = 15.0,
+        right: bool = False,
+    ) -> None:
+        if right:
+            x = self.L - base
+            base = -abs(base)
+        else:
+            x = 0
+            base = abs(base)
+
+        self.dovetails.add_pins(tails, x, base, width, angle, self.W, right)
+
     def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
         x1, x2 = self.profile.interpolate(self.T)
 
         # draw all faces separately from back to front to do basic hidden line removal
         for face in sorted(self._get_faces(x1, x2)):
             face.draw(canvas, x, y)
+
+        self.dovetails.draw(canvas, x, y, x1, x2, self.T)
 
         self._draw_shade(canvas, x, y, x1, x2)
 
