@@ -173,6 +173,7 @@ class Dovetails:
     @dataclass
     class PinX:
         right: bool
+        T: float
         points: Points = field(default_factory=list)  # x, y
 
         def draw(
@@ -214,9 +215,58 @@ class Dovetails:
             else:
                 return None
 
+        def get_side(
+            self, x1: Interpolator, x2: Interpolator, y: float
+        ) -> Optional["Face"]:
+            if self.points:
+                min_y = min(y for x, y in self.points)
+                max_y = max(y for x, y in self.points)
+
+                if min_y <= y <= max_y:
+                    min_x = min(x for x, y in self.points)
+                    max_x = max(x for x, y in self.points)
+                    xz = x2 if self.right else x1
+                    d = -1 if self.right else 1
+
+                    e = -0.01
+
+                    return Face(
+                        [
+                            (d * min_x + xz(0), y, 0 + e),
+                            (d * max_x + xz(0), y, 0 + e),
+                            (d * max_x + xz(self.T), y, self.T - e),
+                            (d * min_x + xz(self.T), y, self.T - e),
+                        ],
+                        colour="red",
+                    )
+
+            return None
+
+        def get_left_right(
+            self, xz: Interpolator, right: bool
+        ) -> Optional[Tuple["Face", float]]:
+            if self.points and self.right == right:
+                d = -1 if self.right else 1
+                min_x = min(x for x, y in self.points)
+                max_x = max(x for x, y in self.points)
+                min_y = min(y for x, y in self.points)
+                max_y = max(y for x, y in self.points)
+                e = -0.01
+                return Face(
+                    [
+                        (xz(0) + e, min_y + e, 0 + e),
+                        (xz(self.T) - e, min_y + e, self.T - e),
+                        (xz(self.T) - e, max_y - e, self.T - e),
+                        (xz(0) + e, max_y - e, 0 + e),
+                    ],
+                    colour="red",
+                ), d * (max_x - min_x)
+            return None
+
     @dataclass
     class TailX:
         right: bool
+        T: float
         base: float
         points: Points = field(default_factory=list)  # y, z
 
@@ -272,6 +322,27 @@ class Dovetails:
             else:
                 return None
 
+        def get_side(
+            self, x1: Interpolator, x2: Interpolator, z: float
+        ) -> Optional["Face"]:
+            # can ignore this for now as pins don't extend to sides and we'll
+            # assume any grooves are near the edge
+            return None
+
+        def get_left_right(
+            self, xz: Interpolator, right: bool
+        ) -> Optional[Tuple["Face", float]]:
+            if self.points and self.right == right:
+                e = 0.01
+                return Face(
+                    [
+                        (xz(z * self.T), y, z * self.T + (e if z else -e))
+                        for y, z in self.points
+                    ],
+                    colour="red",
+                ), self.base
+            return None
+
     def __init__(self) -> None:
         self._pin_x: List[Dovetails.PinX] = []
         self._tail_x: List[Dovetails.TailX] = []
@@ -303,6 +374,41 @@ class Dovetails:
 
         return inner
 
+    def sides(
+        self, x1: Interpolator, x2: Interpolator
+    ) -> Callable[[float], Iterable["Face"]]:
+        def inner(y: float) -> Iterable["Face"]:
+            for pin in self._pin_x:
+                if face := pin.get_side(x1, x2, y):
+                    yield face
+            for tail in self._tail_x:
+                if face := tail.get_side(x1, x2, y):
+                    yield face
+
+        return inner
+
+    def _left_right(
+        self, xz: Interpolator, right: bool
+    ) -> Iterable[Tuple["Face", float]]:
+        for pin in self._pin_x:
+            if face := pin.get_left_right(xz, right):
+                yield face
+        for tail in self._tail_x:
+            if face := tail.get_left_right(xz, right):
+                yield face
+
+    def left_right(
+        self, xz: Interpolator, side: "Face", right: bool = False
+    ) -> Iterable["Face"]:
+        clipped = False
+        for end_clip, dx in self._left_right(xz, right):
+            clipped = True
+            # yield end_clip.offset(dx=dx)
+            yield side.clip_end(end_clip, xz).offset(dx=dx)
+
+        if not clipped:
+            yield side
+
     def add_tails(
         self,
         tails: int,
@@ -310,7 +416,7 @@ class Dovetails:
         base: float,
         pin_width: float,
         angle: float,
-        length: float,
+        T: float,
         height: float,
         right: bool,
     ) -> None:
@@ -329,6 +435,7 @@ class Dovetails:
         self._pin_x.append(
             Dovetails.PinX(
                 right,
+                T,
                 [
                     (x + e, y + e),
                     (x + base, y + e),
@@ -343,6 +450,7 @@ class Dovetails:
             self._pin_x.append(
                 Dovetails.PinX(
                     right,
+                    T,
                     [
                         (x + e, y),
                         (x + base, y - flare),
@@ -356,6 +464,7 @@ class Dovetails:
         self._pin_x.append(
             Dovetails.PinX(
                 right,
+                T,
                 [
                     (x + e, y),
                     (x + base, y - flare),
@@ -373,6 +482,7 @@ class Dovetails:
         pin_width: float,
         angle: float,
         height: float,
+        T: float,
         right: bool,
     ) -> None:
         y = 0.0
@@ -389,6 +499,7 @@ class Dovetails:
             self._tail_x.append(
                 Dovetails.TailX(
                     right,
+                    T,
                     base,
                     [
                         (y + flare, 1),
@@ -565,6 +676,9 @@ class Face:
         self.points.reverse()
         return self
 
+    def offset(self, dx: float = 0, dy: float = 0, dz: float = 0) -> "Face":
+        return Face([(x + dx, y + dy, z + dz) for x, y, z in self.points], self.colour)
+
     def __lt__(self, other: Any) -> bool:
         # z-order (reversed), then top to bottom, left to right
         center = self.centroid
@@ -695,12 +809,62 @@ class Face:
         if clipped:
             # make sure normal isn't altered
             result = Face(result_poly)
-            if result.normal != self.normal:
+            if not equal_vectors(result.normal, self.normal):
                 return result.reverse()
             else:
                 return result
 
         return self
+
+    def remove_side(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
+        y = self.points[0][1]
+        clipped = False
+        result_poly = self.points[:]
+        for region in clip_regions(y):
+            clipped = True
+            clip_poly = [(x, z) for x, y, z in region.points]
+            result_poly = [
+                (x, y, z)
+                for x, z in clip_polygon2(
+                    clip_poly,
+                    [(x, z) for x, y, z in result_poly],
+                )[0]
+            ]
+
+        if clipped:
+            # make sure normal isn't altered
+            result = Face(result_poly)
+            if not equal_vectors(result.normal, self.normal):
+                return result.reverse()
+            else:
+                return result
+
+        return self
+
+    def clip_end(self, clip_region: "Face", xz: Interpolator) -> "Face":
+        clip_poly = [(y, z) for x, y, z in clip_region.points]
+        result_poly = [
+            (xz(z), y, z)
+            for y, z in clip_polygon2(
+                clip_poly, [(y, z) for x, y, z in self.points], "intersection"
+            )[0]
+        ]
+
+        if result_poly:
+            # make sure normal isn't altered
+            result = Face(result_poly)
+            if not equal_vectors(result.normal, self.normal):
+                return result.reverse()
+            else:
+                return result
+
+        return self
+
+
+def equal_vectors(a: Vector3d, b: Vector3d) -> bool:
+    a_rounded = f"{a[0]:.4f},{a[1]:.4f},{a[2]:.4f}"
+    b_rounded = f"{b[0]:.4f},{b[1]:.4f},{b[2]:.4f}"
+    return a_rounded == b_rounded
 
 
 @dataclass
@@ -851,7 +1015,7 @@ class Board:
         right: bool = False,
     ) -> None:
         x = 0
-        self.dovetails.add_tails(tails, x, base, width, angle, self.L, self.W, right)
+        self.dovetails.add_tails(tails, x, base, width, angle, self.T, self.W, right)
 
     def dovetail_pins(
         self,
@@ -868,7 +1032,7 @@ class Board:
             x = 0
             base = abs(base)
 
-        self.dovetails.add_pins(tails, x, base, width, angle, self.W, right)
+        self.dovetails.add_pins(tails, x, base, width, angle, self.W, self.T, right)
 
     def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
         x1, x2 = self.profile.interpolate(self.T)
@@ -887,8 +1051,6 @@ class Board:
         self._draw_cuts(canvas, x, y)
 
     def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
-        yield self._get_top_bottom(x1, x2, Grooves.Side(0.0, 0.0, self.T)).reverse()
-        yield self._get_top_bottom(x1, x2, Grooves.Side(self.W, 0.0, self.T))
         # punch dovetail out of top & bottom faces and side
         for grooves in [False, True]:
             for face in self._get_front(x1, x2, grooves=grooves):
@@ -897,20 +1059,28 @@ class Board:
             for face in self._get_back(x1, x2, grooves=grooves):
                 yield face.remove(self.dovetails.faces(x1, x2))
 
-        yield self._get_left_right(x1)
-        yield self._get_left_right(x2).reverse()
+        yield from self.dovetails.left_right(x1, self._get_left_right(x1), right=False)
+        yield from self.dovetails.left_right(
+            x2, self._get_left_right(x2).reverse(), right=True
+        )
 
-        for side in self.grooves.sides(self.T, top=True, face=False):
-            yield self._get_top_bottom(x1, x2, side).reverse()
+        sides = [Grooves.Side(0.0, 0.0, self.T)]
+        sides.extend(self.grooves.sides(self.T, top=True, face=False))
+        sides.extend(self.grooves.sides(self.T, top=True, face=True))
+        for side in sides:
+            yield (
+                self._get_top_bottom(x1, x2, side)
+                .remove_side(self.dovetails.sides(x1, x2))
+                .reverse()
+            )
 
-        for side in self.grooves.sides(self.T, top=False, face=False):
-            yield self._get_top_bottom(x1, x2, side)
-
-        for side in self.grooves.sides(self.T, top=True, face=True):
-            yield self._get_top_bottom(x1, x2, side).reverse()
-
-        for side in self.grooves.sides(self.T, top=False, face=True):
-            yield self._get_top_bottom(x1, x2, side)
+        sides = [Grooves.Side(self.W, 0.0, self.T)]
+        sides.extend(self.grooves.sides(self.T, top=False, face=False))
+        sides.extend(self.grooves.sides(self.T, top=False, face=True))
+        for side in sides:
+            yield self._get_top_bottom(x1, x2, side).remove_side(
+                self.dovetails.sides(x1, x2)
+            )
 
     def _get_top_bottom(
         self,
