@@ -171,6 +171,12 @@ class Grooves:
 
 class Dovetails:
     @dataclass
+    class End:
+        right: bool
+        dx: float
+        points: Points3d = field(default_factory=list)
+
+    @dataclass
     class PinX:
         right: bool
         T: float
@@ -242,26 +248,6 @@ class Dovetails:
 
             return None
 
-        def get_left_right(
-            self, xz: Interpolator, right: bool
-        ) -> Optional[Tuple["Face", float]]:
-            if self.points and self.right == right:
-                d = -1 if self.right else 1
-                min_x = min(x for x, y in self.points)
-                max_x = max(x for x, y in self.points)
-                min_y = min(y for x, y in self.points)
-                max_y = max(y for x, y in self.points)
-                e = -0.01
-                return Face(
-                    [
-                        (xz(0) + e, min_y + e, 0 + e),
-                        (xz(self.T) - e, min_y + e, self.T - e),
-                        (xz(self.T) - e, max_y - e, self.T - e),
-                        (xz(0) + e, max_y - e, 0 + e),
-                    ],
-                    colour="red",
-                ), d * (max_x - min_x)
-            return None
 
     @dataclass
     class TailX:
@@ -329,23 +315,11 @@ class Dovetails:
             # assume any grooves are near the edge
             return None
 
-        def get_left_right(
-            self, xz: Interpolator, right: bool
-        ) -> Optional[Tuple["Face", float]]:
-            if self.points and self.right == right:
-                e = 0.01
-                return Face(
-                    [
-                        (xz(z * self.T), y, z * self.T + (e if z else -e))
-                        for y, z in self.points
-                    ],
-                    colour="red",
-                ), self.base
-            return None
 
     def __init__(self) -> None:
         self._pin_x: List[Dovetails.PinX] = []
         self._tail_x: List[Dovetails.TailX] = []
+        self._ends: List[Dovetails.End] = []
 
     def draw(
         self,
@@ -387,24 +361,17 @@ class Dovetails:
 
         return inner
 
-    def _left_right(
-        self, xz: Interpolator, right: bool
-    ) -> Iterable[Tuple["Face", float]]:
-        for pin in self._pin_x:
-            if face := pin.get_left_right(xz, right):
-                yield face
-        for tail in self._tail_x:
-            if face := tail.get_left_right(xz, right):
-                yield face
 
     def left_right(
         self, xz: Interpolator, side: "Face", right: bool = False
     ) -> Iterable["Face"]:
         clipped = False
-        for end_clip, dx in self._left_right(xz, right):
-            clipped = True
-            # yield end_clip.offset(dx=dx)
-            yield side.clip_end(end_clip, xz).offset(dx=dx)
+
+        for end in self._ends:
+            if end.right == right:
+                clipped = True
+                # yield Face(end.points, "red").offset(dx=end.dx)
+                yield side.clip_end(Face(end.points, "red"), xz).offset(dx=end.dx)
 
         if not clipped:
             yield side
@@ -432,6 +399,8 @@ class Dovetails:
         # issues with "degenerate" polygons when clipping
         e = -0.01
 
+        d = -1 if right else 1
+
         self._pin_x.append(
             Dovetails.PinX(
                 right,
@@ -444,7 +413,34 @@ class Dovetails:
                 ],
             )
         )
-        y += pin_width0 + tail_width
+        self._ends.append(
+            Dovetails.End(
+                right,
+                d * base,
+                [
+                    (x + e, y + e, 0 + e),
+                    (x + e, y + e, T - e),
+                    (x + e, y + pin_width0 + flare - e, T - e),
+                    (x + e, y + pin_width0 + flare - e, 0 + e),
+                ],
+            )
+        )
+        y += pin_width0
+
+        self._ends.append(
+            Dovetails.End(
+                right,
+                0.0,
+                [
+                    (x + e, y + e, 0 + e),
+                    (x + e, y + e, T - e),
+                    (x + e, y + tail_width - e, T - e),
+                    (x + e, y + tail_width - e, 0 + e),
+                ],
+            )
+        )
+
+        y += tail_width
 
         for i in range(tails - 1):
             self._pin_x.append(
@@ -459,7 +455,34 @@ class Dovetails:
                     ],
                 )
             )
-            y += pin_width + tail_width
+            self._ends.append(
+                Dovetails.End(
+                    right,
+                    d * base,
+                    [
+                        (x + e, y - flare + e, 0 + e),
+                        (x + e, y - flare + e, T - e),
+                        (x + e, y + pin_width + flare - e, T - e),
+                        (x + e, y + pin_width + flare - e, 0 + e),
+                    ],
+                )
+            )
+            y += pin_width
+
+            self._ends.append(
+                Dovetails.End(
+                    right,
+                    0.0,
+                    [
+                        (x + e, y + e, 0 + e),
+                        (x + e, y + e, T - e),
+                        (x + e, y + tail_width - e, T - e),
+                        (x + e, y + tail_width - e, 0 + e),
+                    ],
+                )
+            )
+
+            y += tail_width
 
         self._pin_x.append(
             Dovetails.PinX(
@@ -470,6 +493,18 @@ class Dovetails:
                     (x + base, y - flare),
                     (x + base, y + pin_width0 - e),
                     (x + e, y + pin_width0 - e),
+                ],
+            )
+        )
+        self._ends.append(
+            Dovetails.End(
+                right,
+                d * base,
+                [
+                    (x + e, y - flare + e, 0 + e),
+                    (x + e, y - flare + e, T - e),
+                    (x + e, y + pin_width0 - e, T - e),
+                    (x + e, y + pin_width0 - e, 0 + e),
                 ],
             )
         )
@@ -493,6 +528,22 @@ class Dovetails:
 
         flare = abs(base) * sin(radians(angle))
 
+        e = -0.01
+        x = 0.0
+
+        self._ends.append(
+            Dovetails.End(
+                right,
+                0.0,
+                [
+                    (x + e, y + e, T - e),
+                    (x + e, y + e, 0 + e),
+                    (x + e, y + pin_width0 - e, 0 + e),
+                    (x + e, y + pin_width0 + flare - e, T - e),
+                ],
+            )
+        )
+
         y += pin_width0
 
         for i in range(tails):
@@ -509,7 +560,51 @@ class Dovetails:
                     ],
                 )
             )
-            y += tail_width + pin_width
+
+            self._ends.append(
+                Dovetails.End(
+                    right,
+                    base,
+                    [
+                        (x + e, y + flare, T),
+                        (x + e, y, 0),
+                        (x + e, y + tail_width, 0),
+                        (x + e, y + tail_width - flare, T),
+                    ],
+                )
+            )
+
+            y += tail_width
+
+            self._ends.append(
+                Dovetails.End(
+                    right,
+                    0.0,
+                    [
+                        (x + e, y - flare + e, T - e),
+                        (x + e, y + e, 0 + e),
+                        (x + e, y + pin_width - e, 0 + e),
+                        (x + e, y + pin_width + flare - e, T - e),
+                    ],
+                )
+            )
+
+            y += pin_width
+
+        self._ends.pop()
+
+        self._ends.append(
+            Dovetails.End(
+                right,
+                0.0,
+                [
+                    (x + e, y - pin_width + e - flare, T - e),
+                    (x + e, y - pin_width + e, 0 + e),
+                    (x + e, y - pin_width + pin_width0 - e, 0 + e),
+                    (x + e, y - pin_width + pin_width0 - e, T - e),
+                ],
+            )
+        )
 
 
 class Profile:
@@ -1014,8 +1109,9 @@ class Board:
         angle: float = 15.0,
         right: bool = False,
     ) -> None:
-        x = 0
-        self.dovetails.add_tails(tails, x, base, width, angle, self.T, self.W, right)
+        self.dovetails.add_tails(
+            tails, self.L if right else 0, base, width, angle, self.T, self.W, right
+        )
 
     def dovetail_pins(
         self,

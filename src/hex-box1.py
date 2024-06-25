@@ -204,15 +204,21 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     dovetail_base = length_inside - length_outside
     print(f"- baseline is {dovetail_base:.1f} from end")
 
+    sides[0].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
     sides[0].dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
     sides[1].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
-
     sides[1].dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
-    sides[0].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
+
+    sides[2].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=False)
+    sides[2].dovetail_tails(tails=2, base=dovetail_base, width=15, angle=15, right=True)
+    sides[3].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=False)
+    sides[3].dovetail_tails(tails=2, base=dovetail_base, width=15, angle=15, right=True)
 
     with print_svg(1100, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, [sides[0]])
         draw_boards(canvas, 300, 20, [sides[1]])
+        draw_boards(canvas, 10, 200, [sides[2]])
+        draw_boards(canvas, 300, 200, [sides[3]])
 
     print("## Sides")
 
