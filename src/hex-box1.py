@@ -206,13 +206,17 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     sides[0].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
     sides[0].dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
-    sides[1].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
-    sides[1].dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
+    sides[1].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=True)
+    sides[1].dovetail_tails(
+        tails=3, base=dovetail_base, width=15, angle=15, right=False
+    )
 
     sides[2].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=False)
     sides[2].dovetail_tails(tails=2, base=dovetail_base, width=15, angle=15, right=True)
-    sides[3].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=False)
-    sides[3].dovetail_tails(tails=2, base=dovetail_base, width=15, angle=15, right=True)
+    sides[3].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=True)
+    sides[3].dovetail_tails(
+        tails=2, base=dovetail_base, width=15, angle=15, right=False
+    )
 
     with print_svg(1100, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, [sides[0]])
