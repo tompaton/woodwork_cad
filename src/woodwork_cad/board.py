@@ -23,6 +23,22 @@ CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
 LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))
 
 
+# clip polygon needs to be offset from board by a tiny amount to avoid
+# issues with "degenerate" polygons when clipping
+def peturb(points: Points3d) -> Points3d:
+    mid_x = sum(x for x, y, z in points) / len(points)
+    mid_y = sum(y for x, y, z in points) / len(points)
+    mid_z = sum(z for x, y, z in points) / len(points)
+
+    def e(v: float, mid_v: float) -> float:
+        if v < mid_v:
+            return -0.01
+        else:
+            return 0.01
+
+    return [(x + e(x, mid_x), y + e(y, mid_y), z + e(z, mid_z)) for x, y, z in points]
+
+
 class Cuts:
     @dataclass
     class Cut:
@@ -296,39 +312,41 @@ class Dovetails:
 
         flare = abs(base) * sin(radians(angle))
 
-        # clip polygon needs to be offset from board by a tiny amount to avoid
-        # issues with "degenerate" polygons when clipping
-        e = -0.01
-
         self._pin_x.append(
             Dovetails.PinX(
                 right,
                 # face
-                [
-                    (0 - e, y + e, 0 + e),
-                    (0 + base + e, y + e, 0 + e),
-                    (0 + base + e, y + pin_width0 + flare - e, 0 + e),
-                    (0 - e, y + pin_width0 - e, 0 + e),
-                ],
+                peturb(
+                    [
+                        (0, y, 0),
+                        (0 + base, y, 0),
+                        (0 + base, y + pin_width0 + flare, 0),
+                        (0, y + pin_width0, 0),
+                    ]
+                ),
                 # side
-                [
-                    (0 + e, y + e, 0 + e),
-                    (0 + base + e, y + e, 0 + e),
-                    (0 + base + e, y + e, T - e),
-                    (0 + e, y + e, T - e),
-                ],
+                peturb(
+                    [
+                        (0, y, 0),
+                        (0 + base, y, 0),
+                        (0 + base, y, T),
+                        (0, y, T),
+                    ]
+                ),
             )
         )
         self._ends.append(
             Dovetails.End(
                 right,
                 base,
-                [
-                    (x + e, y + e, 0 + e),
-                    (x + e, y + e, T - e),
-                    (x + e, y + pin_width0 + flare - e, T - e),
-                    (x + e, y + pin_width0 + flare - e, 0 + e),
-                ],
+                peturb(
+                    [
+                        (x, y, 0),
+                        (x, y, T),
+                        (x, y + pin_width0 + flare, T),
+                        (x, y + pin_width0 + flare, 0),
+                    ]
+                ),
             )
         )
         y += pin_width0
@@ -337,12 +355,14 @@ class Dovetails:
             Dovetails.End(
                 right,
                 0.0,
-                [
-                    (x + e, y + e, 0 + e),
-                    (x + e, y + e, T - e),
-                    (x + e, y + tail_width - e, T - e),
-                    (x + e, y + tail_width - e, 0 + e),
-                ],
+                peturb(
+                    [
+                        (x, y, 0),
+                        (x, y, T),
+                        (x, y + tail_width, T),
+                        (x, y + tail_width, 0),
+                    ]
+                ),
             )
         )
 
@@ -353,31 +373,37 @@ class Dovetails:
                 Dovetails.PinX(
                     right,
                     # face
-                    [
-                        (0 - e, y + e, 0 + e),
-                        (0 + base + e, y - flare + e, 0 + e),
-                        (0 + base + e, y + pin_width + flare - e, 0 + e),
-                        (0 - e, y + pin_width - e, 0 + e),
-                    ],
+                    peturb(
+                        [
+                            (0, y, 0),
+                            (0 + base, y - flare, 0),
+                            (0 + base, y + pin_width + flare, 0),
+                            (0, y + pin_width, 0),
+                        ]
+                    ),
                     # side
-                    [
-                        (0 + e, y + e, 0 + e),
-                        (0 + base + e, y + e, 0 + e),
-                        (0 + base + e, y + e, T - e),
-                        (0 + e, y + e, T - e),
-                    ],
+                    peturb(
+                        [
+                            (0, y, 0),
+                            (0 + base, y, 0),
+                            (0 + base, y, T),
+                            (0, y, T),
+                        ]
+                    ),
                 )
             )
             self._ends.append(
                 Dovetails.End(
                     right,
                     base,
-                    [
-                        (x + e, y - flare + e, 0 + e),
-                        (x + e, y - flare + e, T - e),
-                        (x + e, y + pin_width + flare - e, T - e),
-                        (x + e, y + pin_width + flare - e, 0 + e),
-                    ],
+                    peturb(
+                        [
+                            (x, y - flare, 0),
+                            (x, y - flare, T),
+                            (x, y + pin_width + flare, T),
+                            (x, y + pin_width + flare, 0),
+                        ]
+                    ),
                 )
             )
             y += pin_width
@@ -386,12 +412,14 @@ class Dovetails:
                 Dovetails.End(
                     right,
                     0.0,
-                    [
-                        (x + e, y + e, 0 + e),
-                        (x + e, y + e, T - e),
-                        (x + e, y + tail_width - e, T - e),
-                        (x + e, y + tail_width - e, 0 + e),
-                    ],
+                    peturb(
+                        [
+                            (x, y, 0),
+                            (x, y, T),
+                            (x, y + tail_width, T),
+                            (x, y + tail_width, 0),
+                        ]
+                    ),
                 )
             )
 
@@ -401,31 +429,37 @@ class Dovetails:
             Dovetails.PinX(
                 right,
                 # face
-                [
-                    (0 - e, y + e, 0 + e),
-                    (0 + base + e, y - flare + e, 0 + e),
-                    (0 + base + e, y + pin_width0 - e, 0 + e),
-                    (0 - e, y + pin_width0 - e, 0 + e),
-                ],
+                peturb(
+                    [
+                        (0, y, 0),
+                        (0 + base, y - flare, 0),
+                        (0 + base, y + pin_width0, 0),
+                        (0, y + pin_width0, 0),
+                    ]
+                ),
                 # side
-                [
-                    (0 + e, y + e, 0 + e),
-                    (0 + base + e, y + e, 0 + e),
-                    (0 + base + e, y + e, T - e),
-                    (0 + e, y + e, T - e),
-                ],
+                peturb(
+                    [
+                        (0, y, 0),
+                        (0 + base, y, 0),
+                        (0 + base, y, T),
+                        (0, y, T),
+                    ]
+                ),
             )
         )
         self._ends.append(
             Dovetails.End(
                 right,
                 base,
-                [
-                    (x + e, y - flare + e, 0 + e),
-                    (x + e, y - flare + e, T - e),
-                    (x + e, y + pin_width0 - e, T - e),
-                    (x + e, y + pin_width0 - e, 0 + e),
-                ],
+                peturb(
+                    [
+                        (x, y - flare, 0),
+                        (x, y - flare, T),
+                        (x, y + pin_width0, T),
+                        (x, y + pin_width0, 0),
+                    ]
+                ),
             )
         )
 
@@ -450,18 +484,18 @@ class Dovetails:
 
         flare = abs(base) * sin(radians(angle))
 
-        e = -0.01
-
         self._ends.append(
             Dovetails.End(
                 right,
                 0.0,
-                [
-                    (x + e, y + e, T - e),
-                    (x + e, y + e, 0 + e),
-                    (x + e, y + pin_width0 - e, 0 + e),
-                    (x + e, y + pin_width0 + flare - e, T - e),
-                ],
+                peturb(
+                    [
+                        (x, y, T),
+                        (x, y, 0),
+                        (x, y + pin_width0, 0),
+                        (x, y + pin_width0 + flare, T),
+                    ]
+                ),
             )
         )
 
@@ -472,19 +506,23 @@ class Dovetails:
                 Dovetails.TailX(
                     right,
                     # front face
-                    [
-                        (0 + e, y + e, 0 + e),
-                        (0 + base - e, y + e, 0 + e),
-                        (0 + base - e, y + tail_width - e, 0 + e),
-                        (0 + e, y + tail_width - e, 0 + e),
-                    ],
+                    peturb(
+                        [
+                            (0, y, 0),
+                            (0 + base, y, 0),
+                            (0 + base, y + tail_width, 0),
+                            (0, y + tail_width, 0),
+                        ]
+                    ),
                     # back face
-                    [
-                        (0 + e, y + flare + e, T - e),
-                        (0 + base - e, y + flare + e, T - e),
-                        (0 + base - e, y + tail_width - flare - e, T - e),
-                        (0 + e, y + tail_width - flare - e, T - e),
-                    ],
+                    peturb(
+                        [
+                            (0, y + flare, T),
+                            (0 + base, y + flare, T),
+                            (0 + base, y + tail_width - flare, T),
+                            (0, y + tail_width - flare, T),
+                        ]
+                    ),
                 )
             )
 
@@ -492,12 +530,14 @@ class Dovetails:
                 Dovetails.End(
                     right,
                     base,
-                    [
-                        (x + e, y + flare, T),
-                        (x + e, y, 0),
-                        (x + e, y + tail_width, 0),
-                        (x + e, y + tail_width - flare, T),
-                    ],
+                    peturb(
+                        [
+                            (x, y + flare, T),
+                            (x, y, 0),
+                            (x, y + tail_width, 0),
+                            (x, y + tail_width - flare, T),
+                        ]
+                    ),
                 )
             )
 
@@ -507,12 +547,14 @@ class Dovetails:
                 Dovetails.End(
                     right,
                     0.0,
-                    [
-                        (x + e, y - flare + e, T - e),
-                        (x + e, y + e, 0 + e),
-                        (x + e, y + pin_width - e, 0 + e),
-                        (x + e, y + pin_width + flare - e, T - e),
-                    ],
+                    peturb(
+                        [
+                            (x, y - flare, T),
+                            (x, y, 0),
+                            (x, y + pin_width, 0),
+                            (x, y + pin_width + flare, T),
+                        ]
+                    ),
                 )
             )
 
@@ -524,12 +566,14 @@ class Dovetails:
             Dovetails.End(
                 right,
                 0.0,
-                [
-                    (x + e, y - pin_width + e - flare, T - e),
-                    (x + e, y - pin_width + e, 0 + e),
-                    (x + e, y - pin_width + pin_width0 - e, 0 + e),
-                    (x + e, y - pin_width + pin_width0 - e, T - e),
-                ],
+                peturb(
+                    [
+                        (x, y - pin_width - flare, T),
+                        (x, y - pin_width, 0),
+                        (x, y - pin_width + pin_width0, 0),
+                        (x, y - pin_width + pin_width0, T),
+                    ]
+                ),
             )
         )
 

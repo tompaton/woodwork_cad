@@ -253,6 +253,18 @@ def geometry_test():
             ]
             test_clip_polygon(canvas, next(grid), dovetail2, panel2)
 
+            dovetail3 = [
+                (10 + 0.01, 10 + 0.01),
+                (100 + 0.01, 10 + 0.01),
+                (100 + 0.01, 100 + 0.01),
+                (10 + 0.01, 100 + 0.01),
+                (10 + 0.01, 45 + 0.01),
+                (30 + 0.01, 50 + 0.01),
+                (30 + 0.01, 20 + 0.01),
+                (10 + 0.01, 25 + 0.01),
+            ]
+            test_clip_polygon(canvas, next(grid), dovetail3, panel2)
+
             # subject polygon
             spoly = [
                 (u * 15, v * 15)

@@ -351,7 +351,7 @@
 ## clip_polygon (sutherland-hodgman)
 this fails when the clip polygon is not convex
 
-<svg width="1000" viewBox="0 0 500 569.5" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 500 572" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="30.0,60.0 30,30 60,30 60.0,60.0" />
@@ -375,15 +375,17 @@ this fails when the clip polygon is not convex
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="171,321 261,321 261,411 171,411" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="70.48387096774192,534.758064516129 55.0,494.5 88.29670329670331,497.8296703296703 87.78225806451613,502.4596774193548 70.0,505.0 74.0,533.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19.009999999999998,469.01 109.01,469.01 109.01,559.01 19.009999999999998,559.01 19.009999999999998,504.01 39.010000000000005,509.01 39.010000000000005,479.01 19.009999999999998,484.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,471 111,471 111,561 21,561 21,546 41,551 41,521 21,526" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="234.0,526.5 204.0,541.5 174.0,519.0 181.5,511.5 159.0,489.0 204.0,493.5 196.5,474.0 241.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="183.5,480.5 273.5,498.5 221.0,506.0 228.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="220.48387096774192,534.758064516129 205.0,494.5 238.2967032967033,497.8296703296703 237.78225806451613,502.4596774193548 220.0,505.0 224.0,533.0" />
 </svg>
 
 
 ## clip_polygon2 - union (Greiner and Hormann)
 
-<svg width="1000" viewBox="0 0 500 568.5" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 500 571" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 60,110 30,110 30.0,60.0 20,60 20,20 110,20 110,60 60.0,60.0" />
@@ -413,16 +415,19 @@ this fails when the clip polygon is not convex
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 320.0,334.76190476190476 319,335 319,319 411,319 411,411 319,411 319,355 320.0,355.23809523809524" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 32.5,479.5 40.30612244897959,493.03061224489795 10.0,490.0 32.5,512.5 25.0,520.0 55.0,542.5 65.74626865671641,537.1268656716418 77.5,557.5 74.0,533.0 85.0,527.5 87.78225806451613,502.4596774193548 122.5,497.5 89.07608695652175,490.8152173913044 92.5,460.0 47.5,475.0 50.625,483.125" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19.009999999999998,469.01 109.01,469.01 109.01,559.01 19.009999999999998,559.01 19.009999999999998,504.01 39.010000000000005,509.01 39.010000000000005,479.01 19.009999999999998,484.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,471 111,471 111,561 21,561 21,546 41,551 41,521 21,526" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="110.0,470.01 110,470 20,470 20,525 20.009999999999998,524.9975 20.009999999999998,545.0025 20,545 20,560 20.010000000000005,560.0 20.009999999999998,560.01 110.01,560.01 110.01,470.01 110.0,470.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="234.0,526.5 204.0,541.5 174.0,519.0 181.5,511.5 159.0,489.0 204.0,493.5 196.5,474.0 241.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="183.5,480.5 273.5,498.5 221.0,506.0 228.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="200.625,483.125 182.5,479.5 190.30612244897958,493.03061224489795 160.0,490.0 182.5,512.5 175.0,520.0 205.0,542.5 215.7462686567164,537.1268656716418 227.5,557.5 224.0,533.0 235.0,527.5 237.78225806451613,502.4596774193548 272.5,497.5 239.07608695652175,490.8152173913044 242.5,460.0 197.5,475.0 200.625,483.125" />
 </svg>
 
 
 ## clip_polygon2 - difference (Greiner and Hormann)
 this is now the simplest, but clip polygon still can't be coincident...
 
-<svg width="1000" viewBox="0 0 500 568.5" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 500 571" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 60,110 30,110 30.0,60.0 60.0,60.0" />
@@ -450,17 +455,21 @@ this is now the simplest, but clip polygon still can't be coincident...
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 320.0,334.76190476190476 340,330 340,360 320.0,355.23809523809524" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 32.5,479.5 40.30612244897959,493.03061224489795 55.0,494.5 50.625,483.125" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="89.07608695652175,490.8152173913044 122.5,497.5 87.78225806451613,502.4596774193548 89.07608695652175,490.8152173913044" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="74.0,533.0 77.5,557.5 65.74626865671641,537.1268656716418 74.0,533.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19.009999999999998,469.01 109.01,469.01 109.01,559.01 19.009999999999998,559.01 19.009999999999998,504.01 39.010000000000005,509.01 39.010000000000005,479.01 19.009999999999998,484.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,471 111,471 111,561 21,561 21,546 41,551 41,521 21,526" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="110.0,470.01 110,470 20,470 20,525 20.009999999999998,524.9975 20.009999999999998,505.01 40.010000000000005,510.01 40.010000000000005,480.01 20.009999999999998,485.01 20.009999999999998,470.01 110.0,470.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.010000000000005,560.0 20,560 20,545 20.009999999999998,545.0025 20.010000000000005,560.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="234.0,526.5 204.0,541.5 174.0,519.0 181.5,511.5 159.0,489.0 204.0,493.5 196.5,474.0 241.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="183.5,480.5 273.5,498.5 221.0,506.0 228.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="200.625,483.125 182.5,479.5 190.30612244897958,493.03061224489795 205.0,494.5 200.625,483.125" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="239.07608695652175,490.8152173913044 272.5,497.5 237.78225806451613,502.4596774193548 239.07608695652175,490.8152173913044" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="224.0,533.0 227.5,557.5 215.7462686567164,537.1268656716418 224.0,533.0" />
 </svg>
 
 
 ## clip_polygon2 - reversed-diff (Greiner and Hormann)
 
-<svg width="1000" viewBox="0 0 500 569.5" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 500 572" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 110,60 110,20 20,20 20,60 30.0,60.0 30,30 60,30 60.0,60.0" />
@@ -488,18 +497,22 @@ this is now the simplest, but clip polygon still can't be coincident...
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 319,355 319,411 411,411 411,319 319,319 319,335 320.0,334.76190476190476 320,320 410,320 410,410 320,410 320,395 340,400 340,370 320,375 320.0,355.23809523809524" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="74.0,533.0 85.0,527.5 87.78225806451613,502.4596774193548 70.0,505.0 74.0,533.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="65.74626865671642,537.1268656716418 55.0,542.5 25.0,520.0 32.5,512.5 10.0,490.0 40.30612244897959,493.03061224489795 65.74626865671642,537.1268656716418" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 47.5,475.0 92.5,460.0 89.07608695652173,490.8152173913044 50.625,483.125" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19.009999999999998,469.01 109.01,469.01 109.01,559.01 19.009999999999998,559.01 19.009999999999998,504.01 39.010000000000005,509.01 39.010000000000005,479.01 19.009999999999998,484.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,471 111,471 111,561 21,561 21,546 41,551 41,521 21,526" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="110.0,470.01 110.01,470.01 110.01,560.01 20.009999999999998,560.01 20.009999999999998,560.0 110,560 110.0,470.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="20.009999999999998,545.0025 20.009999999999998,524.9975 40,520 40,550 20.009999999999998,545.0025" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="234.0,526.5 204.0,541.5 174.0,519.0 181.5,511.5 159.0,489.0 204.0,493.5 196.5,474.0 241.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="183.5,480.5 273.5,498.5 221.0,506.0 228.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="224.0,533.0 235.0,527.5 237.78225806451613,502.4596774193548 220.0,505.0 224.0,533.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="215.74626865671644,537.1268656716418 205.0,542.5 175.0,520.0 182.5,512.5 160.0,490.0 190.30612244897958,493.03061224489795 215.74626865671644,537.1268656716418" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="200.625,483.125 197.5,475.0 242.5,460.0 239.07608695652175,490.8152173913044 200.625,483.125" />
 </svg>
 
 
 ## clip_polygon2 - intersection (Greiner and Hormann)
 polygons can't be coincident, so make clip region a little larger and it works
 
-<svg width="1000" viewBox="0 0 500 569.5" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 500 572" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19,19 109,19 109,59 19,59" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="31,31 61,31 61,111 31,111" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60.0,60.0 60,30 30,30 30.0,60.0 60.0,60.0" />
@@ -527,9 +540,12 @@ polygons can't be coincident, so make clip region a little larger and it works
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="318,318 410,318 410,410 318,410 318,354 339,359 339,329 318,334" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="321,321 411,321 411,411 321,411 321,396 341,401 341,371 321,376" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="320.0,355.23809523809524 320,375 340,370 340,400 320,395 320,410 410,410 410,320 320,320 320.0,334.76190476190476 340,330 340,360 320.0,355.23809523809524" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="84.0,526.5 54.0,541.5 24.0,519.0 31.5,511.5 9.0,489.0 54.0,493.5 46.5,474.0 91.5,459.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="33.5,480.5 123.5,498.5 71.0,506.0 78.5,558.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="50.625,483.125 89.07608695652175,490.8152173913044 87.78225806451613,502.4596774193548 70.0,505.0 74.0,533.0 65.74626865671641,537.1268656716418 40.30612244897959,493.03061224489795 55.0,494.5 50.625,483.125" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="19.009999999999998,469.01 109.01,469.01 109.01,559.01 19.009999999999998,559.01 19.009999999999998,504.01 39.010000000000005,509.01 39.010000000000005,479.01 19.009999999999998,484.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="21,471 111,471 111,561 21,561 21,546 41,551 41,521 21,526" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="110.0,470.01 110,560 20.010000000000005,560.0 20.009999999999998,545.0025 40,550 40,520 20.009999999999998,524.9975 20.009999999999998,505.01 40.010000000000005,510.01 40.010000000000005,480.01 20.009999999999998,485.01 20.009999999999998,470.01 110.0,470.01" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="234.0,526.5 204.0,541.5 174.0,519.0 181.5,511.5 159.0,489.0 204.0,493.5 196.5,474.0 241.5,459.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="183.5,480.5 273.5,498.5 221.0,506.0 228.5,558.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="200.625,483.125 239.07608695652175,490.8152173913044 237.78225806451613,502.4596774193548 220.0,505.0 224.0,533.0 215.7462686567164,537.1268656716418 190.30612244897958,493.03061224489795 205.0,494.5 200.625,483.125" />
 </svg>
 
 
