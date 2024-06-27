@@ -251,6 +251,19 @@ class Dovetails:
         self._tail_x: List[Dovetails.TailX] = []
         self._ends: List[Dovetails.End] = []
 
+    def add_end(
+        self, right: bool, x: float, dx: float, y: float, dy: List[float], dz: float
+    ) -> None:
+        points = peturb(
+            [
+                (x, y + dy[0], 0),
+                (x, y + dy[1], dz),
+                (x, y + dy[2], dz),
+                (x, y + dy[3], 0),
+            ]
+        )
+        self._ends.append(Dovetails.End(right, dx, points))
+
     def faces(
         self, x1: Interpolator, x2: Interpolator
     ) -> Callable[[float], Iterable["Face"]]:
@@ -335,36 +348,13 @@ class Dovetails:
                 ),
             )
         )
-        self._ends.append(
-            Dovetails.End(
-                right,
-                base,
-                peturb(
-                    [
-                        (x, y, 0),
-                        (x, y, T),
-                        (x, y + pin_width0 + flare, T),
-                        (x, y + pin_width0 + flare, 0),
-                    ]
-                ),
-            )
+        self.add_end(
+            right, x, base, y, [0, 0, pin_width0 + flare, pin_width0 + flare], T
         )
+
         y += pin_width0
 
-        self._ends.append(
-            Dovetails.End(
-                right,
-                0.0,
-                peturb(
-                    [
-                        (x, y, 0),
-                        (x, y, T),
-                        (x, y + tail_width, T),
-                        (x, y + tail_width, 0),
-                    ]
-                ),
-            )
-        )
+        self.add_end(right, x, 0, y, [0, 0, tail_width, tail_width], T)
 
         y += tail_width
 
@@ -392,36 +382,17 @@ class Dovetails:
                     ),
                 )
             )
-            self._ends.append(
-                Dovetails.End(
-                    right,
-                    base,
-                    peturb(
-                        [
-                            (x, y - flare, 0),
-                            (x, y - flare, T),
-                            (x, y + pin_width + flare, T),
-                            (x, y + pin_width + flare, 0),
-                        ]
-                    ),
-                )
+            self.add_end(
+                right,
+                x,
+                base,
+                y,
+                [-flare, -flare, pin_width + flare, pin_width + flare],
+                T,
             )
             y += pin_width
 
-            self._ends.append(
-                Dovetails.End(
-                    right,
-                    0.0,
-                    peturb(
-                        [
-                            (x, y, 0),
-                            (x, y, T),
-                            (x, y + tail_width, T),
-                            (x, y + tail_width, 0),
-                        ]
-                    ),
-                )
-            )
+            self.add_end(right, x, 0, y, [0, 0, tail_width, tail_width], T)
 
             y += tail_width
 
@@ -448,20 +419,7 @@ class Dovetails:
                 ),
             )
         )
-        self._ends.append(
-            Dovetails.End(
-                right,
-                base,
-                peturb(
-                    [
-                        (x, y - flare, 0),
-                        (x, y - flare, T),
-                        (x, y + pin_width0, T),
-                        (x, y + pin_width0, 0),
-                    ]
-                ),
-            )
-        )
+        self.add_end(right, x, base, y, [-flare, -flare, pin_width0, pin_width0], T)
 
     def add_pins(
         self,
@@ -484,20 +442,7 @@ class Dovetails:
 
         flare = abs(base) * sin(radians(angle))
 
-        self._ends.append(
-            Dovetails.End(
-                right,
-                0.0,
-                peturb(
-                    [
-                        (x, y, T),
-                        (x, y, 0),
-                        (x, y + pin_width0, 0),
-                        (x, y + pin_width0 + flare, T),
-                    ]
-                ),
-            )
-        )
+        self.add_end(right, x, 0, y, [pin_width0, pin_width0 + flare, 0, 0], T)
 
         y += pin_width0
 
@@ -526,55 +471,30 @@ class Dovetails:
                 )
             )
 
-            self._ends.append(
-                Dovetails.End(
-                    right,
-                    base,
-                    peturb(
-                        [
-                            (x, y + flare, T),
-                            (x, y, 0),
-                            (x, y + tail_width, 0),
-                            (x, y + tail_width - flare, T),
-                        ]
-                    ),
-                )
+            self.add_end(
+                right, x, base, y, [tail_width, tail_width - flare, flare, 0], T
             )
 
             y += tail_width
 
-            self._ends.append(
-                Dovetails.End(
-                    right,
-                    0.0,
-                    peturb(
-                        [
-                            (x, y - flare, T),
-                            (x, y, 0),
-                            (x, y + pin_width, 0),
-                            (x, y + pin_width + flare, T),
-                        ]
-                    ),
-                )
-            )
+            self.add_end(right, x, 0.0, y, [pin_width, pin_width + flare, -flare, 0], T)
 
             y += pin_width
 
         self._ends.pop()
 
-        self._ends.append(
-            Dovetails.End(
-                right,
-                0.0,
-                peturb(
-                    [
-                        (x, y - pin_width - flare, T),
-                        (x, y - pin_width, 0),
-                        (x, y - pin_width + pin_width0, 0),
-                        (x, y - pin_width + pin_width0, T),
-                    ]
-                ),
-            )
+        self.add_end(
+            right,
+            x,
+            0.0,
+            y,
+            [
+                pin_width,
+                pin_width,
+                -pin_width - flare,
+                -pin_width,
+            ],
+            T,
         )
 
 
