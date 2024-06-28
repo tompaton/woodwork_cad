@@ -251,6 +251,8 @@ class Dovetails:
         self._pin_x: List[Dovetails.PinX] = []
         self._tail_x: List[Dovetails.TailX] = []
         self._ends: List[Dovetails.End] = []
+        self.faces_L: List[Face] = []
+        self.faces_R: List[Face] = []
 
     def add_pin(
         self,
@@ -307,6 +309,10 @@ class Dovetails:
                 ),
             )
         )
+        if flare1:
+            self.add_face(
+                right, 0, y, [0, base, base, 0], [0, -flare1, -flare1, 0], T, False
+            )
         self.add_end(
             right,
             x,
@@ -315,6 +321,16 @@ class Dovetails:
             [-flare1, -flare1, pin_width + flare2, pin_width + flare2],
             T,
         )
+        if flare2:
+            self.add_face(
+                right,
+                0,
+                y + pin_width,
+                [0, base, base, 0],
+                [0, flare2, flare2, 0],
+                T,
+                True,
+            )
         return pin_width
 
     def add_tail(
@@ -364,7 +380,17 @@ class Dovetails:
                 ),
             )
         )
+        self.add_face(right, 0, y, [0, base, base, 0], [0, 0, flare, flare], T, False)
         self.add_end(right, x, y, base, [tail_width, tail_width - flare, flare, 0], T)
+        self.add_face(
+            right,
+            0,
+            y + tail_width,
+            [0, base, base, 0],
+            [0, 0, -flare, -flare],
+            T,
+            True,
+        )
         return tail_width
 
     def add_end(
@@ -379,6 +405,31 @@ class Dovetails:
             ]
         )
         self._ends.append(Dovetails.End(right, dx, points))
+
+    def add_face(
+        self,
+        right: bool,
+        x: float,
+        y: float,
+        dx: List[float],
+        dy: List[float],
+        dz: float,
+        reverse: bool,
+        colour: str = "",
+    ) -> None:
+        faces = self.faces_R if right else self.faces_L
+        face = Face(
+            [
+                (x + dx[0], y + dy[0], 0),
+                (x + dx[1], y + dy[1], 0),
+                (x + dx[2], y + dy[2], dz),
+                (x + dx[3], y + dy[3], dz),
+            ],
+            colour,
+        )
+        if reverse != right:
+            face.points.reverse()
+        faces.append(face)
 
     def faces(
         self, x1: Interpolator, x2: Interpolator
@@ -652,6 +703,9 @@ class Face:
 
     def offset(self, dx: float = 0, dy: float = 0, dz: float = 0) -> "Face":
         return Face([(x + dx, y + dy, z + dz) for x, y, z in self.points], self.colour)
+
+    def offset_profile(self, xz: Interpolator) -> "Face":
+        return Face([(x + xz(z), y, z) for x, y, z in self.points], self.colour)
 
     def __lt__(self, other: Any) -> bool:
         # z-order (reversed), then top to bottom, left to right
@@ -1013,8 +1067,6 @@ class Board:
         for face in sorted(self._get_faces(x1, x2)):
             face.draw(canvas, x, y)
 
-        # self.dovetails.draw(canvas, x, y, x1, x2, self.T)
-
         self._draw_shade(canvas, x, y, x1, x2)
 
         for defect in self.defects:
@@ -1035,6 +1087,11 @@ class Board:
         yield from self.dovetails.left_right(
             x2, self._get_left_right(x2).reverse(), right=True
         )
+
+        for face in self.dovetails.faces_L:
+            yield face.offset_profile(x1)
+        for face in self.dovetails.faces_R:
+            yield face.offset_profile(x2)
 
         sides = [Grooves.Side(0.0, 0.0, self.T)]
         sides.extend(self.grooves.sides(self.T, top=True, face=False))
