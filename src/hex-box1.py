@@ -211,18 +211,9 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         tails=3, base=dovetail_base, width=15, angle=15, right=False
     )
 
-    sides[2].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=False)
-    sides[2].dovetail_tails(tails=2, base=dovetail_base, width=15, angle=15, right=True)
-    sides[3].dovetail_pins(tails=2, base=dovetail_base, width=15, angle=15, right=True)
-    sides[3].dovetail_tails(
-        tails=2, base=dovetail_base, width=15, angle=15, right=False
-    )
-
     with print_svg(1100, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, [sides[0]])
         draw_boards(canvas, 300, 20, [sides[1]])
-        draw_boards(canvas, 10, 200, [sides[2]])
-        draw_boards(canvas, 300, 200, [sides[3]])
 
     print("## Sides")
 
@@ -265,7 +256,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     print("## Base and Lid")
     print("- Cut base and lid out of boards in 2 halves and join")
-    print("- TODO: rebates so groove for base can be smaller?")
+    print("- rebates so groove for base can be smaller?")
+    print("   - better to just plane thickness down to 10mm")
 
     side_length = corners3[2][0] - corners3[3][0]
     print(f"- lid/base width {hex_W3:.1f}, side length {side_length:.1f}")
