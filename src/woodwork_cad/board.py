@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from itertools import pairwise
 from math import cos, radians, sin
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
@@ -744,14 +745,16 @@ class Face:
 
     @property
     def normal(self) -> Vector3d:
-        i = 0
-        while True:
-            try:
-                a = subtract(self.points[i + 1], self.points[i + 0])
-                b = subtract(self.points[i + 2], self.points[i + 1])
-                return normalize(cross(b, a))
-            except ZeroDivisionError:
-                i += 1
+        # for concave polygons we need to sum all cross products
+        # between centroid and each pair of points
+        C = self.centroid
+        sx = sy = sz = 0.0
+        for a, b in pairwise(self.points + self.points[:1]):
+            n = cross(subtract(b, C), subtract(a, C))
+            sx += n[0]
+            sy += n[1]
+            sz += n[2]
+        return normalize((sx, sy, sz))
 
     @property
     def centroid(self) -> Vector3d:
