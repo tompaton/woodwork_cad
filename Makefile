@@ -10,4 +10,5 @@ all: woodwork_cad
 woodwork_cad:
 	ruff check . && mypy .
 	python src/geometry_test.py > output/geometry_test.md
+	python src/board_test.py > output/board_test.md
 
