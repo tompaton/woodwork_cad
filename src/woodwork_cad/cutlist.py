@@ -2,22 +2,23 @@ from dataclasses import dataclass
 from typing import Iterator, List, Optional
 
 
-class Cuts:
-    @dataclass
-    class Cut:
-        op: str
-        x1: float
-        y1: float
-        x2: float
-        y2: float
-        label: str
-        lx: float
-        ly: float
-        colour: str
-        fill: str
+@dataclass
+class Cut:
+    op: str
+    x1: float
+    y1: float
+    x2: float
+    y2: float
+    label: str
+    lx: float
+    ly: float
+    colour: str
+    fill: str
 
+
+class Cuts:
     def __init__(self, cuts: Optional[List[Cut]] = None) -> None:
-        self._cuts: List[Cuts.Cut] = cuts or []
+        self._cuts: List[Cut] = cuts or []
 
     def __iter__(self) -> Iterator[Cut]:
         yield from self._cuts
@@ -47,4 +48,4 @@ class Cuts:
         else:
             fill = "rgba(255,0,0,0.25)"
 
-        self._cuts.append(Cuts.Cut(op, x1, y1, x2, y2, label, lx, ly, colour, fill))
+        self._cuts.append(Cut(op, x1, y1, x2, y2, label, lx, ly, colour, fill))

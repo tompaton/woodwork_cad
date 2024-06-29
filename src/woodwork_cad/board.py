@@ -6,7 +6,7 @@ from .defects import Defects
 from .dovetails import Dovetails
 from .faces import Face
 from .geometry import Points3d
-from .grooves import Grooves
+from .grooves import Grooves, Side
 from .profile import Interpolator, Profile
 from .shades import Shades
 from .svg import SVGCanvas
@@ -208,7 +208,7 @@ class Board:
         for face in self.dovetails.faces_R:
             yield face.offset_profile(x2)
 
-        sides = [Grooves.Side(0.0, 0.0, self.T)]
+        sides = [Side(0.0, 0.0, self.T)]
         sides.extend(self.grooves.sides(self.T, top=True, face=False))
         sides.extend(self.grooves.sides(self.T, top=True, face=True))
         for side in sides:
@@ -218,7 +218,7 @@ class Board:
                 .reverse()
             )
 
-        sides = [Grooves.Side(self.W, 0.0, self.T)]
+        sides = [Side(self.W, 0.0, self.T)]
         sides.extend(self.grooves.sides(self.T, top=False, face=False))
         sides.extend(self.grooves.sides(self.T, top=False, face=True))
         for side in sides:
@@ -230,7 +230,7 @@ class Board:
         self,
         x1: Interpolator,
         x2: Interpolator,
-        side: Grooves.Side,
+        side: Side,
     ) -> Face:
         return Face(
             [

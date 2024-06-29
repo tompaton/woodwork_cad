@@ -7,16 +7,17 @@ from .geometry import line_length
 Interpolator = Callable[[float], float]
 
 
+@dataclass
+class ProfilePoint:
+    x: float
+    z: float
+
+
 class Profile:
-    @dataclass
-    class Point:
-        x: float
-        z: float
+    def __init__(self, points: Optional[List[ProfilePoint]] = None) -> None:
+        self._points: List[ProfilePoint] = points or []
 
-    def __init__(self, points: Optional[List[Point]] = None) -> None:
-        self._points: List[Profile.Point] = points or []
-
-    def __iter__(self) -> Iterator[Point]:
+    def __iter__(self) -> Iterator[ProfilePoint]:
         yield from self._points
 
     def __bool__(self) -> bool:
@@ -26,10 +27,10 @@ class Profile:
     def default(self, L: float, T: float) -> "Profile":
         return Profile(
             [
-                Profile.Point(0, 0),
-                Profile.Point(L, 0),
-                Profile.Point(L, T),
-                Profile.Point(0, T),
+                ProfilePoint(0, 0),
+                ProfilePoint(L, 0),
+                ProfilePoint(L, T),
+                ProfilePoint(0, T),
             ]
         )
 
@@ -40,20 +41,20 @@ class Profile:
         hyp = T / sin(radians(left))
         offset_x = hyp * cos(radians(left))
         x1, y1 = self._points[0].x, self._points[1].z
-        self._points[0] = Profile.Point(x1 + offset_x, y1)
+        self._points[0] = ProfilePoint(x1 + offset_x, y1)
 
         hyp = T / sin(radians(right))
         offset_x = hyp * cos(radians(right))
         x1, y1 = self._points[1].x, self._points[1].z
-        self._points[1] = Profile.Point(x1 - offset_x, y1)
+        self._points[1] = ProfilePoint(x1 - offset_x, y1)
 
     def flip(self) -> None:
         a, b, c, d = self._points
         self._points = [
-            Profile.Point(d.x, a.z),
-            Profile.Point(c.x, b.z),
-            Profile.Point(b.x, c.z),
-            Profile.Point(a.x, d.z),
+            ProfilePoint(d.x, a.z),
+            ProfilePoint(c.x, b.z),
+            ProfilePoint(b.x, c.z),
+            ProfilePoint(a.x, d.z),
         ]
 
     def length(self) -> Tuple[float, float]:

@@ -23,71 +23,60 @@ def peturb(points: Points3d) -> Points3d:
     return [(x + e(x, mid_x), y + e(y, mid_y), z + e(z, mid_z)) for x, y, z in points]
 
 
-class Dovetails:
-    @dataclass
-    class End:
-        right: bool
-        dx: float
-        points: Points3d = field(default_factory=list)
+@dataclass
+class End:
+    right: bool
+    dx: float
+    points: Points3d = field(default_factory=list)
 
-    @dataclass
-    class PinX:
-        right: bool
-        points_f: Points3d = field(default_factory=list)
-        points_s: Points3d = field(default_factory=list)
 
-        def get_face(
-            self, x1: Interpolator, x2: Interpolator, z: float
-        ) -> Optional[Face]:
+@dataclass
+class PinX:
+    right: bool
+    points_f: Points3d = field(default_factory=list)
+    points_s: Points3d = field(default_factory=list)
+
+    def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
+        xz = x2 if self.right else x1
+        return Face([(x + xz(z), y, z) for (x, y, zz) in self.points_f], colour="red")
+
+    def get_side(self, x1: Interpolator, x2: Interpolator, y: float) -> Optional[Face]:
+        min_y = min(y for x, y, z in self.points_f)
+        max_y = max(y for x, y, z in self.points_f)
+
+        if min_y <= y <= max_y:
             xz = x2 if self.right else x1
             return Face(
-                [(x + xz(z), y, z) for (x, y, zz) in self.points_f], colour="red"
+                [(x + xz(z), y, z) for (x, yy, z) in self.points_s], colour="red"
             )
 
-        def get_side(
-            self, x1: Interpolator, x2: Interpolator, y: float
-        ) -> Optional[Face]:
-            min_y = min(y for x, y, z in self.points_f)
-            max_y = max(y for x, y, z in self.points_f)
+        return None
 
-            if min_y <= y <= max_y:
-                xz = x2 if self.right else x1
-                return Face(
-                    [(x + xz(z), y, z) for (x, yy, z) in self.points_s], colour="red"
-                )
 
-            return None
+@dataclass
+class TailX:
+    right: bool
+    points_f: Points3d = field(default_factory=list)
+    points_b: Points3d = field(default_factory=list)
 
-    @dataclass
-    class TailX:
-        right: bool
-        points_f: Points3d = field(default_factory=list)
-        points_b: Points3d = field(default_factory=list)
+    def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
+        xz = x2 if self.right else x1
+        if z:
+            return Face([(x + xz(z), y, z) for x, y, zz in self.points_b], colour="red")
+        else:
+            return Face([(x + xz(z), y, z) for x, y, zz in self.points_f], colour="red")
 
-        def get_face(
-            self, x1: Interpolator, x2: Interpolator, z: float
-        ) -> Optional[Face]:
-            xz = x2 if self.right else x1
-            if z:
-                return Face(
-                    [(x + xz(z), y, z) for x, y, zz in self.points_b], colour="red"
-                )
-            else:
-                return Face(
-                    [(x + xz(z), y, z) for x, y, zz in self.points_f], colour="red"
-                )
+    def get_side(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
+        # can ignore this for now as pins don't extend to sides and we'll
+        # assume any grooves are near the edge
+        return None
 
-        def get_side(
-            self, x1: Interpolator, x2: Interpolator, z: float
-        ) -> Optional[Face]:
-            # can ignore this for now as pins don't extend to sides and we'll
-            # assume any grooves are near the edge
-            return None
 
+class Dovetails:
     def __init__(self) -> None:
-        self._pin_x: List[Dovetails.PinX] = []
-        self._tail_x: List[Dovetails.TailX] = []
-        self._ends: List[Dovetails.End] = []
+        self._pin_x: List[PinX] = []
+        self._tail_x: List[TailX] = []
+        self._ends: List[End] = []
         self.faces_L: List[Face] = []
         self.faces_R: List[Face] = []
 
@@ -124,7 +113,7 @@ class Dovetails:
         T: float,
     ) -> float:
         self._pin_x.append(
-            Dovetails.PinX(
+            PinX(
                 right,
                 # face
                 peturb(
@@ -195,7 +184,7 @@ class Dovetails:
         T: float,
     ) -> float:
         self._tail_x.append(
-            Dovetails.TailX(
+            TailX(
                 right,
                 # front face
                 peturb(
@@ -241,7 +230,7 @@ class Dovetails:
                 (x, y + dy[3], 0),
             ]
         )
-        self._ends.append(Dovetails.End(right, dx, points))
+        self._ends.append(End(right, dx, points))
 
     def add_face(
         self,
