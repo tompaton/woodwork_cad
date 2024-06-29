@@ -10,7 +10,7 @@ from woodwork_cad.geometry import (
     line_intersection,
     to2d,
 )
-from woodwork_cad.svg import offset_points, print_svg
+from woodwork_cad.svg import PrintToSVGFiles, offset_points
 
 
 def test_line_intersection(canvas, offset, l1, l2):
@@ -126,6 +126,8 @@ def xy_grid(width, height=None, max_width=None):
 
 
 def geometry_test():
+    print_svg = PrintToSVGFiles("geometry_test")
+
     print("# Geometry test\n")
 
     print("## line_intersection")

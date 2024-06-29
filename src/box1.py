@@ -11,7 +11,7 @@ from woodwork_cad.board import (
     rip,
     waste,
 )
-from woodwork_cad.svg import print_svg
+from woodwork_cad.svg import PrintToSVGFiles
 
 
 def box1(boxL, boxW, boxH):
@@ -84,6 +84,8 @@ def box1_dimensions(boxH):
 
 def draw_box1(boxH=55):
     boxL, boxW, boxH = box1_dimensions(boxH)
+
+    print_svg = PrintToSVGFiles("box1")
 
     print("# Framed box\n")
     print(f"{boxL} x {boxW} x {boxH}")

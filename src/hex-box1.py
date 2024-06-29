@@ -18,10 +18,10 @@ from woodwork_cad.board import (
 )
 from woodwork_cad.svg import (
     Points,
+    PrintToSVGFiles,
     crop_points,
     offset_points,
     polyline_bounds,
-    print_svg,
     shrink_points,
 )
 
@@ -30,6 +30,10 @@ from woodwork_cad.svg import (
 # STRIPS: alternate contrasting strips in panels
 # MITRE: overlapping mitres
 def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
+    print_svg = PrintToSVGFiles(
+        f"hex_box1{'-strips' if STRIPS else ''}{'-mitre' if MITRE else ''}"
+    )
+
     print("# Hexagonal box")
 
     print("## Stock")
@@ -151,7 +155,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     panels[3].grooves.add(5, T, 5, face=True)
     panels[3].grooves.add(panels[3].W - T - 5, T, 5, face=True)
 
-    with print_svg(1100, zoom=2) as canvas:
+    with print_svg(550, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, panels)
 
     print("## Cut grooves")
@@ -191,7 +195,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         sides[4].mitre(60, 60)
     sides[5].mitre(60, 60)
 
-    with print_svg(1100, zoom=2) as canvas:
+    with print_svg(550, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, sides[:3])
         draw_boards(canvas, 300, 20, sides[3:])
 
@@ -211,7 +215,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         tails=3, base=dovetail_base, width=15, angle=15, right=False
     )
 
-    with print_svg(1100, zoom=2) as canvas:
+    with print_svg(550, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, [sides[0]])
         draw_boards(canvas, 300, 20, [sides[1]])
 
@@ -264,7 +268,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     half = hex_L3 - (hex_L3 - hex_W3) * 2
 
-    with print_svg(1100, zoom=2) as canvas:
+    with print_svg(550, zoom=2) as canvas:
         lid1_xy, lid2_xy = draw_boards(canvas, 10, 20, [lid1, lid2])
 
         # draw hex over panel

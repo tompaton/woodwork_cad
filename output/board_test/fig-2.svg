@@ -1,0 +1,9 @@
+<svg width="1000" viewBox="0 0 500 128.48528137423858" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,18.485281374238568 18.48528137423857,118.48528137423857 318.4852813742386,118.48528137423857 318.4852813742386,18.485281374238568" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,110.0 18.48528137423857,118.48528137423857 18.48528137423857,18.485281374238568" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,18.485281374238568 318.4852813742386,18.485281374238568 310.0,10.0 10.0,10.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,110.0 310.0,110.0 318.4852813742386,118.48528137423857 18.48528137423857,118.48528137423857" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="318.4852813742386,18.485281374238568 318.4852813742386,118.48528137423857 310.0,110.0 310.0,10.0" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,10.0 310.0,10.0 310.0,110.0 10.0,110.0" />
+<circle cx="40" cy="90" r="5" stroke="orange" fill="white" stroke-width="1" />
+</svg>

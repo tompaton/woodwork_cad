@@ -1,0 +1,44 @@
+<svg width="1000" viewBox="0 0 500 540.5025253169417" xmlns="http://www.w3.org/2000/svg">
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="60,60 130.0,60.0" />
+<text style="" text-anchor="start" x="135.0" y="60.0" fill="black" font-size="12px">v1 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="60,60 60.0,130.0" />
+<text style="" text-anchor="start" x="65.0" y="130.0" fill="black" font-size="12px">v2 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60,60 109.49747468305833,109.49747468305833" />
+<text style="" text-anchor="start" x="114.49747468305833" y="109.49747468305833" fill="black" font-size="12px">v3 1.00</text>
+<text style="" text-anchor="start" x="65" y="45" fill="black" font-size="12px">dot = 0.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="260,60 260.0,130.0" />
+<text style="" text-anchor="start" x="265.0" y="130.0" fill="black" font-size="12px">v1 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="260,60 330.0,60.0" />
+<text style="" text-anchor="start" x="335.0" y="60.0" fill="black" font-size="12px">v2 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="260,60 210.50252531694167,10.502525316941679" />
+<text style="" text-anchor="start" x="215.50252531694167" y="10.502525316941679" fill="black" font-size="12px">v3 1.00</text>
+<text style="" text-anchor="start" x="265" y="45" fill="black" font-size="12px">dot = 0.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="60,260 95.0,295.0" />
+<text style="" text-anchor="start" x="100.0" y="295.0" fill="black" font-size="12px">v1 0.71</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="60,260 60.0,330.0" />
+<text style="" text-anchor="start" x="65.0" y="330.0" fill="black" font-size="12px">v2 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60,260 84.74873734152916,284.74873734152914" />
+<text style="" text-anchor="start" x="89.74873734152916" y="284.74873734152914" fill="black" font-size="12px">v3 0.50</text>
+<text style="" text-anchor="start" x="65" y="245" fill="black" font-size="12px">dot = 0.50</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="260,260 260.0,330.0" />
+<text style="" text-anchor="start" x="265.0" y="330.0" fill="black" font-size="12px">v1 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="260,260 295.0,295.0" />
+<text style="" text-anchor="start" x="300.0" y="295.0" fill="black" font-size="12px">v2 0.71</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="260,260 235.25126265847084,235.25126265847084" />
+<text style="" text-anchor="start" x="240.25126265847084" y="235.25126265847084" fill="black" font-size="12px">v3 0.50</text>
+<text style="" text-anchor="start" x="265" y="245" fill="black" font-size="12px">dot = 0.50</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="60,460 60.0,530.0" />
+<text style="" text-anchor="start" x="65.0" y="530.0" fill="black" font-size="12px">v1 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="60,460 109.49747468305833,509.49747468305833" />
+<text style="" text-anchor="start" x="114.49747468305833" y="509.49747468305833" fill="black" font-size="12px">v2 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="60,460 130.0,460.0" />
+<text style="" text-anchor="start" x="135.0" y="460.0" fill="black" font-size="12px">v3 1.00</text>
+<text style="" text-anchor="start" x="65" y="445" fill="black" font-size="12px">dot = 0.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="blue" points="260,460 309.49747468305833,509.49747468305833" />
+<text style="" text-anchor="start" x="314.49747468305833" y="509.49747468305833" fill="black" font-size="12px">v1 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="green" points="260,460 260.0,530.0" />
+<text style="" text-anchor="start" x="265.0" y="530.0" fill="black" font-size="12px">v2 1.00</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="red" points="260,460 190.0,460.0" />
+<text style="" text-anchor="start" x="195.0" y="460.0" fill="black" font-size="12px">v3 1.00</text>
+<text style="" text-anchor="start" x="265" y="445" fill="black" font-size="12px">dot = 0.00</text>
+</svg>

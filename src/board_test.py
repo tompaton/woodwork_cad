@@ -14,10 +14,12 @@ from woodwork_cad.board import (
     rip,
     waste,
 )
-from woodwork_cad.svg import print_svg
+from woodwork_cad.svg import PrintToSVGFiles
 
 
 def board_test() -> None:
+    print_svg = PrintToSVGFiles("board_test")
+
     print("# Hexagonal box")
 
     print("## Stock")

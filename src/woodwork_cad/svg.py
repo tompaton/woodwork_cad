@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from math import sqrt
+from pathlib import Path
 from typing import Any, Iterator, Optional, Tuple
 
 from .geometry import Points, Points3d, to2d
@@ -24,6 +25,15 @@ class SVGCanvas:
             self.result += f"<{tag} {attrs_str}>{content}</{tag}>\n"
         else:
             self.result += f"<{tag} {attrs_str} />\n"
+
+    def svg_document(self, width: int, height: int, zoom: float = 1.0) -> str:
+        # auto calculate height
+        auto_height = (self.max_y or 0) + (self.min_y or 0)
+        viewbox_str = " ".join(map(str, (0, 0, width, height or auto_height)))
+        return (
+            f'<svg width="{int(width * zoom)}" viewBox="{viewbox_str}" xmlns="http://www.w3.org/2000/svg">\n'
+            f"{self.result}</svg>\n"
+        )
 
     # drawing
 
@@ -144,16 +154,42 @@ class SVGCanvas:
 def print_svg(width: int, height: int = 0, zoom: float = 1.0) -> Iterator[SVGCanvas]:
     canvas = SVGCanvas()
     yield canvas
-    # auto calculate height
-    auto_height = (canvas.max_y or 0) + (canvas.min_y or 0)
-    viewbox_str = " ".join(map(str, (0, 0, width, height or auto_height)))
     print()
-    print(
-        f'<svg width="{int(width * zoom)}" viewBox="{viewbox_str}" xmlns="http://www.w3.org/2000/svg">'
-    )
-    print(canvas.result + "</svg>")
+    print(canvas.svg_document(width, height, zoom))
     print()
-    print()
+
+
+class PrintToSVGFiles:
+    def __init__(self, prefix: str) -> None:
+        self.prefix = prefix
+        self.figure = 0
+        self.canvas: Optional[SVGCanvas] = None
+        self.width: int = 0
+        self.height: int = 0
+        self.zoom: float = 1.0
+
+    def __call__(
+        self, width: int, height: int = 0, zoom: float = 1.0
+    ) -> "PrintToSVGFiles":
+        self.width = width
+        self.height = height
+        self.zoom = zoom
+        return self
+
+    def __enter__(self) -> SVGCanvas:
+        self.figure += 1
+        self.canvas = SVGCanvas()
+        return self.canvas
+
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        assert self.canvas is not None
+        f = Path(f"output/{self.prefix}/fig-{self.figure}.svg")
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(self.canvas.svg_document(self.width, self.height, self.zoom))
+        print()
+        print(f"![Figure {self.figure}]({f.relative_to('output/')})")
+        print()
+        self.canvas = None
 
 
 def polyline_bounds(corners: Points) -> Tuple[float, float, Points]:
