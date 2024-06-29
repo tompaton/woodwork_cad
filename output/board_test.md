@@ -1,4 +1,4 @@
-# Hexagonal box
+# Basic Operations
 ## Stock
 create a simple board
  - length 300.0
