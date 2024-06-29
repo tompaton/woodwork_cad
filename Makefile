@@ -1,6 +1,6 @@
 .PHONY: woodwork_cad projects all
 
-all: projects woodwork_cad
+all: woodwork_cad projects
 
 projects:
 	python src/box1.py > output/box1.md
