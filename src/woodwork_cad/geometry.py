@@ -30,6 +30,12 @@ def normalize(a: Vector3d) -> Vector3d:
     return (a[0] / r, a[1] / r, a[2] / r)
 
 
+def equal_vectors(a: Vector3d, b: Vector3d) -> bool:
+    a_rounded = f"{a[0]:.4f},{a[1]:.4f},{a[2]:.4f}"
+    b_rounded = f"{b[0]:.4f},{b[1]:.4f},{b[2]:.4f}"
+    return a_rounded == b_rounded
+
+
 def line_length(x1: float, y1: float, x2: float, y2: float) -> float:
     return length((x2 - x1, y2 - y1, 0))
 
@@ -112,3 +118,8 @@ def clip_polygon2(
 ) -> List[Points]:
     result = _clip_polygon(subject_polygon, clipping_polygon, operation)
     return [poly.points for poly in result]
+
+
+CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
+
+LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))

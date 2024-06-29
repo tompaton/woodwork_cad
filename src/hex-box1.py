@@ -1,10 +1,9 @@
 # ruff: noqa: F401
 import sys
 
-from woodwork_cad.board import (
-    Board,
-    Hole,
-    Notch,
+from woodwork_cad.board import Board
+from woodwork_cad.defects import Hole, Notch
+from woodwork_cad.operations import (
     cut,
     cut_waste,
     draw_boards,

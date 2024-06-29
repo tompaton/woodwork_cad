@@ -1,5 +1,5 @@
-from woodwork_cad.board import (
-    Board,
+from woodwork_cad.board import Board
+from woodwork_cad.operations import (
     cube_net,
     cut,
     draw_boards,

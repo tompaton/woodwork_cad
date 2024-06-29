@@ -1,0 +1,219 @@
+from dataclasses import dataclass
+from itertools import pairwise
+from typing import Any, Callable, Dict, Iterable, Tuple
+
+from .geometry import (
+    CAMERA,
+    LIGHT,
+    Points3d,
+    Vector3d,
+    clip_polygon2,
+    cross,
+    dotproduct,
+    equal_vectors,
+    normalize,
+    subtract,
+)
+from .profile import Interpolator
+from .svg import SVGCanvas
+
+DEBUG = False
+
+
+@dataclass
+class Face:
+    points: Points3d
+    colour: str = ""
+
+    def reverse(self) -> "Face":
+        self.points.reverse()
+        return self
+
+    def offset(self, dx: float = 0, dy: float = 0, dz: float = 0) -> "Face":
+        return Face([(x + dx, y + dy, z + dz) for x, y, z in self.points], self.colour)
+
+    def offset_profile(self, xz: Interpolator) -> "Face":
+        return Face([(x + xz(z), y, z) for x, y, z in self.points], self.colour)
+
+    def __lt__(self, other: Any) -> bool:
+        # z-order (reversed), then top to bottom, left to right
+        center = self.centroid
+        key = (-center[2], center[0], center[1])
+        other_center = other.centroid
+        other_key = (-other_center[2], other_center[0], other_center[1])
+        return key < other_key
+
+    def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
+        normal = self.normal
+
+        if self.colour:
+            colour = self.colour
+            styles: Dict[str, Any] = {}
+        else:
+            colour, styles = self.get_style(normal)
+
+        canvas.polyline3d(
+            colour,
+            [(x + offset_x, y + offset_y, z) for x, y, z in self.points],
+            closed=True,
+            **styles,
+        )
+
+        if DEBUG:
+            x, y, z = self.points[0]
+            dx, dy, dz = normalize(subtract(self.points[1], self.points[0]))
+            canvas.polyline3d(
+                self.colour or "orange",
+                [
+                    (x + offset_x - 3, y + offset_y - 5, z),
+                    (
+                        x + offset_x - 3 + 15 * dx,
+                        y + offset_y + 15 * dy - 5,
+                        z + 15 * dz,
+                    ),
+                    (
+                        x + offset_x - 3 + 10 * dx - 2,
+                        y + offset_y + 15 * dy - 5 - 2,
+                        z + 15 * dz,
+                    ),
+                ],
+                fill="none",
+            )
+            # draw normal from face centroid
+            x, y, z = self.centroid
+            canvas.polyline3d(
+                self.colour or "orange",
+                [
+                    (x + offset_x, y + offset_y, z),
+                    (
+                        x + offset_x + 15 * normal[0],
+                        y + offset_y + 15 * normal[1],
+                        z + 15 * normal[2],
+                    ),
+                    (
+                        x + offset_x + 15 * normal[0] - 2,
+                        y + offset_y + 15 * normal[1],
+                        z + 10 * normal[2],
+                    ),
+                ],
+                fill="none",
+            )
+
+    def get_style(self, normal: Vector3d) -> Tuple[str, Dict[str, Any]]:
+        dash = ""
+
+        camera = dotproduct(normal, CAMERA)
+        light = dotproduct(normal, LIGHT)
+
+        # check angle with camera to find back faces
+        if camera > 0:
+            dash = "2"
+            colour = "gray"
+            fill = "none"
+        else:
+            # angle with camera to determine line colour
+            if camera < -0.5:
+                colour = "black"
+            else:
+                colour = "silver"
+
+            # angle with light determine to colour
+            if light < 0.5:
+                fill = "rgba(255,255,255,0.75)"
+            else:
+                fill = "rgba(192,192,192,0.75)"
+
+        return colour, dict(stroke_dasharray=dash, fill=fill)
+
+    @property
+    def normal(self) -> Vector3d:
+        # for concave polygons we need to sum all cross products
+        # between centroid and each pair of points
+        C = self.centroid
+        sx = sy = sz = 0.0
+        for a, b in pairwise(self.points + self.points[:1]):
+            n = cross(subtract(b, C), subtract(a, C))
+            sx += n[0]
+            sy += n[1]
+            sz += n[2]
+        return normalize((sx, sy, sz))
+
+    @property
+    def centroid(self) -> Vector3d:
+        min_x = min(x for x, y, z in self.points)
+        max_x = max(x for x, y, z in self.points)
+        min_y = min(y for x, y, z in self.points)
+        max_y = max(y for x, y, z in self.points)
+        min_z = min(z for x, y, z in self.points)
+        max_z = max(z for x, y, z in self.points)
+        return ((max_x + min_x) / 2, (max_y + min_y) / 2, (max_z + min_z) / 2)
+
+    def remove(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
+        # clip the dovetail regions out of the face
+        z = self.points[0][2]
+        clipped = False
+        result_poly = self.points[:]
+        for region in clip_regions(z):
+            clipped = True
+            clip_poly = [(x, y) for x, y, z in region.points]
+            result_poly = [
+                (x, y, z)
+                for x, y in clip_polygon2(
+                    clip_poly,
+                    [(x, y) for x, y, z in result_poly],
+                )[0]
+            ]
+
+        if clipped:
+            # make sure normal isn't altered
+            result = Face(result_poly)
+            if not equal_vectors(result.normal, self.normal):
+                return result.reverse()
+            else:
+                return result
+
+        return self
+
+    def remove_side(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
+        y = self.points[0][1]
+        clipped = False
+        result_poly = self.points[:]
+        for region in clip_regions(y):
+            clipped = True
+            clip_poly = [(x, z) for x, y, z in region.points]
+            result_poly = [
+                (x, y, z)
+                for x, z in clip_polygon2(
+                    clip_poly,
+                    [(x, z) for x, y, z in result_poly],
+                )[0]
+            ]
+
+        if clipped:
+            # make sure normal isn't altered
+            result = Face(result_poly)
+            if not equal_vectors(result.normal, self.normal):
+                return result.reverse()
+            else:
+                return result
+
+        return self
+
+    def clip_end(self, clip_region: "Face", xz: Interpolator) -> "Face":
+        clip_poly = [(y, z) for x, y, z in clip_region.points]
+        result_poly = [
+            (xz(z), y, z)
+            for y, z in clip_polygon2(
+                clip_poly, [(y, z) for x, y, z in self.points], "intersection"
+            )[0]
+        ]
+
+        if result_poly:
+            # make sure normal isn't altered
+            result = Face(result_poly)
+            if not equal_vectors(result.normal, self.normal):
+                return result.reverse()
+            else:
+                return result
+
+        return self

@@ -2,8 +2,6 @@
 
 procedural cad for woodwork projects
 
-NOTE: inline SVG in markdown output files renders in vscode, but not in github
-
 see [output/board_test.md](output/board_test.md) for basic operations.
 
 ## Usage
