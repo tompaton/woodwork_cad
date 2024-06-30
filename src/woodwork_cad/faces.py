@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import Any, Callable, Dict, Iterable, Tuple
+from typing import Any, Callable, Dict, Iterable, Optional, Tuple
 
 from .geometry import (
     CAMERA,
@@ -174,12 +174,7 @@ class Face:
             ]
 
         if clipped:
-            # make sure normal isn't altered
-            result = Face(result_poly, self.colour, self.fill)
-            if not equal_vectors(result.normal, self.normal):
-                return result.reverse()
-            else:
-                return result
+            return Face(result_poly, self.colour, self.fill).check_normal(self)
 
         return self
 
@@ -199,30 +194,27 @@ class Face:
             ]
 
         if clipped:
-            # make sure normal isn't altered
-            result = Face(result_poly, self.colour, self.fill)
-            if not equal_vectors(result.normal, self.normal):
-                return result.reverse()
-            else:
-                return result
+            return Face(result_poly, self.colour, self.fill).check_normal(self)
 
         return self
 
-    def clip_end(self, clip_region: "Face", xz: Interpolator) -> "Face":
+    def clip_end(self, clip_region: "Face") -> "Face":
+        return self.clip_end_ex(clip_region) or self
+
+    def clip_end_ex(self, clip_region: "Face") -> Optional["Face"]:
         clip_poly = [(y, z) for x, y, z in clip_region.points]
         result_poly = [
-            (xz(z), y, z)
+            (0.0, y, z)
             for y, z in clip_polygon2(
                 clip_poly, [(y, z) for x, y, z in self.points], "intersection"
             )[0]
         ]
 
-        if result_poly:
-            # make sure normal isn't altered
-            result = Face(result_poly, self.colour, self.fill)
-            if not equal_vectors(result.normal, self.normal):
-                return result.reverse()
-            else:
-                return result
+        return Face(result_poly, self.colour, self.fill) if result_poly else None
 
-        return self
+    def check_normal(self, original: "Face") -> "Face":
+        # make sure normal isn't altered
+        if not equal_vectors(self.normal, original.normal):
+            return self.reverse()
+        else:
+            return self

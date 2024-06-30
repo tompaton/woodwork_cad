@@ -292,7 +292,12 @@ class Dovetails:
             if end.right == right:
                 clipped = True
                 # yield Face(end.points, "red").offset(dx=end.dx)
-                yield side.clip_end(Face(end.points, "red"), xz).offset(dx=end.dx)
+                yield (
+                    side.clip_end(Face(end.points, "red"))
+                    .offset(dx=end.dx)
+                    .offset_profile(xz)
+                    .check_normal(side)
+                )
 
         if not clipped:
             yield side
