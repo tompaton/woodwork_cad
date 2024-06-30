@@ -12,6 +12,7 @@
 <polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,184.0 160.0,184.0 168.48528137423858,192.48528137423858 18.48528137423857,192.48528137423858" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="168.48528137423858,117.48528137423857 168.48528137423858,192.48528137423858 160.0,184.0 160.0,109.0" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,109.0 160.0,109.0 160.0,184.0 10.0,184.0" />
+<polygon fill="rgba(200,150,150,0.25)" stroke-width="1" stroke-dasharray="" stroke="none" points="160.0,109.0 168.48528137423858,117.48528137423857 168.48528137423858,192.48528137423858 160.0,184.0" />
 <polygon fill="rgba(200,150,150,0.25)" stroke-width="1" stroke-dasharray="" stroke="none" points="10.0,109.0 160.0,109.0 160.0,184.0 10.0,184.0" />
 <circle cx="85" cy="134" r="5" stroke="orange" fill="white" stroke-width="1" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,216.48528137423858 18.48528137423857,291.4852813742386 168.48528137423858,291.4852813742386 168.48528137423858,216.48528137423858" />
@@ -26,6 +27,7 @@
 <polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="200.0,235.0 350.0,235.0 358.4852813742386,243.48528137423858 208.48528137423858,243.48528137423858" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="358.4852813742386,18.485281374238568 358.4852813742386,243.48528137423858 350.0,235.0 350.0,10.0" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="200.0,10.0 350.0,10.0 350.0,235.0 200.0,235.0" />
+<polygon fill="rgba(200,150,150,0.25)" stroke-width="1" stroke-dasharray="" stroke="none" points="350.0,85.0 358.4852813742386,93.48528137423857 358.4852813742386,168.48528137423858 350.0,160.0" />
 <polygon fill="rgba(200,150,150,0.25)" stroke-width="1" stroke-dasharray="" stroke="none" points="200.0,85.0 350.0,85.0 350.0,160.0 200.0,160.0" />
 <circle cx="250" cy="60.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="275" cy="110.0" r="5" stroke="orange" fill="white" stroke-width="1" />

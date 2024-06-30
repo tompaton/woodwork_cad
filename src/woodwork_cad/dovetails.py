@@ -80,6 +80,9 @@ class Dovetails:
         self.faces_L: List[Face] = []
         self.faces_R: List[Face] = []
 
+    def __bool__(self) -> bool:
+        return bool(self._ends)
+
     def add_pin(
         self,
         right: bool,

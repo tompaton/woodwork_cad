@@ -207,6 +207,7 @@ class Board:
             yield face.offset_profile(x2)
 
         yield from self._get_shade_front(x1, x2)
+        yield from self._get_shade_right(x1, x2)
 
         sides = [Side(0.0, 0.0, self.T)]
         sides.extend(self.grooves.sides(self.T, top=True, face=False))
@@ -325,6 +326,39 @@ class Board:
                 yield face_shade.clip_face(face_clip)
             else:
                 yield face_shade
+
+    def _get_shade_right(self, x1: Interpolator, x2: Interpolator) -> Iterator[Face]:
+        for face_clip in self._get_shade_right_clip(x1, x2):
+            face_clip.points = peturb(face_clip.points)
+            for shade in self.shades:
+                face = Face(
+                    [
+                        (0.0, shade.y1, 0),
+                        (0.0, shade.y1, self.T),
+                        (0.0, shade.y2, self.T),
+                        (0.0, shade.y2, 0),
+                    ],
+                    "none",
+                    fill=shade.colour,
+                    zorder=1,
+                )
+                face2 = face.clip_end_ex(face_clip)
+                if face2:
+                    yield face2.offset_profile(x2)
+
+    def _get_shade_right_clip(
+        self, x1: Interpolator, x2: Interpolator
+    ) -> Iterator[Face]:
+        if self.dovetails:
+            return
+
+        yield from self.dovetails.left_right(
+            x2, self._get_left_right(x2).reverse(), right=True
+        )
+
+        for face in self.dovetails.faces_R:
+            if len({x for x, y, z in face.points}) == 1:
+                yield face.offset_profile(x2)
 
     def _draw_cuts(self, canvas: SVGCanvas, x: float, y: float) -> None:
         order = 0
