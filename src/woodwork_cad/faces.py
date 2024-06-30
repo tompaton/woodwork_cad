@@ -25,6 +25,7 @@ class Face:
     points: Points3d
     colour: str = ""
     fill: str = ""
+    zorder: int = 0
 
     def reverse(self) -> "Face":
         self.points.reverse()
@@ -35,20 +36,25 @@ class Face:
             [(x + dx, y + dy, z + dz) for x, y, z in self.points],
             self.colour,
             self.fill,
+            self.zorder,
         )
 
     def offset_profile(self, xz: Interpolator) -> "Face":
         return Face(
-            [(x + xz(z), y, z) for x, y, z in self.points], self.colour, self.fill
+            [(x + xz(z), y, z) for x, y, z in self.points],
+            self.colour,
+            self.fill,
+            self.zorder,
         )
 
     def __lt__(self, other: Any) -> bool:
+        return self._key < other._key
+
+    @property
+    def _key(self) -> Tuple[int, float, float, float]:
         # z-order (reversed), then top to bottom, left to right
         center = self.centroid
-        key = (-center[2], center[0], center[1])
-        other_center = other.centroid
-        other_key = (-other_center[2], other_center[0], other_center[1])
-        return key < other_key
+        return (self.zorder, -center[2], center[0], center[1])
 
     def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
         normal = self.normal
@@ -174,7 +180,9 @@ class Face:
             ]
 
         if clipped:
-            return Face(result_poly, self.colour, self.fill).check_normal(self)
+            return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(
+                self
+            )
 
         return self
 
@@ -194,7 +202,9 @@ class Face:
             ]
 
         if clipped:
-            return Face(result_poly, self.colour, self.fill).check_normal(self)
+            return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(
+                self
+            )
 
         return self
 
@@ -210,7 +220,27 @@ class Face:
             )[0]
         ]
 
-        return Face(result_poly, self.colour, self.fill) if result_poly else None
+        return (
+            Face(result_poly, self.colour, self.fill, self.zorder)
+            if result_poly
+            else None
+        )
+
+    def clip_face(self, clip_region: "Face") -> "Face":
+        clip_poly = [(x, y) for x, y, z in clip_region.points]
+        z = self.points[0][2]
+        result_poly = [
+            (x, y, z)
+            for x, y in clip_polygon2(
+                clip_poly, [(x, y) for x, y, z in self.points], "intersection"
+            )[0]
+        ]
+
+        return (
+            Face(result_poly, self.colour, self.fill, self.zorder)
+            if result_poly
+            else self
+        )
 
     def check_normal(self, original: "Face") -> "Face":
         # make sure normal isn't altered

@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Optional, Tuple
+from typing import Iterable, Iterator, Optional, Tuple
 
 from .cutlist import Cuts
 from .defects import Defects
-from .dovetails import Dovetails
+from .dovetails import Dovetails, peturb
 from .faces import Face
 from .geometry import Points3d
 from .grooves import Grooves, Side
@@ -182,8 +182,6 @@ class Board:
         for face in sorted(self._get_faces(x1, x2)):
             face.draw(canvas, x, y)
 
-        self._draw_shade(canvas, x, y, x1, x2)
-
         for defect in self.defects:
             defect.draw(canvas, x, y)
 
@@ -207,6 +205,8 @@ class Board:
             yield face.offset_profile(x1)
         for face in self.dovetails.faces_R:
             yield face.offset_profile(x2)
+
+        yield from self._get_shade_front(x1, x2)
 
         sides = [Side(0.0, 0.0, self.T)]
         sides.extend(self.grooves.sides(self.T, top=True, face=False))
@@ -302,24 +302,29 @@ class Board:
                 ],
             )
 
-    def _draw_shade(
-        self, canvas: SVGCanvas, x: float, y: float, x1: Interpolator, x2: Interpolator
-    ) -> None:
+    def _get_shade_front(self, x1: Interpolator, x2: Interpolator) -> Iterator[Face]:
+        face_clip = None
+        for face in self._get_front(x1, x2, grooves=False):
+            face_clip = face.remove(self.dovetails.faces(x1, x2))
+            face_clip.points = peturb(face_clip.points)
+            break
+
         for shade in self.shades:
-            canvas.polyline3d(
-                "none",
+            face_shade = Face(
                 [
-                    (x + x1(0), y + shade.y1, 0),
-                    (x + x2(0), y + shade.y1, 0),
-                    # extend shading around thickness
-                    (x + x2(self.T), y + shade.y1, self.T),
-                    (x + x2(self.T), y + shade.y2, self.T),
-                    (x + x2(0), y + shade.y2, 0),
-                    (x + x1(0), y + shade.y2, 0),
+                    (x1(0), shade.y1, 0),
+                    (x2(0), shade.y1, 0),
+                    (x2(0), shade.y2, 0),
+                    (x1(0), shade.y2, 0),
                 ],
+                "none",
                 fill=shade.colour,
-                closed=True,
+                zorder=1,
             )
+            if face_clip:
+                yield face_shade.clip_face(face_clip)
+            else:
+                yield face_shade
 
     def _draw_cuts(self, canvas: SVGCanvas, x: float, y: float) -> None:
         order = 0
