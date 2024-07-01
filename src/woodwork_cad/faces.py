@@ -24,16 +24,23 @@ DEBUG = False
 class Face:
     points: Points3d
     colour: str = ""
+    fill: str = ""
 
     def reverse(self) -> "Face":
         self.points.reverse()
         return self
 
     def offset(self, dx: float = 0, dy: float = 0, dz: float = 0) -> "Face":
-        return Face([(x + dx, y + dy, z + dz) for x, y, z in self.points], self.colour)
+        return Face(
+            [(x + dx, y + dy, z + dz) for x, y, z in self.points],
+            self.colour,
+            self.fill,
+        )
 
     def offset_profile(self, xz: Interpolator) -> "Face":
-        return Face([(x + xz(z), y, z) for x, y, z in self.points], self.colour)
+        return Face(
+            [(x + xz(z), y, z) for x, y, z in self.points], self.colour, self.fill
+        )
 
     def __lt__(self, other: Any) -> bool:
         # z-order (reversed), then top to bottom, left to right
@@ -49,6 +56,8 @@ class Face:
         if self.colour:
             colour = self.colour
             styles: Dict[str, Any] = {}
+            if self.fill:
+                styles["fill"] = self.fill
         else:
             colour, styles = self.get_style(normal)
 
@@ -166,7 +175,7 @@ class Face:
 
         if clipped:
             # make sure normal isn't altered
-            result = Face(result_poly)
+            result = Face(result_poly, self.colour, self.fill)
             if not equal_vectors(result.normal, self.normal):
                 return result.reverse()
             else:
@@ -191,7 +200,7 @@ class Face:
 
         if clipped:
             # make sure normal isn't altered
-            result = Face(result_poly)
+            result = Face(result_poly, self.colour, self.fill)
             if not equal_vectors(result.normal, self.normal):
                 return result.reverse()
             else:
@@ -210,7 +219,7 @@ class Face:
 
         if result_poly:
             # make sure normal isn't altered
-            result = Face(result_poly)
+            result = Face(result_poly, self.colour, self.fill)
             if not equal_vectors(result.normal, self.normal):
                 return result.reverse()
             else:
