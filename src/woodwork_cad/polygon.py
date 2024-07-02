@@ -262,7 +262,7 @@ class Polygon(object):
             list.append(clipped)
 
         if not list:
-            list.append(self)
+            list.append(Polygon())
 
         return list
 
@@ -276,6 +276,8 @@ class Polygon(object):
 
     def iter(self):
         """Iterator generator for this doubly linked list."""
+        if not self.first:
+            return
         s = self.first
         while True:
             yield s

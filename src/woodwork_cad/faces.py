@@ -57,6 +57,9 @@ class Face:
         return (self.zorder, -center[2], center[0], center[1])
 
     def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
+        if not self.points:
+            return
+
         normal = self.normal
 
         if self.colour:
@@ -142,6 +145,9 @@ class Face:
 
     @property
     def normal(self) -> Vector3d:
+        if not self.points:
+            return (0.0, 0.0, 0.0)
+
         # for concave polygons we need to sum all cross products
         # between centroid and each pair of points
         C = self.centroid
@@ -155,6 +161,9 @@ class Face:
 
     @property
     def centroid(self) -> Vector3d:
+        if not self.points:
+            return (0.0, 0.0, 0.0)
+
         min_x = min(x for x, y, z in self.points)
         max_x = max(x for x, y, z in self.points)
         min_y = min(y for x, y, z in self.points)
@@ -169,15 +178,16 @@ class Face:
         clipped = False
         result_poly = self.points[:]
         for region in clip_regions(z):
-            clipped = True
-            clip_poly = [(x, y) for x, y, z in region.points]
-            result_poly = [
-                (x, y, z)
-                for x, y in clip_polygon2(
-                    clip_poly,
-                    [(x, y) for x, y, z in result_poly],
-                )[0]
-            ]
+            if result_poly:
+                clipped = True
+                clip_poly = [(x, y) for x, y, z in region.points]
+                result_poly = [
+                    (x, y, z)
+                    for x, y in clip_polygon2(
+                        clip_poly,
+                        [(x, y) for x, y, z in result_poly],
+                    )[0]
+                ]
 
         if clipped:
             return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(
@@ -191,15 +201,16 @@ class Face:
         clipped = False
         result_poly = self.points[:]
         for region in clip_regions(y):
-            clipped = True
-            clip_poly = [(x, z) for x, y, z in region.points]
-            result_poly = [
-                (x, y, z)
-                for x, z in clip_polygon2(
-                    clip_poly,
-                    [(x, z) for x, y, z in result_poly],
-                )[0]
-            ]
+            if result_poly:
+                clipped = True
+                clip_poly = [(x, z) for x, y, z in region.points]
+                result_poly = [
+                    (x, y, z)
+                    for x, z in clip_polygon2(
+                        clip_poly,
+                        [(x, z) for x, y, z in result_poly],
+                    )[0]
+                ]
 
         if clipped:
             return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(

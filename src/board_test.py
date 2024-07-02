@@ -56,12 +56,6 @@ def board_test() -> None:
     with print_svg(500, zoom=2) as canvas:
         draw_boards(canvas, 10, 10, [board])
 
-    print("mitre")
-    board1 = boards2[-1]
-    board1.mitre(45, 45)
-    with print_svg(500, zoom=2) as canvas:
-        draw_boards(canvas, 10, 10, [board1])
-
     print("joint")
     boards3 = process(cut(150, kerf=0), cut(150, kerf=0))(Board(450, 75, 12))
     boards3[0].defects.add(Hole(50, 50))
@@ -73,11 +67,26 @@ def board_test() -> None:
         draw_boards(canvas, 10, 10, boards3)
         draw_boards(canvas, 200, 10, [board3])
 
+    print("mitre")
+    board1 = boards2[-1]
+    board1.mitre(45, 45)
+    board1a = joint(
+        Board(150, 15, 10),
+        Board(150, 15, 10).shade("rgba(200,150,150,0.25)"),
+        Board(150, 15, 10),
+    )
+    board1a.mitre(45, 45)
+    with print_svg(500, zoom=2) as canvas:
+        draw_boards(canvas, 10, 10, [board1])
+        draw_boards(canvas, 200, 10, [board1a])
+
     print("dovetails")
     board3.dovetail_pins(right=False, width=20, tails=3, base=12)
     board3.dovetail_tails(right=True, width=20, tails=3, base=12)
     with print_svg(500, zoom=2) as canvas:
         draw_boards(canvas, 10, 10, [board3])
+        board3.mitre(45, 45)
+        draw_boards(canvas, 200, 10, [board3])
 
     print("grooves")
     board4 = Board(200, 100, 19)
@@ -85,6 +94,8 @@ def board_test() -> None:
     board4.grooves.add(75, 15, 5, face=False)
     with print_svg(500, zoom=2) as canvas:
         draw_boards(canvas, 10, 10, [board4])
+        board4.mitre(45, 45)
+        draw_boards(canvas, 250, 10, [board4])
 
 
 if __name__ == "__main__":

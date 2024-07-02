@@ -23,11 +23,11 @@ cut list on original board
 
 ![Figure 5](board_test/fig-5.svg)
 
-mitre
+joint
 
 ![Figure 6](board_test/fig-6.svg)
 
-joint
+mitre
 
 ![Figure 7](board_test/fig-7.svg)
 

@@ -328,30 +328,36 @@ class Board:
                 yield face_shade
 
     def _get_shade_right(self, x1: Interpolator, x2: Interpolator) -> Iterator[Face]:
-        for face_clip in self._get_shade_right_clip(x1, x2):
-            face_clip.points = peturb(face_clip.points)
-            for shade in self.shades:
-                face = Face(
-                    [
-                        (0.0, shade.y1, 0),
-                        (0.0, shade.y1, self.T),
-                        (0.0, shade.y2, self.T),
-                        (0.0, shade.y2, 0),
-                    ],
-                    "none",
-                    fill=shade.colour,
-                    zorder=1,
-                )
-                face2 = face.clip_end_ex(face_clip)
-                if face2:
-                    yield face2.offset_profile(x2)
+        if self.dovetails:
+            for face_clip in self._get_shade_right_clip(x1, x2):
+                face_clip.points = peturb(face_clip.points)
+                x = face_clip.points[0][0] - x2(0) - x1(0)
+                for shade in self._get_shade_right_face():
+                    face2 = shade.clip_end_ex(face_clip)
+                    if face2:
+                        yield face2.offset_profile(x2).offset(dx=x)
+
+        else:
+            for shade in self._get_shade_right_face():
+                yield shade.offset_profile(x2)
+
+    def _get_shade_right_face(self) -> Iterator[Face]:
+        for shade in self.shades:
+            yield Face(
+                [
+                    (0.0, shade.y1, 0),
+                    (0.0, shade.y1, self.T),
+                    (0.0, shade.y2, self.T),
+                    (0.0, shade.y2, 0),
+                ],
+                "none",
+                fill=shade.colour,
+                zorder=1,
+            )
 
     def _get_shade_right_clip(
         self, x1: Interpolator, x2: Interpolator
     ) -> Iterator[Face]:
-        if self.dovetails:
-            return
-
         yield from self.dovetails.left_right(
             x2, self._get_left_right(x2).reverse(), right=True
         )
