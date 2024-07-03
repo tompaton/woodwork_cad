@@ -82,26 +82,43 @@ might be better to have a long shallow(ish) removable till for brushes and small
     label_all([till_bottom, box_bottom], "till bottom", "box bottom")
 
     board_b1_1, board_b1_2 = process(
-        cut(L_inside + 2 * T), cut(L_inside - 2 * T2), waste
+        cut(L_inside - 2 * T), cut(W_inside + 2 * T2), waste
     )(pile.take("b"))
     board_b2_1, board_b2_2 = process(
-        cut(L_inside + 2 * T), cut(L_inside - 2 * T2), waste
+        cut(L_inside - 2 * T), cut(W_inside + 2 * T2), waste
     )(pile.take("b"))
-
-    label_all(
-        [board_b1_1, board_b1_2, board_b2_1, board_b2_2],
-        "base bottom a",
-        "box lid a",
-        "base bottom b",
-        "box lid b",
+    board_b3_1, board_b3_2 = process(cut(L_inside), cut(W_inside + 2 * T2), waste)(
+        pile.take("b")
     )
 
+    label_all(
+        [board_b1_1, board_b1_2, board_b2_1, board_b2_2, board_b3_2],
+        "box lid a",
+        "base bottom a",
+        "box lid b",
+        "base bottom b",
+        "base bottom c",
+    )
+
+    till_front, till_back, till_ends, board_b3_4a = process(
+        rip(till_depth), rip(till_depth), rip(till_depth)
+    )(board_b3_1)
+    board_b3_4 = process(cut(W_inside + 2 * T2), waste)(board_b3_4a)[0]
+    label_all([board_b3_4], "base bottom d")
+
+    till_left, till_right = process(cut(till_width), cut(till_width), waste)(till_ends)
+
+    till_boards = [till_front, till_back, till_left, till_right]
+    label_all(till_boards, "till front", "till back", "till left", "till right")
+
+    till_boards.append(till_bottom)
+
     board_j1 = joint(board_b1_1, board_b2_1)
-    board_j2 = joint(board_b1_2, board_b2_2)
+    board_j2 = joint(board_b1_2, board_b2_2, board_b3_2, board_b3_4)
 
-    base_bottom = process(rip(W_inside + 2 * T2), waste)(board_j1)[0]
+    box_lid = process(rip(W_inside - 2 * T2), waste)(board_j1)[0]
 
-    box_lid = process(rip(W_inside - 2 * T2), waste)(board_j2)[0]
+    base_bottom = process(rip(L_inside + 2 * T2), waste)(board_j2)[0]
 
     label_all([base_bottom, box_lid], "base bottom", "box lid")
 
@@ -142,17 +159,6 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     print("## Till")
     print("- 30mm deep, 1/2 width")
-
-    board_b3_1, board_b3_2 = process(cut(L_inside), cut(till_width), waste)(
-        pile.take("b")
-    )
-    till_boards = process(rip(till_depth), rip(till_depth), waste)(
-        board_b3_1
-    ) + process(rip(till_depth), rip(till_depth), waste)(board_b3_2)
-
-    label_all(till_boards, "till front", "till back", "till left", "till right")
-
-    till_boards.append(till_bottom)
 
     till_boards[0].dovetail_tails(tails=1, base=T2, width=5, right=False)
     till_boards[0].dovetail_tails(tails=1, base=T2, width=5, right=True)
