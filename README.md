@@ -18,8 +18,11 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 
 ## To do
 
-* better shading of dovetailed ends
 * assembly and plan/elevations
 * dadoes/rebates
 * mortises & tennons
 * mitred cuts
+* shading of left side (visible when mitred)
+
+* bugs:
+  - 2nd board hex_box1-strips/fig-4.svg is missing the top shading stripe

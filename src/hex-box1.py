@@ -313,6 +313,10 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
             closed=True,
         )
 
+    # TODO: cut out lid and base and joint
+
+    # TODO: strips for lid insert
+
     print("## Final box")
     print("TODO: side elevations")
 
