@@ -73,3 +73,7 @@ not too high, but has to have room to easily remove box
 
 ![Figure 5](art_tote/fig-5.svg)
 
+## Jointing
+
+![Figure 6](art_tote/fig-6.svg)
+

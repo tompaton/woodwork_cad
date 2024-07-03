@@ -14,6 +14,7 @@ from woodwork_cad.operations import (
     rip,
     waste,
 )
+from woodwork_cad.stock import StockPile
 from woodwork_cad.svg import PrintToSVGFiles
 
 
@@ -54,7 +55,15 @@ Not sure that the drawer is very useful, wouldn't be long enough for brushes etc
 might be better to have a long shallow(ish) removable till for brushes and small items
 
           """)
-    stock = []
+    pile = StockPile()
+    pile.add("a", 3, Board(790, 180, 12))
+    pile.add("b", 3, Board(740, 135, 15))
+    # pile.add("c", 3, Board(400, 165, 19))
+    # pile.add("d", 2, Board(390, 185, 15))
+    # pile.add("e", 2, Board(720, 65, 19))
+    # pile.add("f", 1, Board(750, 45, 12))
+    pile.add("ply", 1, Board(420, 320, 3))
+    pile.add("stick", 1, Board(400, 15, 15))
 
     L_inside = 400.0
     W_inside = 200.0
@@ -65,40 +74,58 @@ might be better to have a long shallow(ish) removable till for brushes and small
     till_width = W_inside / 2
     box_depth = 60 + 2 * T2
 
-    ply_board = Board(420, 320, 3)
-    stock.append(ply_board)
-    ply_board_a = process(cut(L_inside), waste)(ply_board)[0]
+    ply_board_a = process(cut(L_inside), waste)(pile.take("ply"))[0]
     till_bottom, box_bottom = process(rip(till_width), rip(W_inside), waste)(
         ply_board_a
     )
 
     label_all([till_bottom, box_bottom], "till bottom", "box bottom")
 
-    board1 = Board(830, W_inside + 2 * T, T2)
-    stock.append(board1)
-    base_bottom, box_lid = process(
+    board_b1_1, board_b1_2 = process(
         cut(L_inside + 2 * T), cut(L_inside - 2 * T2), waste
-    )(board1)
+    )(pile.take("b"))
+    board_b2_1, board_b2_2 = process(
+        cut(L_inside + 2 * T), cut(L_inside - 2 * T2), waste
+    )(pile.take("b"))
 
-    box_lid = process(rip(W_inside - 2 * T2), waste)(box_lid)[0]
+    label_all(
+        [board_b1_1, board_b1_2, board_b2_1, board_b2_2],
+        "base bottom a",
+        "box lid a",
+        "base bottom b",
+        "box lid b",
+    )
+
+    board_j1 = joint(board_b1_1, board_b2_1)
+    board_j2 = joint(board_b1_2, board_b2_2)
+
+    base_bottom = process(rip(W_inside + 2 * T2), waste)(board_j1)[0]
+
+    box_lid = process(rip(W_inside - 2 * T2), waste)(board_j2)[0]
 
     label_all([base_bottom, box_lid], "base bottom", "box lid")
 
     print("## Base")
     print("- 60mm for tubes + 30mm for till + 10mm inset for box --> 100m inside depth")
 
-    board2 = Board(1320, D_inside + T, T)
-    stock.append(board2)
-    board2.grooves.add(D_inside, 5, 5, face=False)
-    base_boards = process(
+    board_a1_1, board_a1_2 = process(rip(D_inside + T), rip(30), waste)(pile.take("a"))
+    board_a2_1, board_a2_2 = process(rip(D_inside + T), rip(30), waste)(pile.take("a"))
+
+    board_a3_1, board_a3_2 = process(rip(box_depth), rip(box_depth), waste)(
+        pile.take("a")
+    )
+
+    board_a1_1.grooves.add(D_inside, 5, 5, face=False)
+    board_a2_1.grooves.add(D_inside, 5, 5, face=False)
+    base_boards = process(cut(L_inside + 2 * T), cut(W_inside + 2 * T), waste)(
+        board_a1_1
+    ) + process(
         cut(L_inside + 2 * T),
-        cut(L_inside + 2 * T),
-        cut(W_inside + 2 * T),
         cut(W_inside + 2 * T),
         waste,
-    )(board2)
+    )(board_a2_1)
 
-    label_all(base_boards, "base front", "base back", "base left", "base right")
+    label_all(base_boards, "base front", "base left", "base back", "base right")
 
     base_boards[0].dovetail_tails(tails=2, base=T, width=15, right=False)
     base_boards[0].dovetail_tails(tails=2, base=T, width=15, right=True)
@@ -115,11 +142,13 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     print("## Till")
     print("- 30mm deep, 1/2 width")
-    board3 = Board(1320, till_depth, T2)
-    stock.append(board3)
-    till_boards = process(
-        cut(L_inside), cut(L_inside), cut(till_width), cut(till_width), waste
-    )(board3)
+
+    board_b3_1, board_b3_2 = process(cut(L_inside), cut(till_width), waste)(
+        pile.take("b")
+    )
+    till_boards = process(rip(till_depth), rip(till_depth), waste)(
+        board_b3_1
+    ) + process(rip(till_depth), rip(till_depth), waste)(board_b3_2)
 
     label_all(till_boards, "till front", "till back", "till left", "till right")
 
@@ -142,16 +171,15 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     print("## Removable box")
     print("- 60mm deep inside")
-    board4 = Board(1320, box_depth, T2)
-    stock.append(board4)
-    box_boards = process(
-        cut(L_inside), cut(L_inside), cut(W_inside), cut(W_inside), waste
-    )(board4)
 
-    label_all(box_boards, "box front", "box back", "box left", "box right")
+    box_boards = process(cut(L_inside), cut(W_inside), waste)(board_a3_1) + process(
+        cut(L_inside), cut(W_inside), waste
+    )(board_a3_2)
 
-    box_wedge = Board(W_inside, 15, 15, label="wedge")
-    stock.append(box_wedge)
+    label_all(box_boards, "box front", "box left", "box back", "box right")
+
+    box_wedge = process(cut(W_inside), waste)(pile.take("stick"))[0]
+    label_all([box_wedge], "wedge")
 
     box_boards.extend(
         [
@@ -161,12 +189,15 @@ might be better to have a long shallow(ish) removable till for brushes and small
         ]
     )
 
-    board5 = Board(W_inside, 150, T2)
-    stock.append(board5)
+    box_brace = process(cut(W_inside), waste)(board_a2_2)[0]
+    label_all([box_brace], "bottom brace")
 
-    box_battens = process(rip(30), rip(30), rip(30), rip(30), waste)(board5)
-    label_all(box_battens, "bottom brace", "batten", "batten", "batten")
+    box_battens = process(cut(W_inside), cut(W_inside), cut(W_inside), waste)(
+        board_a1_2
+    )
+    label_all(box_battens, "batten", "batten", "batten")
 
+    box_boards.append(box_brace)
     box_boards.extend(box_battens)
 
     box_boards[0].dovetail_tails(tails=2, base=T, width=5, right=False)
@@ -201,31 +232,16 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
           """)
 
-    raw_stock = [
-        Board(790, 180, 12),
-        # Board(790, 180, 12),
-        # Board(790, 180, 12),
-        Board(740, 135, 15),
-        # Board(740, 135, 15),
-        # Board(740, 135, 15),
-        Board(400, 165, 19),
-        # Board(400, 165, 19),
-        # Board(400, 165, 19),
-        Board(390, 185, 15),
-        # Board(390, 185, 15),
-        Board(720, 65, 19),
-        # Board(720, 65, 19),
-        Board(750, 45, 12),
-    ]
-
     with print_svg(1000) as canvas:
-        draw_boards(canvas, 10, 10, raw_stock)
-        draw_boards(canvas, 30, 30, raw_stock[:5])
-        draw_boards(canvas, 50, 50, raw_stock[:3])
+        pile.draw(canvas, 10, 10)
 
     print("## Cut list")
     with print_svg(1400) as canvas:
-        draw_boards(canvas, 10, 10, stock)
+        draw_boards(canvas, 10, 10, pile.cutlist)
+
+    print("## Jointing")
+    with print_svg(1000) as canvas:
+        draw_boards(canvas, 10, 10, [board_j1, board_j2])
 
 
 if __name__ == "__main__":
