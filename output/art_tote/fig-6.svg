@@ -1,4 +1,4 @@
-<svg width="1000" viewBox="0 0 1000 765.6066017177982" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0 0 1000 766.2132034355964" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.606601717798213,20.606601717798213 20.606601717798213,290.6066017177982 396.6066017177982,290.6066017177982 396.6066017177982,20.606601717798213" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,280.0 20.606601717798213,290.6066017177982 20.606601717798213,20.606601717798213" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.606601717798213,20.606601717798213 396.6066017177982,20.606601717798213 386.0,10.0 10.0,10.0" />
@@ -9,14 +9,14 @@
 <text style="" text-anchor="left" x="20" y="204.0" fill="black">1</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,199.0 387.0,199.0 387.0,280.0 397.6066017177982,290.6066017177982 20.606601717798213,290.6066017177982 10.0,280.0" />
 <text style="" text-anchor="start" x="198.0" y="102.0" fill="black">box lid</text>
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.606601717798213,320.6066017177982 20.606601717798213,755.6066017177982 236.6066017177982,755.6066017177982 236.6066017177982,320.6066017177982" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,310.0 10.0,745.0 20.606601717798213,755.6066017177982 20.606601717798213,320.6066017177982" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.606601717798213,320.6066017177982 236.6066017177982,320.6066017177982 226.0,310.0 10.0,310.0" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,745.0 226.0,745.0 236.6066017177982,755.6066017177982 20.606601717798213,755.6066017177982" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="236.6066017177982,320.6066017177982 236.6066017177982,755.6066017177982 226.0,745.0 226.0,310.0" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,310.0 226.0,310.0 226.0,745.0 10.0,745.0" />
-<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,726.0 227.0,726.0 227.0,731.0 10.0,731.0" />
-<text style="" text-anchor="left" x="20" y="736.0" fill="black">1</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,731.0 227.0,731.0 227.0,745.0 237.6066017177982,755.6066017177982 20.606601717798213,755.6066017177982 10.0,745.0" />
-<text style="" text-anchor="start" x="118.0" y="518.0" fill="black">base bottom</text>
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.606601717798213,321.21320343559637 20.606601717798213,756.2132034355964 236.6066017177982,756.2132034355964 236.6066017177982,321.21320343559637" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,310.6066017177982 10.0,745.6066017177982 20.606601717798213,756.2132034355964 20.606601717798213,321.21320343559637" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.606601717798213,321.21320343559637 236.6066017177982,321.21320343559637 226.0,310.6066017177982 10.0,310.6066017177982" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,745.6066017177982 226.0,745.6066017177982 236.6066017177982,756.2132034355964 20.606601717798213,756.2132034355964" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="236.6066017177982,321.21320343559637 236.6066017177982,756.2132034355964 226.0,745.6066017177982 226.0,310.6066017177982" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,310.6066017177982 226.0,310.6066017177982 226.0,745.6066017177982 10.0,745.6066017177982" />
+<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,726.6066017177982 227.0,726.6066017177982 227.0,731.6066017177982 10.0,731.6066017177982" />
+<text style="" text-anchor="left" x="20" y="736.6066017177982" fill="black">1</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,731.6066017177982 227.0,731.6066017177982 227.0,745.6066017177982 237.6066017177982,756.2132034355964 20.606601717798213,756.2132034355964 10.0,745.6066017177982" />
+<text style="" text-anchor="start" x="118.0" y="518.6066017177982" fill="black">base bottom</text>
 </svg>

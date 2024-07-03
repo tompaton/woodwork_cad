@@ -1,4 +1,4 @@
-<svg width="1100" viewBox="0 0 550 353.18784404921166" xmlns="http://www.w3.org/2000/svg">
+<svg width="1100" viewBox="0 0 550 356.38023220463674" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="19.19238815542512,29.192388155425117 19.19238815542512,168.1923881554251 504.19238815542514,168.1923881554251 504.19238815542514,29.192388155425117" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,20.0 10.0,159.0 19.19238815542512,168.1923881554251 19.19238815542512,29.192388155425117" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="19.19238815542512,29.192388155425117 504.19238815542514,29.192388155425117 495.0,20.0 10.0,20.0" />
@@ -15,25 +15,25 @@
 <circle cx="200" cy="99.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="165" cy="128.0" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="200" cy="147.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="19.19238815542512,194.1923881554251 19.19238815542512,333.19238815542514 504.19238815542514,333.19238815542514 504.19238815542514,194.1923881554251" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,185.0 10.0,324.0 19.19238815542512,333.19238815542514 19.19238815542512,194.1923881554251" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="19.19238815542512,194.1923881554251 504.19238815542514,194.1923881554251 495.0,185.0 10.0,185.0" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,324.0 495.0,324.0 504.19238815542514,333.19238815542514 19.19238815542512,333.19238815542514" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="504.19238815542514,194.1923881554251 504.19238815542514,333.19238815542514 495.0,324.0 495.0,185.0" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,185.0 495.0,185.0 495.0,324.0 10.0,324.0" />
-<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="495.0,228.0 504.19238815542514,237.1923881554251 504.19238815542514,242.1923881554251 495.0,233.0" />
-<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="495.0,276.0 504.19238815542514,285.19238815542514 504.19238815542514,290.19238815542514 495.0,281.0" />
-<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="10.0,228.0 495.0,228.0 495.0,233.0 10.0,233.0" />
-<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="10.0,276.0 495.0,276.0 495.0,281.0 10.0,281.0" />
-<circle cx="165" cy="197.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<circle cx="200" cy="216.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<rect x="290" y="233.0" width="40" height="10.0" style="fill: none; stroke: orange; stroke-width: 1;" />
-<circle cx="165" cy="245.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<circle cx="200" cy="264.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<circle cx="165" cy="293.0" r="5" stroke="orange" fill="white" stroke-width="1" />
-<circle cx="200" cy="312.0" r="5" stroke="orange" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="19.19238815542512,197.3847763108502 19.19238815542512,336.3847763108502 504.19238815542514,336.3847763108502 504.19238815542514,197.3847763108502" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,188.1923881554251 10.0,327.1923881554251 19.19238815542512,336.3847763108502 19.19238815542512,197.3847763108502" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="19.19238815542512,197.3847763108502 504.19238815542514,197.3847763108502 495.0,188.1923881554251 10.0,188.1923881554251" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,327.1923881554251 495.0,327.1923881554251 504.19238815542514,336.3847763108502 19.19238815542512,336.3847763108502" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="504.19238815542514,197.3847763108502 504.19238815542514,336.3847763108502 495.0,327.1923881554251 495.0,188.1923881554251" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,188.1923881554251 495.0,188.1923881554251 495.0,327.1923881554251 10.0,327.1923881554251" />
+<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="495.0,231.1923881554251 504.19238815542514,240.3847763108502 504.19238815542514,245.3847763108502 495.0,236.1923881554251" />
+<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="495.0,279.1923881554251 504.19238815542514,288.3847763108502 504.19238815542514,293.3847763108502 495.0,284.1923881554251" />
+<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="10.0,231.1923881554251 495.0,231.1923881554251 495.0,236.1923881554251 10.0,236.1923881554251" />
+<polygon fill="rgba(192,192,192,0.5)" stroke-width="1" stroke-dasharray="" stroke="none" points="10.0,279.1923881554251 495.0,279.1923881554251 495.0,284.1923881554251 10.0,284.1923881554251" />
+<circle cx="165" cy="200.1923881554251" r="5" stroke="orange" fill="white" stroke-width="1" />
+<circle cx="200" cy="219.1923881554251" r="5" stroke="orange" fill="white" stroke-width="1" />
+<rect x="290" y="236.1923881554251" width="40" height="10.0" style="fill: none; stroke: orange; stroke-width: 1;" />
+<circle cx="165" cy="248.1923881554251" r="5" stroke="orange" fill="white" stroke-width="1" />
+<circle cx="200" cy="267.1923881554251" r="5" stroke="orange" fill="white" stroke-width="1" />
+<circle cx="165" cy="296.1923881554251" r="5" stroke="orange" fill="white" stroke-width="1" />
+<circle cx="200" cy="315.1923881554251" r="5" stroke="orange" fill="white" stroke-width="1" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="215.48356932138697,40.35946183203866 283.983339510407,159.0045441062134 10.0,158.99545589378656 78.49444650493606,40.35932915314862" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="484.5626833874055,20.004544106213388 416.0682368824695,138.64067084685138 279.07911406601863,138.64053816796127 210.5793438769985,19.995455893786556" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="283.983339510407,185.0045441062134 215.488893005471,303.6406708468514 78.49977018902015,303.64053816796127 10.0,184.99545589378656" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="416.06291319838544,205.35946183203868 484.5626833874055,324.0045441062134 210.5793438769985,323.9954558937866 279.0737903819346,205.35932915314862" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="283.983339510407,188.1969322616385 215.488893005471,306.8330590022765 78.49977018902015,306.83292632338635 10.0,188.18784404921166" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="416.06291319838544,208.55184998746378 484.5626833874055,327.1969322616385 210.5793438769985,327.18784404921166 279.0737903819346,208.55171730857373" />
 </svg>
