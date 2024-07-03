@@ -1,3 +1,6 @@
+from typing import Any, List
+
+
 from .board import Board
 from .defects import Defects
 from .geometry import Points, to2d
@@ -159,3 +162,13 @@ def cube_net(
     )
 
     return Board(boards[top].L, boards[top].W, boards[front].W)
+
+
+def dovetail_boards(sides: List[Board], ends: List[Board], **kwargs: Any) -> None:
+    for side in sides:
+        side.dovetail_tails(base=ends[0].T, right=False, **kwargs)
+        side.dovetail_tails(base=ends[0].T, right=True, **kwargs)
+
+    for end in ends:
+        end.dovetail_pins(base=sides[0].T, right=False, **kwargs)
+        end.dovetail_pins(base=sides[0].T, right=True, **kwargs)

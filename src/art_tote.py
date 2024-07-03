@@ -5,6 +5,7 @@ from woodwork_cad.board import Board
 from woodwork_cad.operations import (
     cut,
     cut_waste,
+    dovetail_boards,
     draw_boards,
     joint,
     label_all,
@@ -144,14 +145,8 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     label_all(base_boards, "base front", "base left", "base back", "base right")
 
-    base_boards[0].dovetail_tails(tails=2, base=T, width=15, right=False)
-    base_boards[0].dovetail_tails(tails=2, base=T, width=15, right=True)
-    base_boards[1].dovetail_tails(tails=2, base=T, width=15, right=False)
-    base_boards[1].dovetail_tails(tails=2, base=T, width=15, right=True)
-    base_boards[2].dovetail_pins(tails=2, base=T, width=15, right=False)
-    base_boards[2].dovetail_pins(tails=2, base=T, width=15, right=True)
-    base_boards[3].dovetail_pins(tails=2, base=T, width=15, right=False)
-    base_boards[3].dovetail_pins(tails=2, base=T, width=15, right=True)
+    dovetail_boards(base_boards[0:2], base_boards[2:4], tails=2, width=15)
+
     base_boards.append(base_bottom)
 
     with print_svg(550, zoom=2.0) as canvas:
@@ -160,14 +155,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("## Till")
     print("- 30mm deep, 1/2 width")
 
-    till_boards[0].dovetail_tails(tails=1, base=T2, width=5, right=False)
-    till_boards[0].dovetail_tails(tails=1, base=T2, width=5, right=True)
-    till_boards[1].dovetail_tails(tails=1, base=T2, width=5, right=False)
-    till_boards[1].dovetail_tails(tails=1, base=T2, width=5, right=True)
-    till_boards[2].dovetail_pins(tails=1, base=T2, width=5, right=False)
-    till_boards[2].dovetail_pins(tails=1, base=T2, width=5, right=True)
-    till_boards[3].dovetail_pins(tails=1, base=T2, width=5, right=False)
-    till_boards[3].dovetail_pins(tails=1, base=T2, width=5, right=True)
+    dovetail_boards(till_boards[0:2], till_boards[2:4], tails=1, width=5)
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, till_boards)
@@ -206,14 +194,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     box_boards.append(box_brace)
     box_boards.extend(box_battens)
 
-    box_boards[0].dovetail_tails(tails=2, base=T, width=5, right=False)
-    box_boards[0].dovetail_tails(tails=2, base=T, width=5, right=True)
-    box_boards[1].dovetail_tails(tails=2, base=T, width=5, right=False)
-    box_boards[1].dovetail_tails(tails=2, base=T, width=5, right=True)
-    box_boards[2].dovetail_pins(tails=2, base=T, width=5, right=False)
-    box_boards[2].dovetail_pins(tails=2, base=T, width=5, right=True)
-    box_boards[3].dovetail_pins(tails=2, base=T, width=5, right=False)
-    box_boards[3].dovetail_pins(tails=2, base=T, width=5, right=True)
+    dovetail_boards(box_boards[0:2], box_boards[2:4], tails=2, width=5)
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, box_boards)
