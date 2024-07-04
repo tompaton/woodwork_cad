@@ -1,6 +1,6 @@
 from itertools import pairwise
 from math import cos, radians, sin, sqrt
-from typing import List, Optional, Tuple
+from typing import Callable, List, Optional, Tuple
 
 from .polygon import clip_polygon as _clip_polygon
 
@@ -123,3 +123,20 @@ def clip_polygon2(
 CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
 
 LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))
+
+
+def point_rotator(
+    angle: float, origin_x: float, origin_y: float, offset_x: float, offset_y: float
+) -> Callable[[Point], Point]:
+    cos_a = cos(radians(angle))
+    sin_a = sin(radians(angle))
+
+    def rotate(point: Point) -> Point:
+        x1 = point[0] - origin_x
+        y1 = point[1] - origin_y
+        return (
+            offset_x + x1 * cos_a - y1 * sin_a,
+            offset_y + x1 * sin_a + y1 * cos_a,
+        )
+
+    return rotate

@@ -39,3 +39,7 @@ grooves
 
 ![Figure 9](board_test/fig-9.svg)
 
+rotation
+
+![Figure 10](board_test/fig-10.svg)
+

@@ -1,11 +1,11 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Iterator, Optional, Tuple
+from typing import Iterable, Iterator, List, Optional, Tuple
 
 from .cutlist import Cuts
 from .defects import Defects
 from .dovetails import Dovetails, peturb
-from .faces import Face
-from .geometry import Points3d
+from .faces import Face, rotate_faces
+from .geometry import Point, Points3d, Vector3d
 from .grooves import Grooves, Side
 from .profile import Interpolator, Profile
 from .shades import Shades
@@ -180,17 +180,29 @@ class Board:
             tails, self.L, self.W, self.T, base, width, angle, right
         )
 
-    def draw_board(self, canvas: SVGCanvas, x: float, y: float) -> None:
+    def draw_board(
+        self,
+        canvas: SVGCanvas,
+        x: float,
+        y: float,
+        rotate_y: float = 0.0,
+        offset: Vector3d = (0.0, 0.0, 0.0),
+    ) -> Point:
         x1, x2 = self.profile.interpolate(self.T)
-
+        origin = self.profile.origin
+        origin2d: List[Point] = []  # set in rotate_faces
         # draw all faces separately from back to front to do basic hidden line removal
-        for face in sorted(self._get_faces(x1, x2)):
+        for face in sorted(
+            rotate_faces(self._get_faces(x1, x2), origin, rotate_y, offset, origin2d)
+        ):
             face.draw(canvas, x, y)
 
         for defect in self.defects:
             defect.draw(canvas, x, y)
 
         self._draw_cuts(canvas, x, y)
+
+        return origin2d[0]
 
     def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
         # punch dovetail out of top & bottom faces and side

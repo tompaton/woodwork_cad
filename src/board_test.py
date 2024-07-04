@@ -97,6 +97,28 @@ def board_test() -> None:
         board4.mitre(45, 45)
         draw_boards(canvas, 250, 10, [board4])
 
+    print("rotation")
+    with print_svg(500, zoom=2) as canvas:
+        board4.label = "0°"
+        origin = board4.draw_board(canvas, 10, 10)
+        canvas.circle(10 + origin[0], 10 + origin[1], 3, "red")
+
+        board4.label = "180°"
+        origin = board4.draw_board(
+            canvas, 250, 10, rotate_y=180, offset=(board4.L, 0, board4.T)
+        )
+        canvas.circle(250 + origin[0], 10 + origin[1], 3, "red")
+
+        board4.label = "90°"
+        origin = board4.draw_board(
+            canvas, 10, 150, rotate_y=90, offset=(2 * board4.T, 0, 0)
+        )
+        canvas.circle(10 + origin[0], 150 + origin[1], 3, "red")
+
+        board4.label = "45°"
+        origin = board4.draw_board(canvas, 250, 150, rotate_y=45)
+        canvas.circle(250 + origin[0], 150 + origin[1], 3, "red")
+
 
 if __name__ == "__main__":
     board_test()

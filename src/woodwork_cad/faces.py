@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import Any, Callable, Dict, Iterable, Optional, Tuple
+from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
 from .geometry import (
     CAMERA,
     LIGHT,
+    Point,
+    Point3d,
     Points3d,
     Vector3d,
     clip_polygon2,
@@ -12,7 +14,9 @@ from .geometry import (
     dotproduct,
     equal_vectors,
     normalize,
+    point_rotator,
     subtract,
+    to2d,
 )
 from .profile import Interpolator
 from .svg import SVGCanvas
@@ -259,3 +263,31 @@ class Face:
             return self.reverse()
         else:
             return self
+
+
+def rotate_faces(
+    faces: Iterable[Face],
+    origin: Point3d,
+    rotate_y: float,
+    offset: Vector3d,
+    origin2d_out: List[Point],
+) -> Iterator[Face]:
+    if not rotate_y:
+        yield from faces
+        origin2d_out.append(to2d(origin))
+        return
+
+    dx, dy, dz = offset
+    rotate = point_rotator(rotate_y, origin[0], origin[2], dx, dz)
+
+    def rotate3d(point: Point3d) -> Point3d:
+        x, y, z = point
+        x1, z1 = rotate((x, z))
+        return x1, y + dy, z1
+
+    for face in faces:
+        yield Face(
+            [rotate3d(p) for p in face.points], face.colour, face.fill, face.zorder
+        )
+
+    origin2d_out.append(to2d(rotate3d(origin)))
