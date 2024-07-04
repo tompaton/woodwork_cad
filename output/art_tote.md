@@ -98,7 +98,11 @@ not too high, but has to have room to easily remove box
   - 200.0 x 30 x 12 bottom brace (a-2)
 - till
   - 400.0 x 30 x 15 till front (b-3)
+  - 100.0 x 30 x 15 till right (b-3)
   - 400.0 x 30 x 15 till back (b-3)
   - 100.0 x 30 x 15 till left (b-3)
-  - 100.0 x 30 x 15 till right (b-3)
   - 400.0 x 100.0 x 3 till bottom (ply-1)
+## Plan view
+
+![Figure 7](art_tote/fig-7.svg)
+

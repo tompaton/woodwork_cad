@@ -97,8 +97,8 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     till_left, till_right = process(cut(till_width), cut(till_width), waste)(till_ends)
 
-    till_boards = [till_front, till_back, till_left, till_right]
-    label_all(till_boards, "till front", "till back", "till left", "till right")
+    till_boards = [till_front, till_right, till_back, till_left]
+    label_all(till_boards, "till front", "till right", "till back", "till left")
 
     till_boards.append(till_bottom)
 
@@ -239,6 +239,31 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("- till")
     for board in till_boards:
         print(f"  - {board}")
+
+    print("## Plan view")
+
+    # corners: Points = []
+    with print_svg(550, zoom=2) as canvas:
+        x, y, angle = 10, 10, 0
+        for side in base_boards[:4]:
+            x, y = side.draw_plan(canvas, x, y, angle)
+            # corners.append((x, y))
+            angle += 90
+            canvas.circle(x, y, 2, "red")
+
+        x, y, angle = 10 + base_boards[3].T, 10 + base_boards[0].T, 0
+        for side in box_boards[:4]:
+            x, y = side.draw_plan(canvas, x, y, angle)
+            # corners.append((x, y))
+            angle += 90
+            canvas.circle(x, y, 2, "red")
+
+        x, y, angle = 10 + base_boards[3].T, 10 + base_boards[0].T, 0
+        for side in till_boards[:4]:
+            x, y = side.draw_plan(canvas, x, y, angle)
+            # corners.append((x, y))
+            angle += 90
+            canvas.circle(x, y, 2, "red")
 
 
 if __name__ == "__main__":

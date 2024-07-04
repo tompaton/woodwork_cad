@@ -68,9 +68,9 @@
 <text style="" text-anchor="left" x="225.0" y="763.334523779156" fill="black">7</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="220.0,753.334523779156 411.0,753.334523779156 411.0,783.334523779156 220.0,783.334523779156" />
 <text style="" text-anchor="start" x="210.0" y="698.334523779156" fill="black">till front</text>
+<text style="" text-anchor="start" x="165.0" y="768.334523779156" fill="black">till right</text>
 <text style="" text-anchor="start" x="210.0" y="733.334523779156" fill="black">till back</text>
 <text style="" text-anchor="start" x="60.0" y="768.334523779156" fill="black">till left</text>
-<text style="" text-anchor="start" x="165.0" y="768.334523779156" fill="black">till right</text>
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="631.0,683.334523779156 637.0,683.334523779156 637.0,818.334523779156 647.6066017177982,828.9411254969542 641.6066017177982,828.9411254969542 631.0,818.334523779156" />
 <text style="" text-anchor="left" x="641.0" y="693.334523779156" fill="black">8</text>
 <text style="" text-anchor="start" x="523.0" y="750.834523779156" fill="black">base bottom c</text>
