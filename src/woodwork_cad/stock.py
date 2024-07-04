@@ -28,11 +28,11 @@ class StockPile:
     def take(self, key: str) -> Board:
         for board in self.boards[key]:
             if not board.label.endswith(" (used)"):
+                # TODO: copy defects, shade etc.
+                board2 = Board(board.L, board.W, board.T, label=board.label)
+                self.cutlist.append(board2)
                 board.label += " (used)"
                 board.shade("rgba(224,255,224,0.25)")
-                # TODO: copy defects, shade etc.
-                board2 = Board(board.L, board.W, board.T)
-                self.cutlist.append(board2)
                 return board2
 
         if self.offcuts[key]:

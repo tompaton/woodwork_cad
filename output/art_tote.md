@@ -77,3 +77,28 @@ not too high, but has to have room to easily remove box
 
 ![Figure 6](art_tote/fig-6.svg)
 
+## Dimensions
+- base
+  - 424.0 x 112.0 x 12 base front (a-1)
+  - 224.0 x 112.0 x 12 base left (a-1)
+  - 424.0 x 112.0 x 12 base back (a-2)
+  - 224.0 x 112.0 x 12 base right (a-2)
+  - 216.0 x 416.0 x 15 base bottom
+- box
+  - 400.0 x 76.0 x 12 box front (a-3)
+  - 200.0 x 76.0 x 12 box left (a-3)
+  - 400.0 x 76.0 x 12 box back (a-3)
+  - 200.0 x 76.0 x 12 box right (a-3)
+  - 376.0 x 184.0 x 15 box lid
+  - 400.0 x 200.0 x 3 box bottom (ply-1)
+  - 200.0 x 15 x 15 wedge (stick-1)
+  - 200.0 x 30 x 12 batten (a-1)
+  - 200.0 x 30 x 12 batten (a-1)
+  - 200.0 x 30 x 12 batten (a-1)
+  - 200.0 x 30 x 12 bottom brace (a-2)
+- till
+  - 400.0 x 30 x 15 till front (b-3)
+  - 400.0 x 30 x 15 till back (b-3)
+  - 100.0 x 30 x 15 till left (b-3)
+  - 100.0 x 30 x 15 till right (b-3)
+  - 400.0 x 100.0 x 3 till bottom (ply-1)

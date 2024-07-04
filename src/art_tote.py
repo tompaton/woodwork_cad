@@ -229,6 +229,17 @@ might be better to have a long shallow(ish) removable till for brushes and small
     with print_svg(1000) as canvas:
         draw_boards(canvas, 10, 10, [board_j1, board_j2])
 
+    print("## Dimensions")
+    print("- base")
+    for board in base_boards:
+        print(f"  - {board}")
+    print("- box")
+    for board in box_boards:
+        print(f"  - {board}")
+    print("- till")
+    for board in till_boards:
+        print(f"  - {board}")
+
 
 if __name__ == "__main__":
     draw_art_tote()

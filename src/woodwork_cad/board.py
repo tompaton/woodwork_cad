@@ -33,7 +33,12 @@ class Board:
     dovetails: Dovetails = field(default_factory=Dovetails)
 
     def __str__(self) -> str:
-        return f"{self.L} x {self.W} x {self.T}"
+        label = " " + self.label if self.label else ""
+        parent = self
+        while parent.parent:
+            parent = parent.parent
+        parent_label = f" ({parent.label})" if parent.label else ""
+        return f"{self.L} x {self.W} x {self.T}{label}{parent_label}"
 
     @property
     def area(self):
