@@ -138,7 +138,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     label_all(base_boards, "base front", "base left", "base back", "base right")
 
-    dovetail_boards(base_boards[0:2], base_boards[2:4], tails=2, width=15)
+    dovetail_boards(base_boards[0:4:2], base_boards[1:4:2], tails=2, width=15)
 
     base_boards.append(base_bottom)
 
@@ -148,7 +148,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("## Till")
     print("- 30mm deep, 1/2 width")
 
-    dovetail_boards(till_boards[0:2], till_boards[2:4], tails=1, width=5)
+    dovetail_boards(till_boards[0:4:2], till_boards[1:4:2], tails=1, width=5)
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, till_boards)
@@ -192,7 +192,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     label_all([box_brace], "bottom brace")
     box_boards.append(box_brace)
 
-    dovetail_boards(box_boards[0:2], box_boards[2:4], tails=2, width=5)
+    dovetail_boards(box_boards[0:4:2], box_boards[1:4:2], tails=2, width=5)
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, box_boards)
@@ -264,6 +264,42 @@ might be better to have a long shallow(ish) removable till for brushes and small
             # corners.append((x, y))
             angle += 90
             canvas.circle(x, y, 2, "red")
+
+    print("## Base assembly")
+    angle, mate = 0, (0, 0, 0)
+    base_faces: list = []
+    for side in base_boards[:4]:
+        # need to collect together all rotate faces, then sort, then draw
+        mate = side.rotated_faces(rotate_y=angle, offset=mate, faces=base_faces)[1]
+        angle += 90
+
+    with print_svg(800, zoom=2) as canvas:
+        for face in sorted(base_faces):
+            face.draw(canvas, 20, 20)
+
+    print("## Till assembly")
+    angle, mate = 0, (0, 0, 0)
+    till_faces: list = []
+    for side in till_boards[:4]:
+        # need to collect together all rotate faces, then sort, then draw
+        mate = side.rotated_faces(rotate_y=angle, offset=mate, faces=till_faces)[1]
+        angle += 90
+
+    with print_svg(800, zoom=2) as canvas:
+        for face in sorted(till_faces):
+            face.draw(canvas, 20, 20)
+
+    print("## Box assembly")
+    angle, mate = 0, (0, 0, 0)
+    box_faces: list = []
+    for side in box_boards[:4]:
+        # need to collect together all rotate faces, then sort, then draw
+        mate = side.rotated_faces(rotate_y=angle, offset=mate, faces=box_faces)[1]
+        angle += 90
+
+    with print_svg(800, zoom=2) as canvas:
+        for face in sorted(box_faces):
+            face.draw(canvas, 20, 20)
 
 
 if __name__ == "__main__":

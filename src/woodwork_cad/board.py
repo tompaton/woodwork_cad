@@ -5,7 +5,7 @@ from .cutlist import Cuts
 from .defects import Defects
 from .dovetails import Dovetails, peturb
 from .faces import Face, rotate_faces
-from .geometry import Point, Points3d, Vector3d
+from .geometry import Point3d, Points3d, Vector3d
 from .grooves import Grooves, Side
 from .profile import Interpolator, Profile
 from .shades import Shades
@@ -187,14 +187,12 @@ class Board:
         y: float,
         rotate_y: float = 0.0,
         offset: Vector3d = (0.0, 0.0, 0.0),
-    ) -> Point:
-        x1, x2 = self.profile.interpolate(self.T)
-        origin = self.profile.origin
-        origin2d: List[Point] = []  # set in rotate_faces
+    ) -> Tuple[Point3d, Point3d]:
+        faces: List[Face] = []
+        origin, mate = self.rotated_faces(rotate_y, offset, faces)
+
         # draw all faces separately from back to front to do basic hidden line removal
-        for face in sorted(
-            rotate_faces(self._get_faces(x1, x2), origin, rotate_y, offset, origin2d)
-        ):
+        for face in sorted(faces):
             face.draw(canvas, x, y)
 
         for defect in self.defects:
@@ -202,7 +200,26 @@ class Board:
 
         self._draw_cuts(canvas, x, y)
 
-        return origin2d[0]
+        return origin, mate
+
+    def rotated_faces(
+        self,
+        rotate_y: float,
+        offset: Vector3d,
+        faces: List[Face],
+    ) -> Tuple[Point3d, Point3d]:
+        x1, x2 = self.profile.interpolate(self.T)
+        origin = self.profile.origin
+        mate = self.profile.mate
+        origin2d: List[Point3d] = []  # set in rotate_faces
+
+        faces.extend(
+            rotate_faces(
+                self._get_faces(x1, x2), origin, rotate_y, offset, mate, origin2d
+            )
+        )
+
+        return origin2d[0], origin2d[1]
 
     def _get_faces(self, x1: Interpolator, x2: Interpolator) -> Iterable[Face]:
         # punch dovetail out of top & bottom faces and side

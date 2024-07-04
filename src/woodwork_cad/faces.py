@@ -5,7 +5,6 @@ from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tupl
 from .geometry import (
     CAMERA,
     LIGHT,
-    Point,
     Point3d,
     Points3d,
     Vector3d,
@@ -16,7 +15,6 @@ from .geometry import (
     normalize,
     point_rotator,
     subtract,
-    to2d,
 )
 from .profile import Interpolator
 from .svg import SVGCanvas
@@ -270,11 +268,13 @@ def rotate_faces(
     origin: Point3d,
     rotate_y: float,
     offset: Vector3d,
-    origin2d_out: List[Point],
+    mate: Point3d,
+    origin2d_out: List[Point3d],
 ) -> Iterator[Face]:
     if not rotate_y:
         yield from faces
-        origin2d_out.append(to2d(origin))
+        origin2d_out.append(origin)
+        origin2d_out.append(mate)
         return
 
     dx, dy, dz = offset
@@ -290,4 +290,5 @@ def rotate_faces(
             [rotate3d(p) for p in face.points], face.colour, face.fill, face.zorder
         )
 
-    origin2d_out.append(to2d(rotate3d(origin)))
+    origin2d_out.append(rotate3d(origin))
+    origin2d_out.append(rotate3d(mate))

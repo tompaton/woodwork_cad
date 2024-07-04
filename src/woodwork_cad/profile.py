@@ -85,3 +85,8 @@ class Profile:
     def origin(self) -> Point3d:
         offset = self._points[0]
         return (offset.x, 0.0, offset.z)
+
+    @property
+    def mate(self) -> Point3d:
+        offset = self._points[1]
+        return (offset.x, 0.0, offset.z)

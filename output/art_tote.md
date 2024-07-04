@@ -106,3 +106,15 @@ not too high, but has to have room to easily remove box
 
 ![Figure 7](art_tote/fig-7.svg)
 
+## Base assembly
+
+![Figure 8](art_tote/fig-8.svg)
+
+## Till assembly
+
+![Figure 9](art_tote/fig-9.svg)
+
+## Box assembly
+
+![Figure 10](art_tote/fig-10.svg)
+
