@@ -82,25 +82,13 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     label_all([till_bottom, box_bottom], "till bottom", "box bottom")
 
-    board_b1_1, board_b1_2 = process(
-        cut(L_inside - 2 * T), cut(W_inside + 2 * T2), waste
-    )(pile.take("b"))
-    board_b2_1, board_b2_2 = process(
-        cut(L_inside - 2 * T), cut(W_inside + 2 * T2), waste
-    )(pile.take("b"))
-    board_b3_1, board_b3_2 = process(cut(L_inside), cut(W_inside + 2 * T2), waste)(
-        pile.take("b")
-    )
+    board_b1_1 = pile.take_part("b", cut(L_inside - 2 * T), "b2")
+    board_b2_1 = pile.take_part("b", cut(L_inside - 2 * T), "b2")
 
-    label_all(
-        [board_b1_1, board_b1_2, board_b2_1, board_b2_2, board_b3_2],
-        "box lid a",
-        "base bottom a",
-        "box lid b",
-        "base bottom b",
-        "base bottom c",
-    )
+    label_all([board_b1_1, board_b2_1], "box lid a", "box lid b")
+    board_j1 = joint(board_b1_1, board_b2_1)
 
+    board_b3_1 = pile.take_part("b", cut(L_inside), "b3")
     till_front, till_back, till_ends, board_b3_4a = process(
         rip(till_depth), rip(till_depth), rip(till_depth)
     )(board_b3_1)
@@ -114,7 +102,16 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     till_boards.append(till_bottom)
 
-    board_j1 = joint(board_b1_1, board_b2_1)
+    board_b1_2 = pile.take_part("b2", cut(W_inside + 2 * T2), "b4")
+    board_b2_2 = pile.take_part("b2", cut(W_inside + 2 * T2), "b4")
+    board_b3_2 = pile.take_part("b3", cut(W_inside + 2 * T2), "b5")
+
+    label_all(
+        [board_b1_2, board_b2_2, board_b3_2],
+        "base bottom a",
+        "base bottom b",
+        "base bottom c",
+    )
     board_j2 = joint(board_b1_2, board_b2_2, board_b3_2, board_b3_4)
 
     box_lid = process(rip(W_inside - 2 * T2), waste)(board_j1)[0]
@@ -126,12 +123,8 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("## Base")
     print("- 60mm for tubes + 30mm for till + 10mm inset for box --> 100m inside depth")
 
-    board_a1_1, board_a1_2 = process(rip(D_inside + T), rip(30), waste)(pile.take("a"))
-    board_a2_1, board_a2_2 = process(rip(D_inside + T), rip(30), waste)(pile.take("a"))
-
-    board_a3_1, board_a3_2 = process(rip(box_depth), rip(box_depth), waste)(
-        pile.take("a")
-    )
+    board_a1_1 = pile.take_part("a", rip(D_inside + T), "a2")
+    board_a2_1 = pile.take_part("a", rip(D_inside + T), "a2")
 
     board_a1_1.grooves.add(D_inside, 5, 5, face=False)
     board_a2_1.grooves.add(D_inside, 5, 5, face=False)
@@ -166,6 +159,10 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("## Removable box")
     print("- 60mm deep inside")
 
+    board_a3_1, board_a3_2 = process(rip(box_depth), rip(box_depth), waste)(
+        pile.take("a")
+    )
+
     box_boards = process(cut(L_inside), cut(W_inside), waste)(board_a3_1) + process(
         cut(L_inside), cut(W_inside), waste
     )(board_a3_2)
@@ -183,16 +180,17 @@ might be better to have a long shallow(ish) removable till for brushes and small
         ]
     )
 
-    box_brace = process(cut(W_inside), waste)(board_a2_2)[0]
-    label_all([box_brace], "bottom brace")
-
+    board_a1_2 = pile.take_part("a2", rip(30), "a3")
     box_battens = process(cut(W_inside), cut(W_inside), cut(W_inside), waste)(
         board_a1_2
     )
     label_all(box_battens, "batten", "batten", "batten")
-
-    box_boards.append(box_brace)
     box_boards.extend(box_battens)
+
+    board_a2_2 = pile.take_part("a2", rip(30), "a3")
+    box_brace = process(cut(W_inside), waste)(board_a2_2)[0]
+    label_all([box_brace], "bottom brace")
+    box_boards.append(box_brace)
 
     dovetail_boards(box_boards[0:2], box_boards[2:4], tails=2, width=5)
 
@@ -223,6 +221,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
         pile.draw(canvas, 10, 10)
 
     print("## Cut list")
+    pile.mark_waste()
     with print_svg(1400) as canvas:
         draw_boards(canvas, 10, 10, pile.cutlist)
 
