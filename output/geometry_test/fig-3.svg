@@ -1,4 +1,4 @@
-<svg width="1000" viewBox="0 0 500 325.0" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0.0 0.0 500.0 325.0" xmlns="http://www.w3.org/2000/svg">
 <line x1="60" y1="20" x2="60" y2="110" stroke="gray" stroke-width="1" />
 <text style="" text-anchor="middle" x="50" y="20" fill="black" font-size="12px">in</text>
 <text style="" text-anchor="middle" x="75" y="20" fill="black" font-size="12px">out</text>

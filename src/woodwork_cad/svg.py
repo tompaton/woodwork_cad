@@ -28,10 +28,9 @@ class SVGCanvas:
 
     def svg_document(self, width: int, height: int, zoom: float = 1.0) -> str:
         # auto calculate height
-        auto_height = (self.max_y or 0) + (self.min_y or 0)
-        viewbox_str = " ".join(
-            map(str, (0, min(0, (self.min_y or 0)), width, height or auto_height))
-        )
+        auto_height = abs(self.max_y or 0) + abs(self.min_y or 0)
+        min_y = min(0, self.min_y or 0)
+        viewbox_str = f"{0:.1f} {min_y:.1f} {width:.1f} {height or auto_height:.1f}"
         return (
             f'<svg width="{int(width * zoom)}" viewBox="{viewbox_str}" xmlns="http://www.w3.org/2000/svg">\n'
             f"{self.result}</svg>\n"
