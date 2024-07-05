@@ -1,8 +1,8 @@
 <svg width="1000" viewBox="0.0 0.0 1000.0 203.9" xmlns="http://www.w3.org/2000/svg">
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="48.890872965260115,48.89087296526011 48.890872965260115,193.89087296526012 251.39087296526012,193.89087296526012 251.39087296526012,48.89087296526011" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,155.0 48.890872965260115,193.89087296526012 48.890872965260115,48.89087296526011" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="48.890872965260115,48.89087296526011 251.39087296526012,48.89087296526011 212.5,10.0 10.0,10.0" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,155.0 212.5,155.0 251.39087296526012,193.89087296526012 48.890872965260115,193.89087296526012" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="251.39087296526012,48.89087296526011 251.39087296526012,193.89087296526012 212.5,155.0 212.5,10.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="48.9,48.9 48.9,193.9 251.4,193.9 251.4,48.9" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,155.0 48.9,193.9 48.9,48.9" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="48.9,48.9 251.4,48.9 212.5,10.0 10.0,10.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,155.0 212.5,155.0 251.4,193.9 48.9,193.9" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="251.4,48.9 251.4,193.9 212.5,155.0 212.5,10.0" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,10.0 212.5,10.0 212.5,155.0 10.0,155.0" />
 </svg>

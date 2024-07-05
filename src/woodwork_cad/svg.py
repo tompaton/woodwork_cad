@@ -94,8 +94,8 @@ class SVGCanvas:
     ) -> None:
         self.write(
             "circle",
-            cx=cx,
-            cy=cy,
+            cx=round(cx, 1),
+            cy=round(cy, 1),
             r=r,
             stroke=colour,
             fill=fill,
@@ -142,7 +142,7 @@ class SVGCanvas:
             stroke_width=stroke_width,
             stroke_dasharray=stroke_dasharray,
             stroke=colour,
-            points=" ".join("{},{}".format(*p) for p in points),
+            points=" ".join("{:.1f},{:.1f}".format(*p) for p in points),
             **attrs,
         )
         self._min_max_y(*(y for x, y in points))

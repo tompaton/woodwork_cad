@@ -7,9 +7,9 @@
 <text style="" text-anchor="middle" x="25" y="15" fill="black" font-size="12px">p1</text>
 <circle cx="90" cy="110" r="2" stroke="blue" fill="white" stroke-width="1" />
 <text style="" text-anchor="middle" x="95" y="125" fill="black" font-size="12px">p2</text>
-<circle cx="60.0" cy="71.42857142857143" r="2" stroke="blue" fill="white" stroke-width="1" />
+<circle cx="60.0" cy="71.4" r="2" stroke="blue" fill="white" stroke-width="1" />
 <text style="" text-anchor="middle" x="68.0" y="76.42857142857143" fill="black" font-size="12px">i</text>
-<circle cx="60.0" cy="71.42857142857143" r="4" stroke="red" fill="none" stroke-width="1" />
+<circle cx="60.0" cy="71.4" r="4" stroke="red" fill="none" stroke-width="1" />
 <line x1="210" y1="20" x2="210" y2="110" stroke="gray" stroke-width="1" />
 <text style="" text-anchor="middle" x="200" y="20" fill="black" font-size="12px">in</text>
 <text style="" text-anchor="middle" x="225" y="20" fill="black" font-size="12px">out</text>
@@ -18,10 +18,10 @@
 <text style="" text-anchor="middle" x="245" y="15" fill="black" font-size="12px">p1</text>
 <circle cx="170" cy="110" r="2" stroke="blue" fill="white" stroke-width="1" />
 <text style="" text-anchor="middle" x="175" y="125" fill="black" font-size="12px">p2</text>
-<circle cx="210.0" cy="58.57142857142857" r="2" stroke="blue" fill="white" stroke-width="1" />
+<circle cx="210.0" cy="58.6" r="2" stroke="blue" fill="white" stroke-width="1" />
 <text style="" text-anchor="middle" x="218.0" y="63.57142857142857" fill="black" font-size="12px">i</text>
 <circle cx="170" cy="110" r="4" stroke="red" fill="none" stroke-width="1" />
-<circle cx="210.0" cy="58.57142857142857" r="4" stroke="red" fill="none" stroke-width="1" />
+<circle cx="210.0" cy="58.6" r="4" stroke="red" fill="none" stroke-width="1" />
 <line x1="360" y1="20" x2="360" y2="110" stroke="gray" stroke-width="1" />
 <text style="" text-anchor="middle" x="350" y="20" fill="black" font-size="12px">in</text>
 <text style="" text-anchor="middle" x="375" y="20" fill="black" font-size="12px">out</text>

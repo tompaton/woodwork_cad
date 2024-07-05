@@ -1,15 +1,15 @@
 <svg width="1100" viewBox="0.0 0.0 550.0 351.1" xmlns="http://www.w3.org/2000/svg">
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 294.98889300106975,50.0 302.4944465005349,63.0 142.49444650053488,63.0" />
-<circle cx="294.98889300106975" cy="50.0" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="294.98889300106975,50.0 367.48889300106975,175.5736835487436 359.98333950160463,188.5736835487436 279.9777860021395,50.0" />
-<circle cx="367.48889300106975" cy="175.5736835487436" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.48889300106975,175.5736835487436 294.9944465005349,301.1377481542538 279.98333950160463,301.1377481542538 359.98333950160463,162.5736835487436" />
-<circle cx="294.9944465005349" cy="301.1377481542538" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="294.9944465005349,301.1377481542538 150.00555349946512,301.1377481542538 142.5,288.1377481542538 302.5,288.1377481542538" />
-<circle cx="150.00555349946512" cy="301.1377481542538" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.00555349946512,301.1377481542538 77.50555349946505,175.56406460551025 85.01110699893019,162.56406460551025 165.01666049839537,301.1377481542538" />
-<circle cx="77.50555349946505" cy="175.56406460551025" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.50555349946505,175.56406460551025 149.99999999999994,50.00000000000006 165.01110699893022,50.00000000000006 85.01110699893017,188.56406460551025" />
-<circle cx="149.99999999999994" cy="50.00000000000006" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="290.98634606671834,56.92833590916557 359.48611625573835,175.5734181833403 290.9916697508024,294.2095449239783 154.00254693435153,294.2094122450882 85.50277674533137,175.56432997091346 153.99722325026744,56.92820323027553" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 295.0,50.0 302.5,63.0 142.5,63.0" />
+<circle cx="295.0" cy="50.0" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 367.5,175.6 360.0,188.6 280.0,50.0" />
+<circle cx="367.5" cy="175.6" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,175.6 295.0,301.1 280.0,301.1 360.0,162.6" />
+<circle cx="295.0" cy="301.1" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,301.1 150.0,301.1 142.5,288.1 302.5,288.1" />
+<circle cx="150.0" cy="301.1" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,301.1 77.5,175.6 85.0,162.6 165.0,301.1" />
+<circle cx="77.5" cy="175.6" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,175.6 150.0,50.0 165.0,50.0 85.0,188.6" />
+<circle cx="150.0" cy="50.0" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="291.0,56.9 359.5,175.6 291.0,294.2 154.0,294.2 85.5,175.6 154.0,56.9" />
 </svg>

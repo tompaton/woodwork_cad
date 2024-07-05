@@ -1,15 +1,15 @@
 <svg width="1000" viewBox="0.0 0.0 500.0 152.0" xmlns="http://www.w3.org/2000/svg">
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,18.485281374238568 18.48528137423857,68.48528137423857 318.4852813742386,68.48528137423857 318.4852813742386,18.485281374238568" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,60.0 18.48528137423857,68.48528137423857 18.48528137423857,18.485281374238568" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,18.485281374238568 318.4852813742386,18.485281374238568 310.0,10.0 10.0,10.0" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,60.0 310.0,60.0 318.4852813742386,68.48528137423857 18.48528137423857,68.48528137423857" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="318.4852813742386,18.485281374238568 318.4852813742386,68.48528137423857 310.0,60.0 310.0,10.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,18.5 18.5,68.5 318.5,68.5 318.5,18.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,60.0 18.5,68.5 18.5,18.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,18.5 318.5,18.5 310.0,10.0 10.0,10.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,60.0 310.0,60.0 318.5,68.5 18.5,68.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="318.5,18.5 318.5,68.5 310.0,60.0 310.0,10.0" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,10.0 310.0,10.0 310.0,60.0 10.0,60.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,96.97056274847714 18.48528137423857,141.97056274847716 318.4852813742386,141.97056274847716 318.4852813742386,96.97056274847714" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,88.48528137423857 10.0,133.48528137423858 18.48528137423857,141.97056274847716 18.48528137423857,96.97056274847714" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.48528137423857,96.97056274847714 318.4852813742386,96.97056274847714 310.0,88.48528137423857 10.0,88.48528137423857" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,133.48528137423858 310.0,133.48528137423858 318.4852813742386,141.97056274847716 18.48528137423857,141.97056274847716" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="318.4852813742386,96.97056274847714 318.4852813742386,141.97056274847716 310.0,133.48528137423858 310.0,88.48528137423857" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,88.48528137423857 310.0,88.48528137423857 310.0,133.48528137423858 10.0,133.48528137423858" />
-<circle cx="40" cy="113.48528137423857" r="5" stroke="orange" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,97.0 18.5,142.0 318.5,142.0 318.5,97.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,88.5 10.0,133.5 18.5,142.0 18.5,97.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,97.0 318.5,97.0 310.0,88.5 10.0,88.5" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,133.5 310.0,133.5 318.5,142.0 18.5,142.0" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="318.5,97.0 318.5,142.0 310.0,133.5 310.0,88.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,88.5 310.0,88.5 310.0,133.5 10.0,133.5" />
+<circle cx="40" cy="113.5" r="5" stroke="orange" fill="white" stroke-width="1" />
 </svg>

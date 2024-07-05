@@ -18,17 +18,17 @@
 <circle cx="320.0" cy="260.0" r="3" stroke="red" fill="white" stroke-width="1" />
 <line x1="20" y1="320" x2="60" y2="410" stroke="blue" stroke-width="1" />
 <line x1="110" y1="320" x2="20" y2="410" stroke="green" stroke-width="1" />
-<circle cx="47.69230769230769" cy="382.3076923076923" r="3" stroke="red" fill="white" stroke-width="1" />
+<circle cx="47.7" cy="382.3" r="3" stroke="red" fill="white" stroke-width="1" />
 <line x1="170" y1="320" x2="260" y2="360" stroke="blue" stroke-width="1" />
 <line x1="260" y1="320" x2="170" y2="410" stroke="green" stroke-width="1" />
-<circle cx="232.30769230769232" cy="347.6923076923077" r="3" stroke="red" fill="white" stroke-width="1" />
+<circle cx="232.3" cy="347.7" r="3" stroke="red" fill="white" stroke-width="1" />
 <line x1="410" y1="320" x2="320" y2="410" stroke="blue" stroke-width="1" />
 <line x1="320" y1="320" x2="410" y2="360" stroke="green" stroke-width="1" />
-<circle cx="382.3076923076923" cy="347.6923076923077" r="3" stroke="red" fill="white" stroke-width="1" />
+<circle cx="382.3" cy="347.7" r="3" stroke="red" fill="white" stroke-width="1" />
 <line x1="110" y1="470" x2="20" y2="560" stroke="blue" stroke-width="1" />
 <line x1="20" y1="470" x2="50" y2="510" stroke="green" stroke-width="1" />
-<circle cx="58.57142857142857" cy="521.4285714285714" r="3" stroke="red" fill="white" stroke-width="1" />
+<circle cx="58.6" cy="521.4" r="3" stroke="red" fill="white" stroke-width="1" />
 <line x1="170" y1="470" x2="210" y2="500" stroke="blue" stroke-width="1" />
 <line x1="170" y1="560" x2="210" y2="520" stroke="green" stroke-width="1" />
-<circle cx="221.42857142857144" cy="508.57142857142856" r="3" stroke="red" fill="white" stroke-width="1" />
+<circle cx="221.4" cy="508.6" r="3" stroke="red" fill="white" stroke-width="1" />
 </svg>
