@@ -35,11 +35,23 @@ dovetails
 
 ![Figure 8](board_test/fig-8.svg)
 
-grooves
+dovetails (from above)
 
 ![Figure 9](board_test/fig-9.svg)
 
-rotation
+grooves
 
 ![Figure 10](board_test/fig-10.svg)
+
+grooves (from above)
+
+![Figure 11](board_test/fig-11.svg)
+
+rotation
+
+![Figure 12](board_test/fig-12.svg)
+
+rotation (from above)
+
+![Figure 13](board_test/fig-13.svg)
 

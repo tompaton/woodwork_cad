@@ -3,7 +3,7 @@ from math import sqrt
 from pathlib import Path
 from typing import Any, Iterator, Optional, Tuple
 
-from .geometry import Points, Points3d, to2d
+from .geometry import Points, Points3d, get_camera, set_camera, to2d
 
 
 class SVGCanvas:
@@ -168,22 +168,30 @@ class PrintToSVGFiles:
         self.width: int = 0
         self.height: int = 0
         self.zoom: float = 1.0
+        self.default_camera: str = "below"
+        self.camera: str = "below"
+        self.old_camera: str = "below"
 
     def __call__(
-        self, width: int, height: int = 0, zoom: float = 1.0
+        self, width: int, height: int = 0, zoom: float = 1.0, camera: str = ""
     ) -> "PrintToSVGFiles":
         self.width = width
         self.height = height
         self.zoom = zoom
+        self.camera = camera or self.default_camera
         return self
 
     def __enter__(self) -> SVGCanvas:
         self.figure += 1
         self.canvas = SVGCanvas()
+
+        self.old_camera = get_camera()
+        set_camera(self.camera)
         return self.canvas
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
         assert self.canvas is not None
+        set_camera(self.old_camera)
         f = Path(f"output/{self.prefix}/fig-{self.figure}.svg")
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(self.canvas.svg_document(self.width, self.height, self.zoom))

@@ -3,15 +3,13 @@ from itertools import pairwise
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
 from .geometry import (
-    CAMERA,
-    LIGHT,
     Point3d,
     Points3d,
     Vector3d,
     clip_polygon2,
     cross,
-    dotproduct,
     equal_vectors,
+    get_lighting,
     normalize,
     point_rotator,
     subtract,
@@ -122,8 +120,7 @@ class Face:
     def get_style(self, normal: Vector3d) -> Tuple[str, Dict[str, Any]]:
         dash = ""
 
-        camera = dotproduct(normal, CAMERA)
-        light = dotproduct(normal, LIGHT)
+        camera, light = get_lighting(normal)
 
         # check angle with camera to find back faces
         if camera > 0:

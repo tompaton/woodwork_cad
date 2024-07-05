@@ -14,11 +14,50 @@ Line = Tuple[Point, Point]
 Vector3d = Tuple[float, float, float]
 
 
-def to2d(p: Point3d) -> Point:
+def to2d_isometric_above(p: Point3d) -> Point:
+    x, y, z = p
+    zx = cos(radians(-45))
+    zy = sin(radians(-45))
+    return (x + zx * z, y + zy * z)
+
+
+def to2d_isometric_below(p: Point3d) -> Point:
     x, y, z = p
     zx = cos(radians(45))
     zy = sin(radians(45))
     return (x + zx * z, y + zy * z)
+
+
+_to2d = to2d_isometric_below
+
+
+def to2d(p: Point3d) -> Point:
+    return _to2d(p)
+
+
+def set_camera(mode: str) -> None:
+    global _to2d, CAMERA, LIGHT
+    if mode == "above":
+        _to2d = to2d_isometric_above
+        CAMERA = normalize((-1.0, 1.0, 1.0))
+        LIGHT = normalize((-1.0, 1.0, 1.0))
+    elif mode == "below":
+        _to2d = to2d_isometric_below
+        CAMERA = normalize((-1.0, -1.0, 1.0))
+        LIGHT = normalize((-1.0, 1.0, 1.0))
+    else:
+        msg = f"Unknown camera mode '{mode}'"
+        raise ValueError(msg)
+
+
+def get_camera() -> str:
+    if _to2d == to2d_isometric_above:
+        return "above"
+    elif _to2d == to2d_isometric_below:
+        return "below"
+    else:
+        msg = f"Unknown camera mode '{_to2d}'"
+        raise ValueError(msg)
 
 
 def length(a: Vector3d) -> float:
@@ -123,6 +162,12 @@ def clip_polygon2(
 CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
 
 LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))
+
+
+def get_lighting(normal: Vector3d) -> Tuple[float, float]:
+    camera = dotproduct(normal, CAMERA)
+    light = dotproduct(normal, LIGHT)
+    return camera, light
 
 
 def point_rotator(

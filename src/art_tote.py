@@ -255,15 +255,15 @@ might be better to have a long shallow(ish) removable till for brushes and small
         till_assembly.draw_plan(canvas, 10 + base_boards[3].T, 10 + base_boards[0].T)
 
     print("## Base assembly")
-    with print_svg(800, zoom=2) as canvas:
+    with print_svg(800, zoom=2, camera="above") as canvas:
         base_assembly.draw(canvas, 20, 20)
 
     print("## Till assembly")
-    with print_svg(800, zoom=2) as canvas:
+    with print_svg(800, zoom=2, camera="above") as canvas:
         till_assembly.draw(canvas, 20, 20)
 
     print("## Box assembly")
-    with print_svg(800, zoom=2) as canvas:
+    with print_svg(800, zoom=2, camera="above") as canvas:
         box_assembly.draw(canvas, 20, 20)
 
     print("## Full assembly")
@@ -272,7 +272,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     assembly.add_subassembly((T, -box_depth + T, T), box_assembly)
     assembly.add_subassembly((T, T + 5, T + till_width), till_assembly)
 
-    with print_svg(800, zoom=2) as canvas:
+    with print_svg(800, zoom=2, camera="above") as canvas:
         assembly.draw(canvas, 20, 20)
 
 

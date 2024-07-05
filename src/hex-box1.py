@@ -312,7 +312,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     print("## Final box")
 
-    with print_svg(550, zoom=2) as canvas:
+    with print_svg(550, zoom=2, camera="above") as canvas:
         assembly.draw(canvas, 10, 10)
 
     # options:

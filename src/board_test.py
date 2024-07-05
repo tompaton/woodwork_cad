@@ -89,11 +89,29 @@ def board_test() -> None:
         board3.mitre(45, 45)
         draw_boards(canvas, 200, 10, [board3])
 
+    print("dovetails (from above)")
+    board3 = joint(*boards3)
+    board3.dovetail_pins(right=False, width=20, tails=3, base=12)
+    board3.dovetail_tails(right=True, width=20, tails=3, base=12)
+    with print_svg(500, zoom=2, camera="above") as canvas:
+        draw_boards(canvas, 10, 10, [board3])
+        board3.mitre(45, 45)
+        draw_boards(canvas, 200, 10, [board3])
+
     print("grooves")
     board4 = Board(200, 100, 19)
     board4.grooves.add(10, 10, 10)
     board4.grooves.add(75, 15, 5, face=False)
     with print_svg(500, zoom=2) as canvas:
+        draw_boards(canvas, 10, 10, [board4])
+        board4.mitre(45, 45)
+        draw_boards(canvas, 250, 10, [board4])
+
+    print("grooves (from above)")
+    board4 = Board(200, 100, 19)
+    board4.grooves.add(10, 10, 10)
+    board4.grooves.add(75, 15, 5, face=False)
+    with print_svg(500, zoom=2, camera="above") as canvas:
         draw_boards(canvas, 10, 10, [board4])
         board4.mitre(45, 45)
         draw_boards(canvas, 250, 10, [board4])
@@ -113,6 +131,14 @@ def board_test() -> None:
         _draw_rotated(canvas, board4, 250, 10, 180, offset=(board4.L, 0, board4.T))
         _draw_rotated(canvas, board4, 10, 150, 90, offset=(2 * board4.T, 0, 0))
         _draw_rotated(canvas, board4, 250, 150, 45)
+
+    print("rotation (from above)")
+
+    with print_svg(500, zoom=2, camera="above") as canvas:
+        _draw_rotated(canvas, board4, 10, 10, 0)
+        _draw_rotated(canvas, board4, 250, 10, 180, offset=(board4.L, 0, board4.T))
+        _draw_rotated(canvas, board4, 10, 250, 90, offset=(2 * board4.T, 0, 0))
+        _draw_rotated(canvas, board4, 250, 250, 45)
 
 
 if __name__ == "__main__":
