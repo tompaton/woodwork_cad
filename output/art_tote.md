@@ -118,3 +118,7 @@ not too high, but has to have room to easily remove box
 
 ![Figure 10](art_tote/fig-10.svg)
 
+## Full assembly
+
+![Figure 11](art_tote/fig-11.svg)
+

@@ -266,6 +266,15 @@ might be better to have a long shallow(ish) removable till for brushes and small
     with print_svg(800, zoom=2) as canvas:
         box_assembly.draw(canvas, 20, 20)
 
+    print("## Full assembly")
+    assembly = Assembly()
+    assembly.add_subassembly((0.0, 0.0, 0.0), base_assembly)
+    assembly.add_subassembly((T, -box_depth + T, T), box_assembly)
+    assembly.add_subassembly((T, T + 5, T + till_width), till_assembly)
+
+    with print_svg(800, zoom=2) as canvas:
+        assembly.draw(canvas, 20, 20)
+
 
 if __name__ == "__main__":
     draw_art_tote()
