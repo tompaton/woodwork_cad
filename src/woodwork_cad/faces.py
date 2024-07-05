@@ -271,7 +271,7 @@ def rotate_faces(
     mate: Point3d,
     origin2d_out: List[Point3d],
 ) -> Iterator[Face]:
-    if not rotate_y:
+    if rotate_y == 0.0 and offset == (0.0, 0.0, 0.0):
         yield from faces
         origin2d_out.append(origin)
         origin2d_out.append(mate)
