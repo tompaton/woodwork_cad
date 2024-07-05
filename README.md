@@ -23,6 +23,9 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 * mortises & tennons
 * mitred cuts
 * shading of left side (visible when mitred)
+* better dovetail pin/tail sizing
 
 * bugs:
   - 2nd board hex_box1-strips/fig-4.svg is missing the top shading stripe
+  - (not exactly a bug) painters z-order algorithm makes for some weird overlaps
+    in assemblies

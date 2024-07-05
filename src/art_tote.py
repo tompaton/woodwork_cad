@@ -1,6 +1,7 @@
 # ruff: noqa: F401
 import sys
 
+from woodwork_cad.assembly import Assembly
 from woodwork_cad.board import Board
 from woodwork_cad.operations import (
     cut,
@@ -240,66 +241,30 @@ might be better to have a long shallow(ish) removable till for brushes and small
     for board in till_boards:
         print(f"  - {board}")
 
+    base_assembly = Assembly()
+    base_assembly.add_walls(90, base_boards[:4])
+    till_assembly = Assembly()
+    till_assembly.add_walls(90, till_boards[:4])
+    box_assembly = Assembly()
+    box_assembly.add_walls(90, box_boards[:4])
+
     print("## Plan view")
-
-    # corners: Points = []
     with print_svg(550, zoom=2) as canvas:
-        x, y, angle = 10, 10, 0
-        for side in base_boards[:4]:
-            x, y = side.draw_plan(canvas, x, y, angle)
-            # corners.append((x, y))
-            angle += 90
-            canvas.circle(x, y, 2, "red")
-
-        x, y, angle = 10 + base_boards[3].T, 10 + base_boards[0].T, 0
-        for side in box_boards[:4]:
-            x, y = side.draw_plan(canvas, x, y, angle)
-            # corners.append((x, y))
-            angle += 90
-            canvas.circle(x, y, 2, "red")
-
-        x, y, angle = 10 + base_boards[3].T, 10 + base_boards[0].T, 0
-        for side in till_boards[:4]:
-            x, y = side.draw_plan(canvas, x, y, angle)
-            # corners.append((x, y))
-            angle += 90
-            canvas.circle(x, y, 2, "red")
+        base_assembly.draw_plan(canvas, 10, 10)
+        box_assembly.draw_plan(canvas, 10 + base_boards[3].T, 10 + base_boards[0].T)
+        till_assembly.draw_plan(canvas, 10 + base_boards[3].T, 10 + base_boards[0].T)
 
     print("## Base assembly")
-    angle, mate = 0, (0, 0, 0)
-    base_faces: list = []
-    for side in base_boards[:4]:
-        # need to collect together all rotate faces, then sort, then draw
-        mate = side.rotated_faces(rotate_y=angle, offset=mate, faces=base_faces)[1]
-        angle += 90
-
     with print_svg(800, zoom=2) as canvas:
-        for face in sorted(base_faces):
-            face.draw(canvas, 20, 20)
+        base_assembly.draw(canvas, 20, 20)
 
     print("## Till assembly")
-    angle, mate = 0, (0, 0, 0)
-    till_faces: list = []
-    for side in till_boards[:4]:
-        # need to collect together all rotate faces, then sort, then draw
-        mate = side.rotated_faces(rotate_y=angle, offset=mate, faces=till_faces)[1]
-        angle += 90
-
     with print_svg(800, zoom=2) as canvas:
-        for face in sorted(till_faces):
-            face.draw(canvas, 20, 20)
+        till_assembly.draw(canvas, 20, 20)
 
     print("## Box assembly")
-    angle, mate = 0, (0, 0, 0)
-    box_faces: list = []
-    for side in box_boards[:4]:
-        # need to collect together all rotate faces, then sort, then draw
-        mate = side.rotated_faces(rotate_y=angle, offset=mate, faces=box_faces)[1]
-        angle += 90
-
     with print_svg(800, zoom=2) as canvas:
-        for face in sorted(box_faces):
-            face.draw(canvas, 20, 20)
+        box_assembly.draw(canvas, 20, 20)
 
 
 if __name__ == "__main__":

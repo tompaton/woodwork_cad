@@ -221,8 +221,11 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     print("## Sides")
 
     # TODO: factor out assemble function some how (separate from drawing...)
+    # assembly = Assembly()
+    # assembly.add_walls(60, sides)
     corners: Points = []
     with print_svg(550, zoom=2) as canvas:
+        # corners = assembly.draw_plan(canvas, 150, 50)
         x, y, angle = 150, 50, 0
         for side in sides:
             x, y = side.draw_plan(canvas, x, y, angle)
