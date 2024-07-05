@@ -208,12 +208,9 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     dovetail_base = length_inside - length_outside
     print(f"- baseline is {dovetail_base:.1f} from end")
 
-    sides[0].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
-    sides[0].dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
-    sides[1].dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=True)
-    sides[1].dovetail_tails(
-        tails=3, base=dovetail_base, width=15, angle=15, right=False
-    )
+    for side in sides:
+        side.dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
+        side.dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
 
     with print_svg(550, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, [sides[0]])
@@ -314,7 +311,9 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     # TODO: strips for lid insert
 
     print("## Final box")
-    print("TODO: side elevations")
+
+    with print_svg(550, zoom=2) as canvas:
+        assembly.draw(canvas, 10, 10)
 
     # options:
     # - framed lid (hexagonal frame with panel might need less jointed

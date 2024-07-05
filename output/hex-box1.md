@@ -48,4 +48,6 @@
 ![Figure 6](hex_box1/fig-6.svg)
 
 ## Final box
-TODO: side elevations
+
+![Figure 7](hex_box1/fig-7.svg)
+
