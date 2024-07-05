@@ -17,7 +17,8 @@ class Assembly:
 
     def add_walls(self, angle: float, sides: List[Board]) -> None:
         rotate_y = 0.0
-        offset = (0.0, 0.0, 0.0)
+        x, y, z = sides[0].profile.origin
+        offset = (-x, -y, -z)
         for side in sides:
             self.boards.append(side)
             self.positions.append(offset)

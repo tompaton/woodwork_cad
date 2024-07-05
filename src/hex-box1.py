@@ -1,6 +1,7 @@
 # ruff: noqa: F401
 import sys
 
+from woodwork_cad.assembly import Assembly
 from woodwork_cad.board import Board
 from woodwork_cad.defects import Hole, Notch
 from woodwork_cad.operations import (
@@ -220,18 +221,10 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     print("## Sides")
 
-    # TODO: factor out assemble function some how (separate from drawing...)
-    # assembly = Assembly()
-    # assembly.add_walls(60, sides)
-    corners: Points = []
+    assembly = Assembly()
+    assembly.add_walls(60, sides)
     with print_svg(550, zoom=2) as canvas:
-        # corners = assembly.draw_plan(canvas, 150, 50)
-        x, y, angle = 150, 50, 0
-        for side in sides:
-            x, y = side.draw_plan(canvas, x, y, angle)
-            corners.append((x, y))
-            angle += 60
-            canvas.circle(x, y, 2, "red")
+        corners = assembly.draw_plan(canvas, 157.5, 50)
 
         hex_L, hex_W, corners2 = polyline_bounds(corners)
 
