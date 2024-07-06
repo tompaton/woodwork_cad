@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from operator import attrgetter
 from typing import Iterable, Iterator, List, Optional, Tuple
 
 from .cutlist import Cuts
@@ -192,7 +193,7 @@ class Board:
         origin, mate = self.rotated_faces(rotate_y, offset, faces)
 
         # draw all faces separately from back to front to do basic hidden line removal
-        for face in sorted(faces):
+        for face in sorted(faces, key=attrgetter("_key")):
             face.draw(canvas, x, y)
 
         for defect in self.defects:

@@ -27,8 +27,13 @@ class Face:
     fill: str = ""
     zorder: int = 0
 
+    def __post_init__(self) -> None:
+        self.__centroid: Optional[Vector3d] = None
+        self.__normal: Optional[Vector3d] = None
+
     def reverse(self) -> "Face":
         self.points.reverse()
+        self.__normal = None
         return self
 
     def offset(self, dx: float = 0, dy: float = 0, dz: float = 0) -> "Face":
@@ -147,29 +152,37 @@ class Face:
         if not self.points:
             return (0.0, 0.0, 0.0)
 
-        # for concave polygons we need to sum all cross products
-        # between centroid and each pair of points
-        C = self.centroid
-        sx = sy = sz = 0.0
-        for a, b in pairwise(self.points + self.points[:1]):
-            n = cross(subtract(b, C), subtract(a, C))
-            sx += n[0]
-            sy += n[1]
-            sz += n[2]
-        return normalize((sx, sy, sz))
+        if self.__normal is None:
+            # for concave polygons we need to sum all cross products
+            # between centroid and each pair of points
+            C = self.centroid
+            sx = sy = sz = 0.0
+            for a, b in pairwise(self.points + self.points[:1]):
+                n = cross(subtract(b, C), subtract(a, C))
+                sx += n[0]
+                sy += n[1]
+                sz += n[2]
+            self.__normal = normalize((sx, sy, sz))
+        return self.__normal
 
     @property
     def centroid(self) -> Vector3d:
         if not self.points:
             return (0.0, 0.0, 0.0)
 
-        min_x = min(x for x, y, z in self.points)
-        max_x = max(x for x, y, z in self.points)
-        min_y = min(y for x, y, z in self.points)
-        max_y = max(y for x, y, z in self.points)
-        min_z = min(z for x, y, z in self.points)
-        max_z = max(z for x, y, z in self.points)
-        return ((max_x + min_x) / 2, (max_y + min_y) / 2, (max_z + min_z) / 2)
+        if self.__centroid is None:
+            min_x = min(x for x, y, z in self.points)
+            max_x = max(x for x, y, z in self.points)
+            min_y = min(y for x, y, z in self.points)
+            max_y = max(y for x, y, z in self.points)
+            min_z = min(z for x, y, z in self.points)
+            max_z = max(z for x, y, z in self.points)
+            self.__centroid = (
+                (max_x + min_x) / 2,
+                (max_y + min_y) / 2,
+                (max_z + min_z) / 2,
+            )
+        return self.__centroid
 
     def remove(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
         # clip the dovetail regions out of the face

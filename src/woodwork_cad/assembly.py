@@ -1,3 +1,4 @@
+from operator import attrgetter
 from typing import Iterator, List
 
 from .board import Board
@@ -47,7 +48,7 @@ class Assembly:
         self.subassemblies.append(assembly)
 
     def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
-        for face in sorted(self.faces):
+        for face in sorted(self.faces, key=attrgetter("_key")):
             face.draw(canvas, x, y)
 
     @property
