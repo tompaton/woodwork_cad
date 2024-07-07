@@ -5,18 +5,18 @@
 <polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,280.0 386.0,280.0 396.6,290.6 20.6,290.6" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="396.6,20.6 396.6,290.6 386.0,280.0 386.0,10.0" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,10.0 386.0,10.0 386.0,280.0 10.0,280.0" />
-<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,194.0 387.0,194.0 387.0,199.0 10.0,199.0" />
-<text style="" text-anchor="left" x="20" y="204.0" fill="black">1</text>
-<text style="" text-anchor="start" x="198.0" y="102.0" fill="black">box lid</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,199.0 387.0,199.0 387.0,280.0 397.6,290.6 20.6,290.6 10.0,280.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,321.2 20.6,756.2 236.6,756.2 236.6,321.2" />
+<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,186.0 387.0,186.0 387.0,191.0 10.0,191.0" />
+<text style="" text-anchor="left" x="20" y="196.0" fill="black">1</text>
+<text style="" text-anchor="start" x="198.0" y="98.0" fill="black">box lid</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,191.0 387.0,191.0 387.0,280.0 397.6,290.6 20.6,290.6 10.0,280.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,321.2 20.6,756.2 244.6,756.2 244.6,321.2" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,310.6 10.0,745.6 20.6,756.2 20.6,321.2" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,321.2 236.6,321.2 226.0,310.6 10.0,310.6" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,745.6 226.0,745.6 236.6,756.2 20.6,756.2" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="236.6,321.2 236.6,756.2 226.0,745.6 226.0,310.6" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,310.6 226.0,310.6 226.0,745.6 10.0,745.6" />
-<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,726.6 227.0,726.6 227.0,731.6 10.0,731.6" />
-<text style="" text-anchor="left" x="20" y="736.6066017177982" fill="black">1</text>
-<text style="" text-anchor="start" x="118.0" y="518.6066017177982" fill="black">base bottom</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,731.6 227.0,731.6 227.0,745.6 237.6,756.2 20.6,756.2 10.0,745.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,321.2 244.6,321.2 234.0,310.6 10.0,310.6" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,745.6 234.0,745.6 244.6,756.2 20.6,756.2" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="244.6,321.2 244.6,756.2 234.0,745.6 234.0,310.6" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,310.6 234.0,310.6 234.0,745.6 10.0,745.6" />
+<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,734.6 235.0,734.6 235.0,739.6 10.0,739.6" />
+<text style="" text-anchor="left" x="20" y="744.6066017177982" fill="black">1</text>
+<text style="" text-anchor="start" x="122.0" y="522.6066017177982" fill="black">base bottom</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,739.6 235.0,739.6 235.0,745.6 245.6,756.2 20.6,756.2 10.0,745.6" />
 </svg>

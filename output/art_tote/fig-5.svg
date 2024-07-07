@@ -25,10 +25,10 @@
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="386.0,352.1 392.0,352.1 392.0,487.1 402.6,497.7 396.6,497.7 386.0,487.1" />
 <text style="" text-anchor="left" x="396.0" y="362.12132034355966" fill="black">1</text>
 <text style="" text-anchor="start" x="198.0" y="419.62132034355966" fill="black">box lid a</text>
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="607.0,352.1 613.0,352.1 613.0,487.1 623.6,497.7 617.6,497.7 607.0,487.1" />
-<text style="" text-anchor="left" x="617.0" y="362.12132034355966" fill="black">2</text>
-<text style="" text-anchor="start" x="499.0" y="419.62132034355966" fill="black">base bottom a</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="612.0,352.1 751.0,352.1 751.0,487.1 761.6,497.7 622.6,497.7 612.0,487.1" />
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="615.0,352.1 621.0,352.1 621.0,487.1 631.6,497.7 625.6,497.7 615.0,487.1" />
+<text style="" text-anchor="left" x="625.0" y="362.12132034355966" fill="black">2</text>
+<text style="" text-anchor="start" x="503.0" y="419.62132034355966" fill="black">base bottom a</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="620.0,352.1 751.0,352.1 751.0,487.1 761.6,497.7 630.6,497.7 620.0,487.1" />
 <text style="" text-anchor="middle" x="380.0" y="419.62132034355966" fill="black">b-1</text>
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,528.3 20.6,663.3 760.6,663.3 760.6,528.3" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,517.7 10.0,652.7 20.6,663.3 20.6,528.3" />
@@ -39,10 +39,10 @@
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="386.0,517.7 392.0,517.7 392.0,652.7 402.6,663.3 396.6,663.3 386.0,652.7" />
 <text style="" text-anchor="left" x="396.0" y="527.7279220613578" fill="black">1</text>
 <text style="" text-anchor="start" x="198.0" y="585.2279220613578" fill="black">box lid b</text>
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="607.0,517.7 613.0,517.7 613.0,652.7 623.6,663.3 617.6,663.3 607.0,652.7" />
-<text style="" text-anchor="left" x="617.0" y="527.7279220613578" fill="black">2</text>
-<text style="" text-anchor="start" x="499.0" y="585.2279220613578" fill="black">base bottom b</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="612.0,517.7 751.0,517.7 751.0,652.7 761.6,663.3 622.6,663.3 612.0,652.7" />
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="615.0,517.7 621.0,517.7 621.0,652.7 631.6,663.3 625.6,663.3 615.0,652.7" />
+<text style="" text-anchor="left" x="625.0" y="527.7279220613578" fill="black">2</text>
+<text style="" text-anchor="start" x="503.0" y="585.2279220613578" fill="black">base bottom b</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="620.0,517.7 751.0,517.7 751.0,652.7 761.6,663.3 630.6,663.3 620.0,652.7" />
 <text style="" text-anchor="middle" x="380.0" y="585.2279220613578" fill="black">b-2</text>
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,693.9 20.6,828.9 760.6,828.9 760.6,693.9" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,683.3 10.0,818.3 20.6,828.9 20.6,693.9" />
@@ -60,10 +60,10 @@
 <text style="" text-anchor="start" x="210.0" y="733.334523779156" fill="black">till back</text>
 <polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,783.3 411.0,783.3 411.0,788.3 10.0,788.3" />
 <text style="" text-anchor="left" x="20" y="793.334523779156" fill="black">4</text>
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="226.0,788.3 232.0,788.3 232.0,818.3 242.6,828.9 236.6,828.9 226.0,818.3" />
-<text style="" text-anchor="left" x="236.0" y="798.334523779156" fill="black">5</text>
-<text style="" text-anchor="start" x="118.0" y="803.334523779156" fill="black">base bottom d</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="231.0,788.3 411.0,788.3 411.0,818.3 421.6,828.9 241.6,828.9 231.0,818.3" />
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="234.0,788.3 240.0,788.3 240.0,818.3 250.6,828.9 244.6,828.9 234.0,818.3" />
+<text style="" text-anchor="left" x="244.0" y="798.334523779156" fill="black">5</text>
+<text style="" text-anchor="start" x="122.0" y="803.334523779156" fill="black">base bottom d</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="239.0,788.3 411.0,788.3 411.0,818.3 421.6,828.9 249.6,828.9 239.0,818.3" />
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="110.0,753.3 116.0,753.3 116.0,783.3 110.0,783.3" />
 <text style="" text-anchor="left" x="120.0" y="763.334523779156" fill="black">6</text>
 <text style="" text-anchor="start" x="60.0" y="768.334523779156" fill="black">till left</text>
@@ -71,10 +71,10 @@
 <text style="" text-anchor="left" x="225.0" y="763.334523779156" fill="black">7</text>
 <text style="" text-anchor="start" x="165.0" y="768.334523779156" fill="black">till right</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="220.0,753.3 411.0,753.3 411.0,783.3 220.0,783.3" />
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="631.0,683.3 637.0,683.3 637.0,818.3 647.6,828.9 641.6,828.9 631.0,818.3" />
-<text style="" text-anchor="left" x="641.0" y="693.334523779156" fill="black">8</text>
-<text style="" text-anchor="start" x="523.0" y="750.834523779156" fill="black">base bottom c</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="636.0,683.3 751.0,683.3 751.0,818.3 761.6,828.9 646.6,828.9 636.0,818.3" />
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="639.0,683.3 645.0,683.3 645.0,818.3 655.6,828.9 649.6,828.9 639.0,818.3" />
+<text style="" text-anchor="left" x="649.0" y="693.334523779156" fill="black">8</text>
+<text style="" text-anchor="start" x="527.0" y="750.834523779156" fill="black">base bottom c</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="644.0,683.3 751.0,683.3 751.0,818.3 761.6,828.9 654.6,828.9 644.0,818.3" />
 <text style="" text-anchor="middle" x="380.0" y="750.834523779156" fill="black">b-3</text>
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,857.4 18.5,1037.4 808.5,1037.4 808.5,857.4" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,848.9 10.0,1028.9 18.5,1037.4 18.5,857.4" />
@@ -134,25 +134,25 @@
 <polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,1445.9 800.0,1445.9 808.5,1454.4 18.5,1454.4" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="808.5,1274.4 808.5,1454.4 800.0,1445.9 800.0,1265.9" />
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,1265.9 800.0,1265.9 800.0,1445.9 10.0,1445.9" />
-<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,1341.9 801.0,1341.9 801.0,1346.9 10.0,1346.9" />
-<text style="" text-anchor="left" x="20" y="1351.9116882454314" fill="black">1</text>
-<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,1422.9 801.0,1422.9 801.0,1427.9 10.0,1427.9" />
-<text style="" text-anchor="left" x="20" y="1432.9116882454314" fill="black">2</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,1427.9 801.0,1427.9 801.0,1445.9 809.5,1454.4 18.5,1454.4 10.0,1445.9" />
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="410.0,1265.9 416.0,1265.9 416.0,1341.9 410.0,1341.9" />
+<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,1349.9 801.0,1349.9 801.0,1354.9 10.0,1354.9" />
+<text style="" text-anchor="left" x="20" y="1359.9116882454314" fill="black">1</text>
+<polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,1438.9 801.0,1438.9 801.0,1443.9 10.0,1443.9" />
+<text style="" text-anchor="left" x="20" y="1448.9116882454314" fill="black">2</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,1443.9 801.0,1443.9 801.0,1445.9 809.5,1454.4 18.5,1454.4 10.0,1445.9" />
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="410.0,1265.9 416.0,1265.9 416.0,1349.9 410.0,1349.9" />
 <text style="" text-anchor="left" x="420.0" y="1275.9116882454314" fill="black">3</text>
-<text style="" text-anchor="start" x="210.0" y="1303.9116882454314" fill="black">box front</text>
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="615.0,1265.9 621.0,1265.9 621.0,1341.9 615.0,1341.9" />
+<text style="" text-anchor="start" x="210.0" y="1307.9116882454314" fill="black">box front</text>
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="615.0,1265.9 621.0,1265.9 621.0,1349.9 615.0,1349.9" />
 <text style="" text-anchor="left" x="625.0" y="1275.9116882454314" fill="black">4</text>
-<text style="" text-anchor="start" x="515.0" y="1303.9116882454314" fill="black">box left</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="620.0,1265.9 801.0,1265.9 801.0,1341.9 620.0,1341.9" />
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="410.0,1346.9 416.0,1346.9 416.0,1422.9 410.0,1422.9" />
-<text style="" text-anchor="left" x="420.0" y="1356.9116882454314" fill="black">5</text>
-<text style="" text-anchor="start" x="210.0" y="1384.9116882454314" fill="black">box back</text>
-<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="615.0,1346.9 621.0,1346.9 621.0,1422.9 615.0,1422.9" />
-<text style="" text-anchor="left" x="625.0" y="1356.9116882454314" fill="black">6</text>
-<text style="" text-anchor="start" x="515.0" y="1384.9116882454314" fill="black">box right</text>
-<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="620.0,1346.9 801.0,1346.9 801.0,1422.9 620.0,1422.9" />
+<text style="" text-anchor="start" x="515.0" y="1307.9116882454314" fill="black">box left</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="620.0,1265.9 801.0,1265.9 801.0,1349.9 620.0,1349.9" />
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="410.0,1354.9 416.0,1354.9 416.0,1438.9 410.0,1438.9" />
+<text style="" text-anchor="left" x="420.0" y="1364.9116882454314" fill="black">5</text>
+<text style="" text-anchor="start" x="210.0" y="1396.9116882454314" fill="black">box back</text>
+<polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="615.0,1354.9 621.0,1354.9 621.0,1438.9 615.0,1438.9" />
+<text style="" text-anchor="left" x="625.0" y="1364.9116882454314" fill="black">6</text>
+<text style="" text-anchor="start" x="515.0" y="1396.9116882454314" fill="black">box right</text>
+<polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="620.0,1354.9 801.0,1354.9 801.0,1438.9 620.0,1438.9" />
 <text style="" text-anchor="middle" x="405.0" y="1355.9116882454314" fill="black">a-3</text>
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,1485.0 20.6,1500.0 420.6,1500.0 420.6,1485.0" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,1474.4 10.0,1489.4 20.6,1500.0 20.6,1485.0" />

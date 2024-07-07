@@ -2,7 +2,7 @@
 import sys
 
 from woodwork_cad.assembly import Assembly
-from woodwork_cad.board import Board
+from woodwork_cad.board import Board, Size
 from woodwork_cad.operations import (
     cut,
     cut_waste,
@@ -56,9 +56,18 @@ Not sure that the drawer is very useful, wouldn't be long enough for brushes etc
 might be better to have a long shallow(ish) removable till for brushes and small items
 
           """)
+    Ta = 12.0
+    Tb = 15.0
+
+    s_inside = Size(400.0, 200.0, 100.0)
+    s_base = s_inside.expand(Ta * 2, Ta * 2, Ta)
+    s_box = Size(s_inside.length, s_inside.width, 60 + 2 * Ta)
+    s_box_lid = s_box.contract(2 * Ta, 2 * Ta)
+    s_till = Size(s_inside.length, s_inside.width / 2, 30)
+
     pile = StockPile()
-    pile.add("a", 3, Board(790, 180, 12))
-    pile.add("b", 3, Board(740, 135, 15))
+    pile.add("a", 3, Board(790, 180, Ta))
+    pile.add("b", 3, Board(740, 135, Tb))
     # unused boards
     # pile.add("c", 3, Board(400, 165, 19))
     # pile.add("d", 2, Board(390, 185, 15))
@@ -67,54 +76,39 @@ might be better to have a long shallow(ish) removable till for brushes and small
     pile.add("ply", 1, Board(420, 320, 3))
     pile.add("stick", 1, Board(400, 15, 15))
 
-    L_inside = 400.0
-    W_inside = 200.0
-    D_inside = 100.0
-    T = 12.0
-    T2 = 8.0
-    till_depth = 30
-    till_width = W_inside / 2
-    box_depth = 60 + 2 * T2
-
-    ply_board_a = process(cut(L_inside), waste)(pile.take("ply"))[0]
+    ply_board_a = process(cut(s_inside.length), waste)(pile.take("ply"))[0]
     till_bottom, box_bottom = process(
-        rip(till_width, label="till bottom"),
-        rip(W_inside, label="box bottom"),
+        rip(s_till.width, label="till bottom"),
+        rip(s_inside.width, label="box bottom"),
         waste,
     )(ply_board_a)
 
     board_j1 = joint(
-        pile.take_part("b", cut(L_inside - 2 * T, label="box lid a"), "b2"),
-        pile.take_part("b", cut(L_inside - 2 * T, label="box lid b"), "b2"),
+        pile.take_part("b", cut(s_box_lid.length, label="box lid a"), "b2"),
+        pile.take_part("b", cut(s_box_lid.length, label="box lid b"), "b2"),
     )
-    box_lid = process(rip(W_inside - 2 * T2, label="box lid"), waste)(board_j1)[0]
+    box_lid = process(rip(s_box_lid.width, label="box lid"), waste)(board_j1)[0]
 
     till_front, till_back, till_ends, board_j2_4a = process(
-        rip(till_depth, label="till front"),
-        rip(till_depth, label="till back"),
-        rip(till_depth),
-    )(pile.take_part("b", cut(L_inside), "b3"))
-    board_j2_4 = process(cut(W_inside + 2 * T2, label="base bottom d"), waste)(
-        board_j2_4a
-    )[0]
+        rip(s_till.depth, label="till front"),
+        rip(s_till.depth, label="till back"),
+        rip(s_till.depth),
+    )(pile.take_part("b", cut(s_inside.length), "b3"))
+    board_j2_4 = process(cut(s_base.width, label="base bottom d"), waste)(board_j2_4a)[
+        0
+    ]
 
     till_left, till_right = process(
-        cut(till_width, label="till left"),
-        cut(till_width, label="till right"),
+        cut(s_till.width, label="till left"),
+        cut(s_till.width, label="till right"),
         waste,
     )(till_ends)
 
     till_boards = [till_front, till_right, till_back, till_left, till_bottom]
 
-    board_j2_1 = pile.take_part(
-        "b2", cut(W_inside + 2 * T2, label="base bottom a"), "b4"
-    )
-    board_j2_2 = pile.take_part(
-        "b2", cut(W_inside + 2 * T2, label="base bottom b"), "b4"
-    )
-    board_j2_3 = pile.take_part(
-        "b3", cut(W_inside + 2 * T2, label="base bottom c"), "b5"
-    )
+    board_j2_1 = pile.take_part("b2", cut(s_base.width, label="base bottom a"), "b4")
+    board_j2_2 = pile.take_part("b2", cut(s_base.width, label="base bottom b"), "b4")
+    board_j2_3 = pile.take_part("b3", cut(s_base.width, label="base bottom c"), "b5")
 
     board_j2 = joint(board_j2_1, board_j2_2, board_j2_3, board_j2_4)
 
@@ -122,25 +116,25 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("- 60mm for tubes + 30mm for till + 10mm inset for box --> 100m inside depth")
     print("- central divider/stiffener, ~40mm high")
 
-    board_a1_1 = pile.take_part("a", rip(D_inside + T), "a2")
-    board_a2_1 = pile.take_part("a", rip(D_inside + T), "a2")
+    board_a1_1 = pile.take_part("a", rip(s_base.depth), "a2")
+    board_a2_1 = pile.take_part("a", rip(s_base.depth), "a2")
 
-    board_a1_1.grooves.add(D_inside, 5, 5, face=False)
-    board_a2_1.grooves.add(D_inside, 5, 5, face=False)
+    board_a1_1.grooves.add(s_inside.depth, 5, 5, face=False)
+    board_a2_1.grooves.add(s_inside.depth, 5, 5, face=False)
     base_boards = process(
-        cut(L_inside + 2 * T, label="base front"),
-        cut(W_inside + 2 * T, label="base left"),
+        cut(s_base.length, label="base front"),
+        cut(s_base.width, label="base left"),
         waste,
     )(board_a1_1) + process(
-        cut(L_inside + 2 * T, label="base back"),
-        cut(W_inside + 2 * T, label="base right"),
+        cut(s_base.length, label="base back"),
+        cut(s_base.width, label="base right"),
         waste,
     )(board_a2_1)
 
     dovetail_boards(base_boards[0:4:2], base_boards[1:4:2], tails=2, width=15)
 
     base_boards.append(
-        process(rip(L_inside + 2 * T2, label="base bottom"), waste)(board_j2)[0]
+        process(rip(s_base.length, label="base bottom"), waste)(board_j2)[0]
     )
 
     with print_svg(550, zoom=2.0) as canvas:
@@ -162,17 +156,23 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("- 60mm deep inside")
     print("- sits on small rails set into grooves in base font/back walls")
 
-    board_a3_1, board_a3_2 = process(rip(box_depth), rip(box_depth), waste)(
+    board_a3_1, board_a3_2 = process(rip(s_box.depth), rip(s_box.depth), waste)(
         pile.take("a")
     )
 
     box_boards = process(
-        cut(L_inside, label="box front"), cut(W_inside, label="box left"), waste
+        cut(s_inside.length, label="box front"),
+        cut(s_inside.width, label="box left"),
+        waste,
     )(board_a3_1) + process(
-        cut(L_inside, label="box back"), cut(W_inside, label="box right"), waste
+        cut(s_inside.length, label="box back"),
+        cut(s_inside.width, label="box right"),
+        waste,
     )(board_a3_2)
 
-    box_wedge = process(cut(W_inside, label="wedge"), waste)(pile.take("stick"))[0]
+    box_wedge = process(cut(s_inside.width, label="wedge"), waste)(pile.take("stick"))[
+        0
+    ]
 
     box_boards.extend(
         [
@@ -184,15 +184,15 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     board_a1_2 = pile.take_part("a2", rip(30), "a3")
     box_battens = process(
-        cut(W_inside, label="batten"),
-        cut(W_inside, label="batten"),
-        cut(W_inside, label="batten"),
+        cut(s_inside.width, label="batten"),
+        cut(s_inside.width, label="batten"),
+        cut(s_inside.width, label="batten"),
         waste,
     )(board_a1_2)
     box_boards.extend(box_battens)
 
     board_a2_2 = pile.take_part("a2", rip(30), "a3")
-    box_brace = process(cut(W_inside, label="bottom brace"), waste)(board_a2_2)[0]
+    box_brace = process(cut(s_inside.width, label="bottom brace"), waste)(board_a2_2)[0]
     box_boards.append(box_brace)
 
     dovetail_boards(box_boards[0:4:2], box_boards[1:4:2], tails=2, width=5)
@@ -271,8 +271,8 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("## Full assembly")
     assembly = Assembly()
     assembly.add_subassembly((0.0, 0.0, 0.0), base_assembly)
-    assembly.add_subassembly((T, -box_depth + T, T), box_assembly)
-    assembly.add_subassembly((T, T + 5, T + till_width), till_assembly)
+    assembly.add_subassembly((Ta, -s_box.depth + Ta, Ta), box_assembly)
+    assembly.add_subassembly((Ta, Ta + 5, Ta + s_till.width), till_assembly)
 
     with print_svg(800, zoom=2, camera="above") as canvas:
         assembly.draw(canvas, 20, 20)

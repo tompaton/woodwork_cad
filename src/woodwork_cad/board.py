@@ -14,6 +14,23 @@ from .svg import SVGCanvas
 
 
 @dataclass
+class Size:
+    length: float  # x
+    width: float  # z
+    depth: float  # y
+
+    def expand(
+        self, length: float = 0.0, width: float = 0.0, depth: float = 0.0
+    ) -> "Size":
+        return Size(self.length + length, self.width + width, self.depth + depth)
+
+    def contract(
+        self, length: float = 0.0, width: float = 0.0, depth: float = 0.0
+    ) -> "Size":
+        return Size(self.length - length, self.width - width, self.depth - depth)
+
+
+@dataclass
 class Board:
     L: float
     W: float
