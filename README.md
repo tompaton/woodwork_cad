@@ -22,11 +22,12 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 * dadoes/rebates
 * mortises & tennons
 * mitred cuts
-* shading of left side (visible when mitred)
+* shading of left side (visible when mitred/rotated)
 * better dovetail pin/tail sizing
 
 * bugs:
-  - 2nd board hex_box1-strips/fig-4.svg is missing the top shading stripe
+  - 2nd board hex_box1-strips/fig-4.svg is missing the top shading stripe (when
+     pins/tails swapped)
   - (not exactly a bug) painters z-order algorithm makes for some weird overlaps
     in assemblies
   - Assembly.add_walls isn't working for first side with mitred profiles?

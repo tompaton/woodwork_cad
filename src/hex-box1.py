@@ -9,7 +9,6 @@ from woodwork_cad.operations import (
     cut_waste,
     draw_boards,
     joint,
-    label_all,
     process,
     process_all,
     process_first,

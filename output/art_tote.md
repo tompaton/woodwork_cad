@@ -16,7 +16,7 @@ The box is 290 X 180 mm and 55 deep. Two levels would fit all but 5 of my paint 
 
           
 
-## Design
+## Notes
 - 360 or 400 mm long?
 - 200mm wide inside
 - 55-60mm deep inside
@@ -33,11 +33,13 @@ might be better to have a long shallow(ish) removable till for brushes and small
           
 ## Base
 - 60mm for tubes + 30mm for till + 10mm inset for box --> 100m inside depth
+- central divider/stiffener, ~40mm high
 
 ![Figure 1](art_tote/fig-1.svg)
 
 ## Till
 - 30mm deep, 1/2 width
+- will sit/ride on small rails set into grooves in base end walls
 
 ![Figure 2](art_tote/fig-2.svg)
 
@@ -45,6 +47,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
 not too high, but has to have room to easily remove box
 ## Removable box
 - 60mm deep inside
+- sits on small rails set into grooves in base font/back walls
 
 ![Figure 3](art_tote/fig-3.svg)
 
@@ -58,8 +61,8 @@ not too high, but has to have room to easily remove box
 
 ![3 x 740 x 135 x 15](images/art_tote/3x740x135x15.jpg)
 
-- 2 x 390 x 185 x 15 (10mm mouldings)
-- 3 x 400 x 165 x 19 (20mm bevels)
+- 2 x 390 x 185 x 15 (10mm mouldings) (unused)
+- 3 x 400 x 165 x 19 (20mm bevels) (unused)
 - 1 x 750 x 45 x 12
 - 2 x 720 x 65 x 19 (60x8 mortice at 150,10)
 

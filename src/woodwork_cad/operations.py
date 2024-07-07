@@ -1,6 +1,5 @@
 from typing import Any, List
 
-
 from .board import Board
 from .defects import Defects
 from .geometry import Points, to2d
@@ -17,16 +16,16 @@ def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> P
     return points
 
 
-def cut(length: float, kerf: float = 5):
+def cut(length: float, kerf: float = 5, label: str = ""):
     def operation(board: Board):
-        return board.cut(length, kerf)
+        return label_all(board.cut(length, kerf), label)
 
     return operation
 
 
-def rip(width: float, kerf: float = 5):
+def rip(width: float, kerf: float = 5, label: str = ""):
     def operation(board: Board):
-        return board.rip(width, kerf)
+        return label_all(board.rip(width, kerf), label)
 
     return operation
 
@@ -106,18 +105,20 @@ def joint2(boards: list[Board], *indexes: int, label: str = ""):
 
 def label_all(boards: list[Board], *labels):
     for board, label in zip(boards, labels):
-        board.label = label
-        if board.parent:
-            board.parent.add_cut(
-                "",
-                0,
-                0,
-                board.L,
-                board.W,
-                label,
-                board.L / 2 + board.offset_x,
-                board.W / 2 + board.offset_y,
-            )
+        if label:
+            board.label = label
+            if board.parent:
+                board.parent.add_cut(
+                    "",
+                    0,
+                    0,
+                    board.L,
+                    board.W,
+                    label,
+                    board.L / 2 + board.offset_x,
+                    board.W / 2 + board.offset_y,
+                )
+    return boards
 
 
 def cube_net(
