@@ -16,14 +16,17 @@ class Assembly:
 
         self.subassemblies: List["Assembly"] = []
 
+    def add_board(self, board: Board, position: Point3d, angle: float) -> None:
+        self.boards.append(board)
+        self.positions.append(position)
+        self.angles.append(angle)
+
     def add_walls(self, angle: float, sides: List[Board]) -> None:
         rotate_y = 0.0
         x, y, z = sides[0].profile.origin
         offset = (-x, -y, -z)
         for side in sides:
-            self.boards.append(side)
-            self.positions.append(offset)
-            self.angles.append(rotate_y)
+            self.add_board(side, offset, rotate_y)
 
             # don't actually want to rotate any faces at this point, so pass in
             # empty list, but we want the rotated mate point as the next offset

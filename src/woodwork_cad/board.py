@@ -66,6 +66,21 @@ class Board:
     def aspect(self):
         return self.L / self.W
 
+    def rotate(
+        self, rotate_x: float = 0.0, rotate_y: float = 0.0, rotate_z: float = 0.0
+    ) -> None:
+        # don't actually rotate for now, just switch the dimensions, so this will
+        # only work for flat boards for base/lid etc.
+        if rotate_x == 90.0:
+            self.W, self.T = self.T, self.W
+            self._profile = Profile()
+        elif rotate_y == 90.0:
+            self.L, self.T = self.T, self.L
+            self._profile = Profile()
+        else:
+            msg = f"rotate currently doesn't support {rotate_x=}, {rotate_y=}, {rotate_z=}"
+            raise NotImplementedError(msg)
+
     @property
     def defects(self) -> Defects:
         if not self._defects:
