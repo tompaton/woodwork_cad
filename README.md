@@ -18,7 +18,6 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 
 ## To do
 
-* assembly and plan/elevations
 * dadoes/rebates
 * mortises & tennons
 * mitred cuts

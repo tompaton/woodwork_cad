@@ -275,11 +275,22 @@ might be better to have a long shallow(ish) removable till for brushes and small
         batten, (s_box.length - 2 * batten.L - box_wedge.L, -batten.W, 0.0), 0.0
     )
 
+    assembly = Assembly()
+    assembly.add_subassembly((0.0, 0.0, 0.0), base_assembly)
+    assembly.add_subassembly((Ta, -s_box.depth + Ta, Ta), box_assembly)
+    assembly.add_subassembly((Ta, Ta + 5, Ta + s_till.width), till_assembly)
+
     print("## Plan view")
-    with print_svg(550, zoom=2) as canvas:
-        base_assembly.draw_plan(canvas, 10, 10)
-        box_assembly.draw_plan(canvas, 10 + base_boards[3].T, 10 + base_boards[0].T)
-        till_assembly.draw_plan(canvas, 10 + base_boards[3].T, 10 + base_boards[0].T)
+    with print_svg(550, zoom=2, camera="plan") as canvas:
+        assembly.draw(canvas, 20, 20)
+
+    print("## Front view")
+    with print_svg(550, zoom=2, camera="front") as canvas:
+        assembly.draw(canvas, 20, 20)
+
+    print("## Side view")
+    with print_svg(550, zoom=2, camera="side") as canvas:
+        assembly.draw(canvas, 20, 20)
 
     print("## Base assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:
@@ -294,11 +305,6 @@ might be better to have a long shallow(ish) removable till for brushes and small
         box_assembly.draw(canvas, 20, 20)
 
     print("## Full assembly")
-    assembly = Assembly()
-    assembly.add_subassembly((0.0, 0.0, 0.0), base_assembly)
-    assembly.add_subassembly((Ta, -s_box.depth + Ta, Ta), box_assembly)
-    assembly.add_subassembly((Ta, Ta + 5, Ta + s_till.width), till_assembly)
-
     with print_svg(800, zoom=2, camera="above") as canvas:
         assembly.draw(canvas, 20, 20)
 

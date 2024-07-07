@@ -55,3 +55,15 @@ rotation (from above)
 
 ![Figure 13](board_test/fig-13.svg)
 
+plan view
+
+![Figure 14](board_test/fig-14.svg)
+
+front view
+
+![Figure 15](board_test/fig-15.svg)
+
+side view
+
+![Figure 16](board_test/fig-16.svg)
+

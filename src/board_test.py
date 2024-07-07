@@ -139,6 +139,22 @@ def board_test() -> None:
         _draw_rotated(canvas, board4, 10, 250, 90, offset=(2 * board4.T, 0, 0))
         _draw_rotated(canvas, board4, 250, 250, 45)
 
+    print("plan view")
+
+    board4.label = ""
+    with print_svg(500, zoom=2, camera="plan") as canvas:
+        board4.draw_board(canvas, 10, 10)
+
+    print("front view")
+
+    with print_svg(500, zoom=2, camera="front") as canvas:
+        board4.draw_board(canvas, 10, 10)
+
+    print("side view")
+
+    with print_svg(500, zoom=2, camera="side") as canvas:
+        board4.draw_board(canvas, 10, 10)
+
 
 if __name__ == "__main__":
     board_test()

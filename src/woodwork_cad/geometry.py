@@ -28,6 +28,21 @@ def to2d_isometric_below(p: Point3d) -> Point:
     return (x + zx * z, y + zy * z)
 
 
+def to2d_plan(p: Point3d) -> Point:
+    x, y, z = p
+    return (x, z)
+
+
+def to2d_front(p: Point3d) -> Point:
+    x, y, z = p
+    return (x, y)
+
+
+def to2d_side(p: Point3d) -> Point:
+    x, y, z = p
+    return (z, y)
+
+
 _to2d = to2d_isometric_below
 
 
@@ -36,15 +51,26 @@ def to2d(p: Point3d) -> Point:
 
 
 def set_camera(mode: str) -> None:
-    global _to2d, CAMERA, LIGHT
+    global _to2d, _get_lighting, CAMERA, LIGHT
     if mode == "above":
         _to2d = to2d_isometric_above
+        _get_lighting = get_3d_lighting
         CAMERA = normalize((-1.0, 1.0, 1.0))
         LIGHT = normalize((-1.0, 1.0, 1.0))
     elif mode == "below":
         _to2d = to2d_isometric_below
+        _get_lighting = get_3d_lighting
         CAMERA = normalize((-1.0, -1.0, 1.0))
         LIGHT = normalize((-1.0, 1.0, 1.0))
+    elif mode == "plan":
+        _to2d = to2d_plan
+        _get_lighting = get_plan_lighting
+    elif mode == "front":
+        _to2d = to2d_front
+        _get_lighting = get_plan_lighting
+    elif mode == "side":
+        _to2d = to2d_side
+        _get_lighting = get_plan_lighting
     else:
         msg = f"Unknown camera mode '{mode}'"
         raise ValueError(msg)
@@ -55,6 +81,12 @@ def get_camera() -> str:
         return "above"
     elif _to2d == to2d_isometric_below:
         return "below"
+    elif _to2d == to2d_plan:
+        return "plan"
+    elif _to2d == to2d_front:
+        return "front"
+    elif _to2d == to2d_side:
+        return "side"
     else:
         msg = f"Unknown camera mode '{_to2d}'"
         raise ValueError(msg)
@@ -164,10 +196,21 @@ CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
 LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))
 
 
-def get_lighting(normal: Vector3d) -> Tuple[float, float]:
+def get_3d_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
     camera = dotproduct(normal, CAMERA)
     light = dotproduct(normal, LIGHT)
-    return camera, light
+    return camera, light, False
+
+
+def get_plan_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
+    return 0.0, 0.0, True
+
+
+_get_lighting = get_3d_lighting
+
+
+def get_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
+    return _get_lighting(normal)
 
 
 def point_rotator(

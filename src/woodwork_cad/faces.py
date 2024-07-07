@@ -125,7 +125,10 @@ class Face:
     def get_style(self, normal: Vector3d) -> Tuple[str, Dict[str, Any]]:
         dash = ""
 
-        camera, light = get_lighting(normal)
+        camera, light, plan = get_lighting(normal)
+
+        if plan:
+            return "black", {}
 
         # check angle with camera to find back faces
         if camera > 0:
