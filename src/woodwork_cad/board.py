@@ -439,23 +439,25 @@ class Board:
             if cut.op:
                 if cut.y2 == self.W:
                     points = [
-                        (x + cut.x1, y + cut.y1, 0),
-                        (x + cut.x2 + 1, y + cut.y1, 0),
-                        (x + cut.x2 + 1, y + cut.y2, 0),
+                        (cut.x1, cut.y1, 0),
+                        (cut.x2 + 1, cut.y1, 0),
+                        (cut.x2 + 1, cut.y2, 0),
                         # continue around edge
-                        (x + cut.x2 + 1, y + cut.y2, self.T),
-                        (x + cut.x1, y + cut.y2, self.T),
-                        (x + cut.x1, y + cut.y2, 0),
+                        (cut.x2 + 1, cut.y2, self.T),
+                        (cut.x1, cut.y2, self.T),
+                        (cut.x1, cut.y2, 0),
                     ]
                 else:
                     points = [
-                        (x + cut.x1, y + cut.y1, 0),
-                        (x + cut.x2 + 1, y + cut.y1, 0),
-                        (x + cut.x2 + 1, y + cut.y2, 0),
-                        (x + cut.x1, y + cut.y2, 0),
+                        (cut.x1, cut.y1, 0),
+                        (cut.x2 + 1, cut.y1, 0),
+                        (cut.x2 + 1, cut.y2, 0),
+                        (cut.x1, cut.y2, 0),
                     ]
 
-                canvas.polyline3d(cut.colour, points, fill=cut.fill, closed=True)
+                canvas.polyline3d(
+                    cut.colour, points, x=x, y=y, fill=cut.fill, closed=True
+                )
 
                 if cut.op != "waste":
                     order += 1

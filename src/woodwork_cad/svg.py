@@ -147,8 +147,17 @@ class SVGCanvas:
         )
         self._min_max_y(*(y for x, y in points))
 
-    def polyline3d(self, colour: str, points: Points3d, **kwargs: Any) -> None:
-        return self.polyline(colour, [to2d(p) for p in points], **kwargs)
+    def polyline3d(
+        self,
+        colour: str,
+        points: Points3d,
+        x: float = 0.0,
+        y: float = 0.0,
+        **kwargs: Any,
+    ) -> None:
+        return self.polyline(
+            colour, [to2d(p, offset_x=x, offset_y=y) for p in points], **kwargs
+        )
 
 
 @contextmanager

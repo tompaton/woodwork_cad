@@ -46,8 +46,9 @@ def to2d_side(p: Point3d) -> Point:
 _to2d = to2d_isometric_below
 
 
-def to2d(p: Point3d) -> Point:
-    return _to2d(p)
+def to2d(p: Point3d, offset_x: float = 0.0, offset_y: float = 0.0) -> Point:
+    x, y = _to2d(p)
+    return x + offset_x, y + offset_y
 
 
 def set_camera(mode: str) -> None:

@@ -76,10 +76,7 @@ class Face:
             colour, styles = self.get_style(normal)
 
         canvas.polyline3d(
-            colour,
-            [(x + offset_x, y + offset_y, z) for x, y, z in self.points],
-            closed=True,
-            **styles,
+            colour, self.points, x=offset_x, y=offset_y, closed=True, **styles
         )
 
         if DEBUG:
@@ -88,18 +85,12 @@ class Face:
             canvas.polyline3d(
                 self.colour or "orange",
                 [
-                    (x + offset_x - 3, y + offset_y - 5, z),
-                    (
-                        x + offset_x - 3 + 15 * dx,
-                        y + offset_y + 15 * dy - 5,
-                        z + 15 * dz,
-                    ),
-                    (
-                        x + offset_x - 3 + 10 * dx - 2,
-                        y + offset_y + 15 * dy - 5 - 2,
-                        z + 15 * dz,
-                    ),
+                    (x, y, z),
+                    (x + 15 * dx, y + 15 * dy, z + 15 * dz),
+                    (x + 10 * dx - 2, y + 15 * dy - 2, z + 15 * dz),
                 ],
+                x=offset_x - 3,
+                y=offset_y - 5,
                 fill="none",
             )
             # draw normal from face centroid
@@ -107,18 +98,20 @@ class Face:
             canvas.polyline3d(
                 self.colour or "orange",
                 [
-                    (x + offset_x, y + offset_y, z),
+                    (x, y, z),
                     (
-                        x + offset_x + 15 * normal[0],
-                        y + offset_y + 15 * normal[1],
+                        x + 15 * normal[0],
+                        y + 15 * normal[1],
                         z + 15 * normal[2],
                     ),
                     (
-                        x + offset_x + 15 * normal[0] - 2,
-                        y + offset_y + 15 * normal[1],
+                        x + 15 * normal[0] - 2,
+                        y + 15 * normal[1],
                         z + 10 * normal[2],
                     ),
                 ],
+                x=offset_x,
+                y=offset_y,
                 fill="none",
             )
 
