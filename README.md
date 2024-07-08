@@ -23,6 +23,8 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 * mitred cuts
 * shading of left side (visible when mitred/rotated)
 * better dovetail pin/tail sizing
+* indicate specific dimensions on board/plan/3d views
+* exploded view
 
 * bugs:
   - 2nd board hex_box1-strips/fig-4.svg is missing the top shading stripe (when

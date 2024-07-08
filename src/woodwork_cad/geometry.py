@@ -30,7 +30,7 @@ def to2d_isometric_below(p: Point3d) -> Point:
 
 def to2d_plan(p: Point3d) -> Point:
     x, y, z = p
-    return (x, z)
+    return (x, -z)
 
 
 def to2d_front(p: Point3d) -> Point:
