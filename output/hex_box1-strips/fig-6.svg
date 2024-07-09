@@ -32,8 +32,8 @@
 <circle cx="185" cy="267.2" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="150" cy="296.2" r="5" stroke="orange" fill="white" stroke-width="1" />
 <circle cx="185" cy="315.2" r="5" stroke="orange" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="215.5,40.4 284.0,159.0 10.0,159.0 78.5,40.4" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="484.5,20.0 416.0,138.6 279.1,138.6 210.6,20.0" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="284.0,188.2 215.5,306.8 78.5,306.8 10.0,188.2" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="416.0,208.6 484.5,327.2 210.6,327.2 279.1,208.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="284.0,159.0 215.5,40.4 78.5,40.4 10.0,159.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="416.0,138.6 484.5,20.0 210.6,20.0 279.1,138.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="215.5,306.8 284.0,188.2 10.0,188.2 78.5,306.8" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="484.5,327.2 416.0,208.6 279.1,208.6 210.6,327.2" />
 </svg>

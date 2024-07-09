@@ -3,7 +3,7 @@ from typing import Iterator, List
 
 from .board import Board
 from .faces import Face, rotate_faces
-from .geometry import Point3d, Points, Vector3d
+from .geometry import Point, Point3d, Points, Vector3d
 from .svg import SVGCanvas
 
 
@@ -74,11 +74,7 @@ class Assembly:
         for assembly in self.subassemblies:
             yield from assembly.faces
 
-    def draw_plan(self, canvas: SVGCanvas, x: float, y: float) -> Points:
-        corners: Points = []
-        for side, position, angle in zip(self.boards, self.positions, self.angles):
-            p = side.draw_plan(canvas, x + position.x, y + position.z, angle)
-            canvas.circle(p.x, p.y, 2, "red")
-            corners.append(p)
-
-        return corners
+    def get_corners(self, x: float, y: float) -> Points:
+        return [
+            Point(p.x + x, y - p.z) for p in self.positions[1:] + self.positions[:1]
+        ]

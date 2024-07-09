@@ -4,6 +4,7 @@ import sys
 from woodwork_cad.assembly import Assembly
 from woodwork_cad.board import Board
 from woodwork_cad.defects import Hole, Notch
+from woodwork_cad.geometry import Point, Point3d, to2d
 from woodwork_cad.operations import (
     cut,
     cut_waste,
@@ -219,8 +220,11 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     assembly = Assembly()
     assembly.add_walls(60, sides)
-    with print_svg(550, zoom=2) as canvas:
-        corners = assembly.draw_plan(canvas, 157.5, 50)
+    with print_svg(550, zoom=2, camera="plan") as canvas:
+        assembly.draw(canvas, 157.5, 50)
+        corners = assembly.get_corners(157.5, 50)
+        for p2 in corners:
+            canvas.circle(p2.x, p2.y, 2, "red")
 
         hex_L, hex_W, corners2 = polyline_bounds(corners)
 
@@ -236,9 +240,9 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         canvas.polyline(
             "green",
             offset_points(
-                150 + length_outside / 2 - hex_L3 / 2,
-                50 + (hex_W - hex_W3) / 2,
-                corners3,
+                157.5 - length_outside / 2,
+                50 - (hex_W - hex_W3) / 2,
+                [Point(p.x, -p.y) for p in corners3],
             ),
             stroke_dasharray=3,
             closed=True,

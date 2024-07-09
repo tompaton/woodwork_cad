@@ -6,7 +6,7 @@ from .cutlist import Cuts
 from .defects import Defects
 from .dovetails import Dovetails, peturb
 from .faces import Face, rotate_faces
-from .geometry import Point, Point3d, Points3d, Vector3d
+from .geometry import Point3d, Points3d, Vector3d
 from .grooves import Grooves, Side
 from .profile import Interpolator, Profile
 from .shades import Shades
@@ -481,15 +481,3 @@ class Board:
                 content=self.label,
                 style="",
             )
-
-    def draw_plan(
-        self,
-        canvas: SVGCanvas,
-        x: float,
-        y: float,
-        angle: float,
-        colour: str = "black",
-    ) -> Point:
-        rotated = self.profile.plan_points(x, y, angle)
-        canvas.polyline(colour, rotated, closed=True)
-        return rotated[1]

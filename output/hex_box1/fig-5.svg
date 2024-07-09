@@ -1,15 +1,213 @@
-<svg width="1100" viewBox="0.0 0.0 550.0 351.1" xmlns="http://www.w3.org/2000/svg">
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 295.0,50.0 302.5,63.0 142.5,63.0" />
+<svg width="1100" viewBox="0.0 -203.1 550.0 255.1" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 165.0,-201.1 165.0,-201.1 159.2,-201.1 159.2,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 150.0,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 150.0,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 150.0,-201.1 165.0,-201.1 165.0,-201.1 159.2,-201.1 159.2,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 280.0,-201.1 280.0,-201.1 295.0,-201.1 295.0,-201.1 280.0,-201.1 280.0,-201.1 295.0,-201.1 295.0,-201.1 295.0,-201.1 295.0,-201.1 280.0,-201.1 280.0,-201.1 295.0,-201.1 295.0,-201.1 165.0,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1 150.0,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1 150.0,-201.1 150.0,-201.1 150.0,-201.1 165.0,-201.1 165.0,-201.1 150.0,-201.1 150.0,-201.1 165.0,-201.1 165.0,-201.1 165.0,-201.1 295.0,-201.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 280.0,-201.1 295.0,-201.1 295.0,-201.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 280.0,-201.1 295.0,-201.1 295.0,-201.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 280.0,-201.1 295.0,-201.1 295.0,-201.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 142.5,-188.1 157.5,-188.1 165.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,-201.1 157.5,-188.1 142.5,-188.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 142.5,-188.1 157.5,-188.1 165.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,-201.1 157.5,-188.1 142.5,-188.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 142.5,-188.1 157.5,-188.1 165.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,-201.1 157.5,-188.1 142.5,-188.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 142.5,-188.1 150.0,-201.1 150.0,-201.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 142.5,-188.1 150.0,-201.1 150.0,-201.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 142.5,-188.1 150.0,-201.1 150.0,-201.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 165.0,-201.1 157.5,-188.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 157.5,-188.1 165.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 165.0,-201.1 157.5,-188.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 157.5,-188.1 165.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 165.0,-201.1 157.5,-188.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 157.5,-188.1 165.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,-188.1 165.0,-201.1 165.0,-201.1 157.5,-188.1 157.5,-188.1 160.4,-193.1 160.4,-193.1 157.5,-188.1 157.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,-188.1 157.5,-188.1 165.0,-201.1 165.0,-201.1 157.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,-188.1 157.5,-188.1 165.0,-201.1 165.0,-201.1 157.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,-188.1 157.5,-188.1 160.4,-193.1 160.4,-193.1 157.5,-188.1 157.5,-188.1 165.0,-201.1 165.0,-201.1 157.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,-201.1 295.0,-201.1 302.5,-188.1 157.5,-188.1 165.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,-201.1 157.5,-188.1 302.5,-188.1 295.0,-201.1 165.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 280.0,-201.1 287.5,-188.1 287.5,-188.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 280.0,-201.1 287.5,-188.1 287.5,-188.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 280.0,-201.1 287.5,-188.1 287.5,-188.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 302.5,-188.1 287.5,-188.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 287.5,-188.1 302.5,-188.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 302.5,-188.1 287.5,-188.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 287.5,-188.1 302.5,-188.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 302.5,-188.1 287.5,-188.1 280.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,-201.1 287.5,-188.1 302.5,-188.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 280.0,-201.1 287.5,-188.1 302.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,-188.1 287.5,-188.1 280.0,-201.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 280.0,-201.1 287.5,-188.1 302.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,-188.1 287.5,-188.1 280.0,-201.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 280.0,-201.1 287.5,-188.1 302.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,-188.1 287.5,-188.1 280.0,-201.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 302.5,-188.1 302.5,-188.1 299.6,-193.1 299.6,-193.1 302.5,-188.1 302.5,-188.1 295.0,-201.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 295.0,-201.1 302.5,-188.1 302.5,-188.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 295.0,-201.1 302.5,-188.1 302.5,-188.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,-201.1 295.0,-201.1 302.5,-188.1 302.5,-188.1 299.6,-193.1 299.6,-193.1 302.5,-188.1 302.5,-188.1 295.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="160.4,-193.1 157.5,-188.1 302.5,-188.1 299.6,-193.1 160.4,-193.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="160.4,-193.1 299.6,-193.1 302.5,-188.1 157.5,-188.1 160.4,-193.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="160.4,-193.1 157.5,-188.1 302.5,-188.1 299.6,-193.1 160.4,-193.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="160.4,-193.1 299.6,-193.1 302.5,-188.1 157.5,-188.1 160.4,-193.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 142.5,-188.1 157.5,-188.1 157.5,-188.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 142.5,-188.1 157.5,-188.1 157.5,-188.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,-188.1 142.5,-188.1 157.5,-188.1 157.5,-188.1 142.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,-188.1 287.5,-188.1 302.5,-188.1 302.5,-188.1 287.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,-188.1 287.5,-188.1 302.5,-188.1 302.5,-188.1 287.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,-188.1 302.5,-188.1 302.5,-188.1 287.5,-188.1 287.5,-188.1 293.3,-188.1 293.3,-188.1 287.5,-188.1 287.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,-188.1 287.5,-188.1 293.3,-188.1 293.3,-188.1 287.5,-188.1 287.5,-188.1 302.5,-188.1 302.5,-188.1 287.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,-188.1 287.5,-188.1 287.5,-188.1 302.5,-188.1 302.5,-188.1 157.5,-188.1 157.5,-188.1 142.5,-188.1 142.5,-188.1 142.5,-188.1 142.5,-188.1 157.5,-188.1 157.5,-188.1 142.5,-188.1 142.5,-188.1 157.5,-188.1 157.5,-188.1 142.5,-188.1 142.5,-188.1 142.5,-188.1 142.5,-188.1 157.5,-188.1 157.5,-188.1 302.5,-188.1 302.5,-188.1 302.5,-188.1 287.5,-188.1 287.5,-188.1 302.5,-188.1 302.5,-188.1 287.5,-188.1 287.5,-188.1 302.5,-188.1 302.5,-188.1 302.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-88.6 150.0,-201.1 165.0,-201.1 92.5,-75.6 85.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-88.6 92.5,-75.6 165.0,-201.1 150.0,-201.1 85.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="89.6,-80.6 92.5,-75.6 165.0,-201.1 159.2,-201.1 89.6,-80.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="89.6,-80.6 159.2,-201.1 165.0,-201.1 92.5,-75.6 89.6,-80.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="89.6,-80.6 92.5,-75.6 165.0,-201.1 159.2,-201.1 89.6,-80.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="89.6,-80.6 159.2,-201.1 165.0,-201.1 92.5,-75.6 89.6,-80.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,-201.1 142.5,-188.1 142.5,-188.1 150.0,-201.1 150.0,-201.1 142.5,-188.1 142.5,-188.1 150.0,-201.1 150.0,-201.1 150.0,-201.1 150.0,-201.1 142.5,-188.1 142.5,-188.1 150.0,-201.1 150.0,-201.1 85.0,-88.6 85.0,-88.6 85.0,-88.6 77.5,-75.6 77.5,-75.6 85.0,-88.6 85.0,-88.6 77.5,-75.6 77.5,-75.6 77.5,-75.6 77.5,-75.6 85.0,-88.6 85.0,-88.6 77.5,-75.6 77.5,-75.6 85.0,-88.6 85.0,-88.6 85.0,-88.6 150.0,-201.1 150.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-88.6 360.0,-88.6 367.5,-75.6 367.5,-75.6 360.0,-88.6 360.0,-88.6 367.5,-75.6 367.5,-75.6 367.5,-75.6 367.5,-75.6 360.0,-88.6 360.0,-88.6 367.5,-75.6 367.5,-75.6 302.5,-188.1 302.5,-188.1 302.5,-188.1 295.0,-201.1 295.0,-201.1 302.5,-188.1 302.5,-188.1 295.0,-201.1 295.0,-201.1 295.0,-201.1 295.0,-201.1 302.5,-188.1 302.5,-188.1 295.0,-201.1 295.0,-201.1 302.5,-188.1 302.5,-188.1 302.5,-188.1 367.5,-75.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,-201.1 157.5,-188.1 157.5,-188.1 165.0,-201.1 165.0,-201.1 92.5,-75.6 92.5,-75.6 85.0,-62.6 85.0,-62.6 85.0,-62.6 85.0,-62.6 92.5,-75.6 92.5,-75.6 85.0,-62.6 85.0,-62.6 92.5,-75.6 92.5,-75.6 85.0,-62.6 85.0,-62.6 85.0,-62.6 85.0,-62.6 92.5,-75.6 92.5,-75.6 165.0,-201.1 165.0,-201.1 165.0,-201.1 157.5,-188.1 157.5,-188.1 165.0,-201.1 165.0,-201.1 157.5,-188.1 157.5,-188.1 165.0,-201.1 165.0,-201.1 165.0,-201.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-62.6 352.5,-75.6 352.5,-75.6 360.0,-62.6 360.0,-62.6 287.5,-188.1 287.5,-188.1 280.0,-201.1 280.0,-201.1 280.0,-201.1 280.0,-201.1 287.5,-188.1 287.5,-188.1 280.0,-201.1 280.0,-201.1 287.5,-188.1 287.5,-188.1 280.0,-201.1 280.0,-201.1 280.0,-201.1 280.0,-201.1 287.5,-188.1 287.5,-188.1 360.0,-62.6 360.0,-62.6 360.0,-62.6 352.5,-75.6 352.5,-75.6 360.0,-62.6 360.0,-62.6 352.5,-75.6 352.5,-75.6 360.0,-62.6 360.0,-62.6 360.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="293.3,-188.1 287.5,-188.1 360.0,-62.6 362.9,-67.6 293.3,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="293.3,-188.1 362.9,-67.6 360.0,-62.6 287.5,-188.1 293.3,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="293.3,-188.1 287.5,-188.1 360.0,-62.6 362.9,-67.6 293.3,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="293.3,-188.1 362.9,-67.6 360.0,-62.6 287.5,-188.1 293.3,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,-188.1 367.5,-75.6 360.0,-62.6 287.5,-188.1 302.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,-188.1 287.5,-188.1 360.0,-62.6 367.5,-75.6 302.5,-188.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-88.6 85.0,-88.6 82.1,-83.6 82.1,-83.6 85.0,-88.6 85.0,-88.6 77.5,-75.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 77.5,-75.6 85.0,-88.6 85.0,-88.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 77.5,-75.6 85.0,-88.6 85.0,-88.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 77.5,-75.6 85.0,-88.6 85.0,-88.6 82.1,-83.6 82.1,-83.6 85.0,-88.6 85.0,-88.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="92.5,-75.6 85.0,-88.6 85.0,-88.6 92.5,-75.6 92.5,-75.6 89.6,-80.6 89.6,-80.6 92.5,-75.6 92.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="92.5,-75.6 92.5,-75.6 85.0,-88.6 85.0,-88.6 92.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="92.5,-75.6 92.5,-75.6 85.0,-88.6 85.0,-88.6 92.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="92.5,-75.6 92.5,-75.6 89.6,-80.6 89.6,-80.6 92.5,-75.6 92.5,-75.6 85.0,-88.6 85.0,-88.6 92.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 360.0,-88.6 367.5,-75.6 367.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 360.0,-88.6 367.5,-75.6 367.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 360.0,-88.6 367.5,-75.6 367.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 360.0,-88.6 352.5,-75.6 352.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 360.0,-88.6 352.5,-75.6 352.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 360.0,-88.6 352.5,-75.6 352.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-62.6 92.5,-75.6 85.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-88.6 92.5,-75.6 85.0,-62.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-62.6 92.5,-75.6 85.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-88.6 92.5,-75.6 85.0,-62.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-62.6 92.5,-75.6 85.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-88.6 92.5,-75.6 85.0,-62.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-88.6 92.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 92.5,-75.6 85.0,-88.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-88.6 92.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 92.5,-75.6 85.0,-88.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-88.6 92.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 92.5,-75.6 85.0,-88.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-62.6 352.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 352.5,-75.6 360.0,-62.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-62.6 352.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 352.5,-75.6 360.0,-62.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-62.6 352.5,-75.6 360.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-88.6 352.5,-75.6 360.0,-62.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-88.6 352.5,-75.6 360.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-62.6 352.5,-75.6 360.0,-88.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-88.6 352.5,-75.6 360.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-62.6 352.5,-75.6 360.0,-88.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-88.6 352.5,-75.6 360.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-62.6 352.5,-75.6 360.0,-88.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 85.0,-62.6 92.5,-75.6 92.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 85.0,-62.6 92.5,-75.6 92.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 85.0,-62.6 92.5,-75.6 92.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 85.0,-62.6 77.5,-75.6 77.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 85.0,-62.6 77.5,-75.6 77.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-62.6 85.0,-62.6 77.5,-75.6 77.5,-75.6 85.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="352.5,-75.6 360.0,-62.6 360.0,-62.6 352.5,-75.6 352.5,-75.6 355.4,-70.6 355.4,-70.6 352.5,-75.6 352.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="352.5,-75.6 352.5,-75.6 360.0,-62.6 360.0,-62.6 352.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="352.5,-75.6 352.5,-75.6 360.0,-62.6 360.0,-62.6 352.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="352.5,-75.6 352.5,-75.6 355.4,-70.6 355.4,-70.6 352.5,-75.6 352.5,-75.6 360.0,-62.6 360.0,-62.6 352.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 360.0,-62.6 360.0,-62.6 362.9,-67.6 362.9,-67.6 360.0,-62.6 360.0,-62.6 367.5,-75.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 367.5,-75.6 360.0,-62.6 360.0,-62.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 367.5,-75.6 360.0,-62.6 360.0,-62.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,-75.6 367.5,-75.6 360.0,-62.6 360.0,-62.6 362.9,-67.6 362.9,-67.6 360.0,-62.6 360.0,-62.6 367.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="151.7,37.0 157.5,37.0 85.0,-88.6 82.1,-83.6 151.7,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="151.7,37.0 82.1,-83.6 85.0,-88.6 157.5,37.0 151.7,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="151.7,37.0 157.5,37.0 85.0,-88.6 82.1,-83.6 151.7,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="151.7,37.0 82.1,-83.6 85.0,-88.6 157.5,37.0 151.7,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,37.0 77.5,-75.6 85.0,-88.6 157.5,37.0 142.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,37.0 157.5,37.0 85.0,-88.6 77.5,-75.6 142.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="85.0,-88.6 92.5,-75.6 92.5,-75.6 85.0,-88.6 85.0,-88.6 157.5,37.0 157.5,37.0 165.0,50.0 165.0,50.0 165.0,50.0 165.0,50.0 157.5,37.0 157.5,37.0 165.0,50.0 165.0,50.0 157.5,37.0 157.5,37.0 165.0,50.0 165.0,50.0 165.0,50.0 165.0,50.0 157.5,37.0 157.5,37.0 85.0,-88.6 85.0,-88.6 85.0,-88.6 92.5,-75.6 92.5,-75.6 85.0,-88.6 85.0,-88.6 92.5,-75.6 92.5,-75.6 85.0,-88.6 85.0,-88.6 85.0,-88.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,50.0 287.5,37.0 287.5,37.0 280.0,50.0 280.0,50.0 352.5,-75.6 352.5,-75.6 360.0,-88.6 360.0,-88.6 360.0,-88.6 360.0,-88.6 352.5,-75.6 352.5,-75.6 360.0,-88.6 360.0,-88.6 352.5,-75.6 352.5,-75.6 360.0,-88.6 360.0,-88.6 360.0,-88.6 360.0,-88.6 352.5,-75.6 352.5,-75.6 280.0,50.0 280.0,50.0 280.0,50.0 287.5,37.0 287.5,37.0 280.0,50.0 280.0,50.0 287.5,37.0 287.5,37.0 280.0,50.0 280.0,50.0 280.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,-75.6 85.0,-62.6 85.0,-62.6 77.5,-75.6 77.5,-75.6 85.0,-62.6 85.0,-62.6 77.5,-75.6 77.5,-75.6 77.5,-75.6 77.5,-75.6 85.0,-62.6 85.0,-62.6 77.5,-75.6 77.5,-75.6 142.5,37.0 142.5,37.0 142.5,37.0 150.0,50.0 150.0,50.0 142.5,37.0 142.5,37.0 150.0,50.0 150.0,50.0 150.0,50.0 150.0,50.0 142.5,37.0 142.5,37.0 150.0,50.0 150.0,50.0 142.5,37.0 142.5,37.0 142.5,37.0 77.5,-75.6 77.5,-75.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 302.5,37.0 302.5,37.0 295.0,50.0 295.0,50.0 302.5,37.0 302.5,37.0 295.0,50.0 295.0,50.0 295.0,50.0 295.0,50.0 302.5,37.0 302.5,37.0 295.0,50.0 295.0,50.0 360.0,-62.6 360.0,-62.6 360.0,-62.6 367.5,-75.6 367.5,-75.6 360.0,-62.6 360.0,-62.6 367.5,-75.6 367.5,-75.6 367.5,-75.6 367.5,-75.6 360.0,-62.6 360.0,-62.6 367.5,-75.6 367.5,-75.6 360.0,-62.6 360.0,-62.6 360.0,-62.6 295.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="355.3,-70.6 352.5,-75.6 280.0,50.0 285.7,50.0 355.3,-70.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="355.3,-70.6 285.7,50.0 280.0,50.0 352.5,-75.6 355.3,-70.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="355.3,-70.6 352.5,-75.6 280.0,50.0 285.7,50.0 355.3,-70.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="355.3,-70.6 285.7,50.0 280.0,50.0 352.5,-75.6 355.3,-70.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-62.6 295.0,50.0 280.0,50.0 352.5,-75.6 360.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="360.0,-62.6 352.5,-75.6 280.0,50.0 295.0,50.0 360.0,-62.6" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,37.0 142.5,37.0 142.5,37.0 157.5,37.0 157.5,37.0 151.7,37.0 151.7,37.0 157.5,37.0 157.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,37.0 157.5,37.0 151.7,37.0 151.7,37.0 157.5,37.0 157.5,37.0 142.5,37.0 142.5,37.0 157.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,37.0 157.5,37.0 142.5,37.0 142.5,37.0 157.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="157.5,37.0 157.5,37.0 142.5,37.0 142.5,37.0 157.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,37.0 157.5,37.0 157.5,37.0 142.5,37.0 142.5,37.0 287.5,37.0 287.5,37.0 302.5,37.0 302.5,37.0 302.5,37.0 302.5,37.0 287.5,37.0 287.5,37.0 302.5,37.0 302.5,37.0 287.5,37.0 287.5,37.0 302.5,37.0 302.5,37.0 302.5,37.0 302.5,37.0 287.5,37.0 287.5,37.0 142.5,37.0 142.5,37.0 142.5,37.0 157.5,37.0 157.5,37.0 142.5,37.0 142.5,37.0 157.5,37.0 157.5,37.0 142.5,37.0 142.5,37.0 142.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 302.5,37.0 287.5,37.0 287.5,37.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 302.5,37.0 287.5,37.0 287.5,37.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 302.5,37.0 287.5,37.0 287.5,37.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="284.6,42.0 287.5,37.0 142.5,37.0 145.4,42.0 284.6,42.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="284.6,42.0 145.4,42.0 142.5,37.0 287.5,37.0 284.6,42.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="284.6,42.0 287.5,37.0 142.5,37.0 145.4,42.0 284.6,42.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="284.6,42.0 145.4,42.0 142.5,37.0 287.5,37.0 284.6,42.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 142.5,37.0 157.5,37.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 157.5,37.0 142.5,37.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 142.5,37.0 157.5,37.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 157.5,37.0 142.5,37.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 142.5,37.0 157.5,37.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 157.5,37.0 142.5,37.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 142.5,37.0 142.5,37.0 145.4,42.0 145.4,42.0 142.5,37.0 142.5,37.0 150.0,50.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 150.0,50.0 142.5,37.0 142.5,37.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 150.0,50.0 142.5,37.0 142.5,37.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 150.0,50.0 142.5,37.0 142.5,37.0 145.4,42.0 145.4,42.0 142.5,37.0 142.5,37.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 165.0,50.0 157.5,37.0 142.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,37.0 157.5,37.0 165.0,50.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 165.0,50.0 157.5,37.0 142.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,37.0 157.5,37.0 165.0,50.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 165.0,50.0 157.5,37.0 142.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="142.5,37.0 157.5,37.0 165.0,50.0 150.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 165.0,50.0 157.5,37.0 157.5,37.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 165.0,50.0 157.5,37.0 157.5,37.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 165.0,50.0 157.5,37.0 157.5,37.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,50.0 150.0,50.0 142.5,37.0 287.5,37.0 280.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,50.0 287.5,37.0 142.5,37.0 150.0,50.0 280.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,37.0 280.0,50.0 280.0,50.0 287.5,37.0 287.5,37.0 284.6,42.0 284.6,42.0 287.5,37.0 287.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,37.0 287.5,37.0 280.0,50.0 280.0,50.0 287.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,37.0 287.5,37.0 280.0,50.0 280.0,50.0 287.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="287.5,37.0 287.5,37.0 284.6,42.0 284.6,42.0 287.5,37.0 287.5,37.0 280.0,50.0 280.0,50.0 287.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 280.0,50.0 287.5,37.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 287.5,37.0 280.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 280.0,50.0 287.5,37.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 287.5,37.0 280.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 280.0,50.0 287.5,37.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 287.5,37.0 280.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 302.5,37.0 295.0,50.0 295.0,50.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 302.5,37.0 295.0,50.0 295.0,50.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="302.5,37.0 302.5,37.0 295.0,50.0 295.0,50.0 302.5,37.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 302.5,37.0 287.5,37.0 280.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,50.0 287.5,37.0 302.5,37.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 302.5,37.0 287.5,37.0 280.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,50.0 287.5,37.0 302.5,37.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 302.5,37.0 287.5,37.0 280.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="280.0,50.0 287.5,37.0 302.5,37.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 165.0,50.0 150.0,50.0 150.0,50.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 165.0,50.0 150.0,50.0 150.0,50.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="165.0,50.0 165.0,50.0 150.0,50.0 150.0,50.0 165.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 280.0,50.0 280.0,50.0 285.7,50.0 285.7,50.0 280.0,50.0 280.0,50.0 295.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 295.0,50.0 280.0,50.0 280.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 295.0,50.0 280.0,50.0 280.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 295.0,50.0 280.0,50.0 280.0,50.0 285.7,50.0 285.7,50.0 280.0,50.0 280.0,50.0 295.0,50.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,50.0 165.0,50.0 165.0,50.0 150.0,50.0 150.0,50.0 165.0,50.0 165.0,50.0 150.0,50.0 150.0,50.0 150.0,50.0 150.0,50.0 165.0,50.0 165.0,50.0 150.0,50.0 150.0,50.0 280.0,50.0 280.0,50.0 280.0,50.0 295.0,50.0 295.0,50.0 280.0,50.0 280.0,50.0 295.0,50.0 295.0,50.0 295.0,50.0 295.0,50.0 280.0,50.0 280.0,50.0 295.0,50.0 295.0,50.0 280.0,50.0 280.0,50.0 280.0,50.0 150.0,50.0 150.0,50.0" />
 <circle cx="295.0" cy="50.0" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,50.0 367.5,175.6 360.0,188.6 280.0,50.0" />
-<circle cx="367.5" cy="175.6" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="367.5,175.6 295.0,301.1 280.0,301.1 360.0,162.6" />
-<circle cx="295.0" cy="301.1" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="295.0,301.1 150.0,301.1 142.5,288.1 302.5,288.1" />
-<circle cx="150.0" cy="301.1" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="150.0,301.1 77.5,175.6 85.0,162.6 165.0,301.1" />
-<circle cx="77.5" cy="175.6" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="" stroke="black" points="77.5,175.6 150.0,50.0 165.0,50.0 85.0,188.6" />
-<circle cx="150.0" cy="50.0" r="2" stroke="red" fill="white" stroke-width="1" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="291.0,56.9 359.5,175.6 291.0,294.2 154.0,294.2 85.5,175.6 154.0,56.9" />
+<circle cx="367.5" cy="-75.6" r="2" stroke="red" fill="white" stroke-width="1" />
+<circle cx="295.0" cy="-201.1" r="2" stroke="red" fill="white" stroke-width="1" />
+<circle cx="150.0" cy="-201.1" r="2" stroke="red" fill="white" stroke-width="1" />
+<circle cx="77.5" cy="-75.6" r="2" stroke="red" fill="white" stroke-width="1" />
+<circle cx="150.0" cy="50" r="2" stroke="red" fill="white" stroke-width="1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="3" stroke="green" points="290.5,-194.2 359.0,-75.6 290.5,43.1 153.5,43.1 85.0,-75.6 153.5,-194.2" />
 </svg>

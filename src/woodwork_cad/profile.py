@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from math import cos, radians, sin
 from typing import Callable, Iterator, List, Optional, Tuple
 
-from .geometry import Point, Point3d, line_length, point_rotator
+from .geometry import Point3d, line_length
 
 Interpolator = Callable[[float], float]
 
@@ -73,11 +73,6 @@ class Profile:
             return self._points[1].x + z * (self._points[2].x - self._points[1].x) / T
 
         return x1, x2
-
-    def plan_points(self, x: float, y: float, angle: float) -> List[Point]:
-        offset = self._points[0]
-        rotate = point_rotator(angle, offset.x, offset.z, x, y)
-        return [rotate(Point(p.x, p.z)) for p in self._points]
 
     @property
     def origin(self) -> Point3d:
