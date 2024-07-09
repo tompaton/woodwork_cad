@@ -9,22 +9,22 @@ from .svg import SVGCanvas
 
 class Assembly:
     def __init__(self) -> None:
-        self.origin: Point3d = (0.0, 0.0, 0.0)
+        self.origin: Point3d = Point3d(0.0, 0.0, 0.0)
         self.boards: List[Board] = []
-        self.positions: List[Point3d] = []
+        self.positions: List[Vector3d] = []
         self.angles: List[float] = []
 
         self.subassemblies: List["Assembly"] = []
 
-    def add_board(self, board: Board, position: Point3d, angle: float) -> None:
+    def add_board(self, board: Board, position: Vector3d, angle: float) -> None:
         self.boards.append(board)
         self.positions.append(position)
         self.angles.append(angle)
 
     def add_walls(self, angle: float, sides: List[Board]) -> None:
         rotate_y = 0.0
-        x, y, z = sides[0].profile.origin
-        offset = (-x, -y, -z)
+        o = sides[0].profile.origin
+        offset = Vector3d(-o.x, -o.y, -o.z)
         for side in sides:
             self.add_board(side, offset, rotate_y)
 
@@ -42,12 +42,12 @@ class Assembly:
                 )
             )
 
-            offset = origin2d[1]
+            offset = Vector3d(origin2d[1].x, origin2d[1].y, origin2d[1].z)
 
             rotate_y += angle
 
     def add_subassembly(self, offset: Vector3d, assembly: "Assembly") -> None:
-        assembly.origin = offset
+        assembly.origin = Point3d(offset.x, offset.y, offset.z)
         self.subassemblies.append(assembly)
 
     def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
@@ -56,15 +56,17 @@ class Assembly:
 
     @property
     def faces(self) -> Iterator[Face]:
-        x0, y0, z0 = self.origin
         for side, offset, rotate_y in zip(self.boards, self.positions, self.angles):
             x1, x2 = side.profile.interpolate(side.T)
-            x, y, z = offset
             yield from rotate_faces(
                 side._get_faces(x1, x2),
                 side.profile.origin,
                 rotate_y,
-                (x + x0, y + y0, z + z0),
+                Vector3d(
+                    offset.x + self.origin.x,
+                    offset.y + self.origin.y,
+                    offset.z + self.origin.z,
+                ),
                 side.profile.mate,
                 [],
             )
@@ -75,9 +77,8 @@ class Assembly:
     def draw_plan(self, canvas: SVGCanvas, x: float, y: float) -> Points:
         corners: Points = []
         for side, position, angle in zip(self.boards, self.positions, self.angles):
-            x1, y1, z1 = position
-            x2, y2 = side.draw_plan(canvas, x + x1, y + z1, angle)
-            canvas.circle(x2, y2, 2, "red")
-            corners.append((x2, y2))
+            p = side.draw_plan(canvas, x + position.x, y + position.z, angle)
+            canvas.circle(p.x, p.y, 2, "red")
+            corners.append(p)
 
         return corners

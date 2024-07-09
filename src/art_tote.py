@@ -3,6 +3,7 @@ import sys
 
 from woodwork_cad.assembly import Assembly
 from woodwork_cad.board import Board, Size
+from woodwork_cad.geometry import Vector3d
 from woodwork_cad.operations import (
     cut,
     cut_waste,
@@ -247,38 +248,44 @@ might be better to have a long shallow(ish) removable till for brushes and small
     base_assembly.add_walls(90, base_boards[:4])
     base_boards[-1].rotate(rotate_x=90.0)
     base_boards[-1].rotate(rotate_y=90.0)
-    base_assembly.add_board(base_boards[-1], (0.0, s_inside.depth, 0.0), 0.0)
+    base_assembly.add_board(base_boards[-1], Vector3d(0.0, s_inside.depth, 0.0), 0.0)
 
     till_assembly = Assembly()
     till_assembly.add_walls(90, till_boards[:4])
     till_bottom.rotate(rotate_x=90.0)
-    till_assembly.add_board(till_bottom, (0.0, s_till.depth, 0.0), 0.0)
+    till_assembly.add_board(till_bottom, Vector3d(0.0, s_till.depth, 0.0), 0.0)
 
     box_assembly = Assembly()
     box_assembly.add_walls(90, box_boards[:4])
     box_bottom.rotate(rotate_x=90.0)
-    box_assembly.add_board(box_bottom, (0.0, s_box.depth, 0.0), 0.0)
+    box_assembly.add_board(box_bottom, Vector3d(0.0, s_box.depth, 0.0), 0.0)
     box_lid.rotate(rotate_x=90.0)
-    box_assembly.add_board(box_lid, (box_boards[0].T, 0.0, box_boards[0].T), 0.0)
+    box_assembly.add_board(
+        box_lid, Vector3d(box_boards[0].T, 0.0, box_boards[0].T), 0.0
+    )
     batten = box_battens[0]
     batten.rotate(rotate_x=90)
     batten.rotate(rotate_y=90)
     box_wedge.rotate(rotate_x=90)
     box_wedge.rotate(rotate_y=90)
-    box_assembly.add_board(batten, (0.0, -batten.W, 0.0), 0.0)
-    box_assembly.add_board(batten, (batten.L, -batten.W, 0.0), 0.0)
-    box_assembly.add_board(batten, (s_box.length - batten.L, -batten.W, 0.0), 0.0)
+    box_assembly.add_board(batten, Vector3d(0.0, -batten.W, 0.0), 0.0)
+    box_assembly.add_board(batten, Vector3d(batten.L, -batten.W, 0.0), 0.0)
     box_assembly.add_board(
-        box_wedge, (s_box.length - batten.L - box_wedge.L, -box_wedge.W, 0.0), 0.0
+        batten, Vector3d(s_box.length - batten.L, -batten.W, 0.0), 0.0
     )
     box_assembly.add_board(
-        batten, (s_box.length - 2 * batten.L - box_wedge.L, -batten.W, 0.0), 0.0
+        box_wedge,
+        Vector3d(s_box.length - batten.L - box_wedge.L, -box_wedge.W, 0.0),
+        0.0,
+    )
+    box_assembly.add_board(
+        batten, Vector3d(s_box.length - 2 * batten.L - box_wedge.L, -batten.W, 0.0), 0.0
     )
 
     assembly = Assembly()
-    assembly.add_subassembly((0.0, 0.0, 0.0), base_assembly)
-    assembly.add_subassembly((Ta, -s_box.depth + Ta, Ta), box_assembly)
-    assembly.add_subassembly((Ta, Ta + 5, Ta + s_till.width), till_assembly)
+    assembly.add_subassembly(Vector3d(0.0, 0.0, 0.0), base_assembly)
+    assembly.add_subassembly(Vector3d(Ta, -s_box.depth + Ta, Ta), box_assembly)
+    assembly.add_subassembly(Vector3d(Ta, Ta + 5, Ta + s_till.width), till_assembly)
 
     print("## Plan view")
     with print_svg(550, zoom=2, camera="plan") as canvas:

@@ -1,7 +1,7 @@
 # ruff: noqa: F401
 from woodwork_cad.board import Board
 from woodwork_cad.defects import Hole, Notch
-from woodwork_cad.geometry import to2d
+from woodwork_cad.geometry import Vector3d, to2d
 from woodwork_cad.operations import (
     cut,
     cut_waste,
@@ -120,23 +120,27 @@ def board_test() -> None:
     def _draw_rotated(canvas, board, x, y, angle, **kwargs):
         board.label = f"{angle}°"
         origin, mate = board.draw_board(canvas, x, y, rotate_y=angle, **kwargs)
-        ox, oy = to2d(origin)
-        mx, my = to2d(mate)
-        canvas.circle(x + ox, y + oy, 3, "red")
-        canvas.circle(x + mx, y + my, 3, "green")
+        o = to2d(origin)
+        m = to2d(mate)
+        canvas.circle(x + o.x, y + o.y, 3, "red")
+        canvas.circle(x + m.x, y + m.y, 3, "green")
 
     with print_svg(500, zoom=2) as canvas:
         _draw_rotated(canvas, board4, 10, 10, 0)
-        _draw_rotated(canvas, board4, 250, 10, 180, offset=(board4.L, 0, board4.T))
-        _draw_rotated(canvas, board4, 10, 150, 90, offset=(2 * board4.T, 0, 0))
+        _draw_rotated(
+            canvas, board4, 250, 10, 180, offset=Vector3d(board4.L, 0, board4.T)
+        )
+        _draw_rotated(canvas, board4, 10, 150, 90, offset=Vector3d(2 * board4.T, 0, 0))
         _draw_rotated(canvas, board4, 250, 150, 45)
 
     print("rotation (from above)")
 
     with print_svg(500, zoom=2, camera="above") as canvas:
         _draw_rotated(canvas, board4, 10, 10, 0)
-        _draw_rotated(canvas, board4, 250, 10, 180, offset=(board4.L, 0, board4.T))
-        _draw_rotated(canvas, board4, 10, 250, 90, offset=(2 * board4.T, 0, 0))
+        _draw_rotated(
+            canvas, board4, 250, 10, 180, offset=Vector3d(board4.L, 0, board4.T)
+        )
+        _draw_rotated(canvas, board4, 10, 250, 90, offset=Vector3d(2 * board4.T, 0, 0))
         _draw_rotated(canvas, board4, 250, 250, 45)
 
     print("plan view")

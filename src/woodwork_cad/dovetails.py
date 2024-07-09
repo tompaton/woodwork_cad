@@ -3,16 +3,16 @@ from math import radians, sin
 from typing import Callable, Iterable, List, Optional
 
 from .faces import Face
-from .geometry import Points3d
+from .geometry import Point3d, Points3d
 from .profile import Interpolator
 
 
 # clip polygon needs to be offset from board by a tiny amount to avoid
 # issues with "degenerate" polygons when clipping
 def peturb(points: Points3d) -> Points3d:
-    mid_x = sum(x for x, y, z in points) / len(points)
-    mid_y = sum(y for x, y, z in points) / len(points)
-    mid_z = sum(z for x, y, z in points) / len(points)
+    mid_x = sum(p.x for p in points) / len(points)
+    mid_y = sum(p.y for p in points) / len(points)
+    mid_z = sum(p.z for p in points) / len(points)
 
     def e(v: float, mid_v: float) -> float:
         if v < mid_v:
@@ -20,7 +20,10 @@ def peturb(points: Points3d) -> Points3d:
         else:
             return 0.01
 
-    return [(x + e(x, mid_x), y + e(y, mid_y), z + e(z, mid_z)) for x, y, z in points]
+    return [
+        Point3d(p.x + e(p.x, mid_x), p.y + e(p.y, mid_y), p.z + e(p.z, mid_z))
+        for p in points
+    ]
 
 
 @dataclass
@@ -38,16 +41,16 @@ class PinX:
 
     def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
         xz = x2 if self.right else x1
-        return Face([(x + xz(z), y, z) for (x, y, zz) in self.points_f], colour="red")
+        return Face([Point3d(p.x + xz(z), p.y, z) for p in self.points_f], colour="red")
 
     def get_side(self, x1: Interpolator, x2: Interpolator, y: float) -> Optional[Face]:
-        min_y = min(y for x, y, z in self.points_f)
-        max_y = max(y for x, y, z in self.points_f)
+        min_y = min(p.y for p in self.points_f)
+        max_y = max(p.y for p in self.points_f)
 
         if min_y <= y <= max_y:
             xz = x2 if self.right else x1
             return Face(
-                [(x + xz(z), y, z) for (x, yy, z) in self.points_s], colour="red"
+                [Point3d(p.x + xz(p.z), y, p.z) for p in self.points_s], colour="red"
             )
 
         return None
@@ -62,9 +65,13 @@ class TailX:
     def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
         xz = x2 if self.right else x1
         if z:
-            return Face([(x + xz(z), y, z) for x, y, zz in self.points_b], colour="red")
+            return Face(
+                [Point3d(p.x + xz(z), p.y, z) for p in self.points_b], colour="red"
+            )
         else:
-            return Face([(x + xz(z), y, z) for x, y, zz in self.points_f], colour="red")
+            return Face(
+                [Point3d(p.x + xz(z), p.y, z) for p in self.points_f], colour="red"
+            )
 
     def get_side(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
         # can ignore this for now as pins don't extend to sides and we'll
@@ -121,19 +128,19 @@ class Dovetails:
                 # face
                 peturb(
                     [
-                        (0, y, 0),
-                        (0 + base, y - flare1, 0),
-                        (0 + base, y + pin_width + flare2, 0),
-                        (0, y + pin_width, 0),
+                        Point3d(0, y, 0),
+                        Point3d(0 + base, y - flare1, 0),
+                        Point3d(0 + base, y + pin_width + flare2, 0),
+                        Point3d(0, y + pin_width, 0),
                     ]
                 ),
                 # side
                 peturb(
                     [
-                        (0, y, 0),
-                        (0 + base, y, 0),
-                        (0 + base, y, T),
-                        (0, y, T),
+                        Point3d(0, y, 0),
+                        Point3d(0 + base, y, 0),
+                        Point3d(0 + base, y, T),
+                        Point3d(0, y, T),
                     ]
                 ),
             )
@@ -192,19 +199,19 @@ class Dovetails:
                 # front face
                 peturb(
                     [
-                        (0, y, 0),
-                        (0 + base, y, 0),
-                        (0 + base, y + tail_width, 0),
-                        (0, y + tail_width, 0),
+                        Point3d(0, y, 0),
+                        Point3d(0 + base, y, 0),
+                        Point3d(0 + base, y + tail_width, 0),
+                        Point3d(0, y + tail_width, 0),
                     ]
                 ),
                 # back face
                 peturb(
                     [
-                        (0, y + flare, T),
-                        (0 + base, y + flare, T),
-                        (0 + base, y + tail_width - flare, T),
-                        (0, y + tail_width - flare, T),
+                        Point3d(0, y + flare, T),
+                        Point3d(0 + base, y + flare, T),
+                        Point3d(0 + base, y + tail_width - flare, T),
+                        Point3d(0, y + tail_width - flare, T),
                     ]
                 ),
             )
@@ -227,10 +234,10 @@ class Dovetails:
     ) -> None:
         points = peturb(
             [
-                (x, y + dy[0], 0),
-                (x, y + dy[1], dz),
-                (x, y + dy[2], dz),
-                (x, y + dy[3], 0),
+                Point3d(x, y + dy[0], 0),
+                Point3d(x, y + dy[1], dz),
+                Point3d(x, y + dy[2], dz),
+                Point3d(x, y + dy[3], 0),
             ]
         )
         self._ends.append(End(right, dx, points))
@@ -249,10 +256,10 @@ class Dovetails:
         faces = self.faces_R if right else self.faces_L
         face = Face(
             [
-                (x + dx[0], y + dy[0], 0),
-                (x + dx[1], y + dy[1], 0),
-                (x + dx[2], y + dy[2], dz),
-                (x + dx[3], y + dy[3], dz),
+                Point3d(x + dx[0], y + dy[0], 0),
+                Point3d(x + dx[1], y + dy[1], 0),
+                Point3d(x + dx[2], y + dy[2], dz),
+                Point3d(x + dx[3], y + dy[3], dz),
             ],
             colour,
         )

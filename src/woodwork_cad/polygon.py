@@ -41,8 +41,11 @@ class Vertex(object):
         if isinstance(vertex, Vertex):
             vertex = (vertex.x, vertex.y)
             # checked = True
+        if isinstance(vertex, tuple):
+            self.x, self.y = vertex  # point coordinates of the vertex
+        else:
+            self.x, self.y = vertex.x, vertex.y
 
-        self.x, self.y = vertex  # point coordinates of the vertex
         self.next = None  # reference to the next vertex of the polygon
         self.prev = None  # reference to the previous vertex of the polygon
         self.neighbour = None  # reference to the corresponding intersection vertex in the other polygon

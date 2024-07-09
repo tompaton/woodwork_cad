@@ -1,54 +1,71 @@
+from dataclasses import dataclass
 from itertools import pairwise
 from math import cos, radians, sin, sqrt
 from typing import Callable, List, Optional, Tuple
 
 from .polygon import clip_polygon as _clip_polygon
 
-Point = Tuple[float, float]
-Points = List[Point]
-Point3d = Tuple[float, float, float]
-Points3d = List[Point3d]
 
+@dataclass
+class Point:
+    x: float
+    y: float
+
+
+Points = List[Point]
 Line = Tuple[Point, Point]
 
-Vector3d = Tuple[float, float, float]
+
+@dataclass
+class Point3d:
+    x: float
+    y: float
+    z: float
+
+
+Points3d = List[Point3d]
+
+
+@dataclass
+class Vector3d:
+    x: float
+    y: float
+    z: float
+
+    def __str__(self) -> str:
+        return f"{(self.x, self.y, self.z)}"
 
 
 def to2d_isometric_above(p: Point3d) -> Point:
-    x, y, z = p
     zx = cos(radians(-45))
     zy = sin(radians(-45))
-    return (x + zx * z, y + zy * z)
+    return Point(p.x + zx * p.z, p.y + zy * p.z)
 
 
 def to2d_isometric_below(p: Point3d) -> Point:
-    x, y, z = p
     zx = cos(radians(45))
     zy = sin(radians(45))
-    return (x + zx * z, y + zy * z)
+    return Point(p.x + zx * p.z, p.y + zy * p.z)
 
 
 def to2d_plan(p: Point3d) -> Point:
-    x, y, z = p
-    return (x, -z)
+    return Point(p.x, -p.z)
 
 
 def to2d_front(p: Point3d) -> Point:
-    x, y, z = p
-    return (x, y)
+    return Point(p.x, p.y)
 
 
 def to2d_side(p: Point3d) -> Point:
-    x, y, z = p
-    return (z, y)
+    return Point(p.z, p.y)
 
 
 _to2d = to2d_isometric_below
 
 
 def to2d(p: Point3d, offset_x: float = 0.0, offset_y: float = 0.0) -> Point:
-    x, y = _to2d(p)
-    return x + offset_x, y + offset_y
+    p2 = _to2d(p)
+    return Point(p2.x + offset_x, p2.y + offset_y)
 
 
 def set_camera(mode: str) -> None:
@@ -56,13 +73,13 @@ def set_camera(mode: str) -> None:
     if mode == "above":
         _to2d = to2d_isometric_above
         _get_lighting = get_3d_lighting
-        CAMERA = normalize((-1.0, 1.0, 1.0))
-        LIGHT = normalize((-1.0, 1.0, 1.0))
+        CAMERA = normalize(Vector3d(-1.0, 1.0, 1.0))
+        LIGHT = normalize(Vector3d(-1.0, 1.0, 1.0))
     elif mode == "below":
         _to2d = to2d_isometric_below
         _get_lighting = get_3d_lighting
-        CAMERA = normalize((-1.0, -1.0, 1.0))
-        LIGHT = normalize((-1.0, 1.0, 1.0))
+        CAMERA = normalize(Vector3d(-1.0, -1.0, 1.0))
+        LIGHT = normalize(Vector3d(-1.0, 1.0, 1.0))
     elif mode == "plan":
         _to2d = to2d_plan
         _get_lighting = get_plan_lighting
@@ -94,43 +111,43 @@ def get_camera() -> str:
 
 
 def length(a: Vector3d) -> float:
-    return sqrt(sum(a1 * a2 for a1, a2 in zip(a, a)))
+    return sqrt(dotproduct(a, a))
 
 
 def normalize(a: Vector3d) -> Vector3d:
     r = length(a)
-    return (a[0] / r, a[1] / r, a[2] / r)
+    return Vector3d(a.x / r, a.y / r, a.z / r)
 
 
 def equal_vectors(a: Vector3d, b: Vector3d) -> bool:
-    a_rounded = f"{a[0]:.4f},{a[1]:.4f},{a[2]:.4f}"
-    b_rounded = f"{b[0]:.4f},{b[1]:.4f},{b[2]:.4f}"
+    a_rounded = f"{a.x:.4f},{a.y:.4f},{a.z:.4f}"
+    b_rounded = f"{b.x:.4f},{b.y:.4f},{b.z:.4f}"
     return a_rounded == b_rounded
 
 
 def line_length(x1: float, y1: float, x2: float, y2: float) -> float:
-    return length((x2 - x1, y2 - y1, 0))
+    return length(Vector3d(x2 - x1, y2 - y1, 0))
 
 
 def subtract(p1: Point3d, p2: Point3d) -> Vector3d:
-    return (p1[0] - p2[0], p1[1] - p2[1], p1[2] - p2[2])
+    return Vector3d(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z)
 
 
 def cross(a: Vector3d, b: Vector3d) -> Vector3d:
-    return (
-        a[1] * b[2] - a[2] * b[1],
-        a[2] * b[0] - a[0] * b[2],
-        a[0] * b[1] - a[1] * b[0],
+    return Vector3d(
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x,
     )
 
 
 def dotproduct(a: Vector3d, b: Vector3d) -> float:
-    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+    return a.x * b.x + a.y * b.y + a.z * b.z
 
 
 def is_inside(p: Point, line: Line) -> bool:
     a, b = line
-    return (b[0] - a[0]) * (p[1] - a[1]) > (b[1] - a[1]) * (p[0] - a[0])
+    return (b.x - a.x) * (p.y - a.y) > (b.y - a.y) * (p.x - a.x)
 
 
 def get_edges(polygon: Points) -> List[Line]:
@@ -143,22 +160,24 @@ def line_intersection(line0: Line, line1: Line) -> Optional[Point]:
     see {@link https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line|Wikipedia}
     """
 
-    x1, y1 = line0[0]
-    x2, y2 = line0[1]
-    x3, y3 = line1[0]
-    x4, y4 = line1[1]
-    denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    p1, p2 = line0
+    p3, p4 = line1
+    denominator = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x)
 
     if abs(denominator) < 0.0001:
         return None  # parallel lines
 
-    numerator_x = (x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)
-    numerator_y = (x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)
+    numerator_x = (p1.x * p2.y - p1.y * p2.x) * (p3.x - p4.x) - (p1.x - p2.x) * (
+        p3.x * p4.y - p3.y * p4.x
+    )
+    numerator_y = (p1.x * p2.y - p1.y * p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (
+        p3.x * p4.y - p3.y * p4.x
+    )
 
     x = numerator_x / denominator
     y = numerator_y / denominator
 
-    return (x, y)
+    return Point(x, y)
 
 
 def clip_polygon(clipping_polygon: Points, subject_polygon: Points) -> Points:
@@ -189,12 +208,12 @@ def clip_polygon2(
     clipping_polygon: Points, subject_polygon: Points, operation: str = "difference"
 ) -> List[Points]:
     result = _clip_polygon(subject_polygon, clipping_polygon, operation)
-    return [poly.points for poly in result]
+    return [[Point(x, y) for x, y in poly.points] for poly in result]
 
 
-CAMERA: Vector3d = normalize((-1.0, -1.0, 1.0))
+CAMERA: Vector3d = normalize(Vector3d(-1.0, -1.0, 1.0))
 
-LIGHT: Vector3d = normalize((-1.0, 1.0, 1.0))
+LIGHT: Vector3d = normalize(Vector3d(-1.0, 1.0, 1.0))
 
 
 def get_3d_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
@@ -221,9 +240,9 @@ def point_rotator(
     sin_a = sin(radians(angle))
 
     def rotate(point: Point) -> Point:
-        x1 = point[0] - origin_x
-        y1 = point[1] - origin_y
-        return (
+        x1 = point.x - origin_x
+        y1 = point.y - origin_y
+        return Point(
             offset_x + x1 * cos_a - y1 * sin_a,
             offset_y + x1 * sin_a + y1 * cos_a,
         )

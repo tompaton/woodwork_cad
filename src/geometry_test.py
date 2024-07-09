@@ -1,6 +1,9 @@
 from functools import partial
 
 from woodwork_cad.geometry import (
+    Point,
+    Point3d,
+    Vector3d,
     clip_polygon,
     clip_polygon2,
     cross,
@@ -15,44 +18,41 @@ from woodwork_cad.svg import PrintToSVGFiles, offset_points
 
 def test_line_intersection(canvas, offset, l1, l2):
     x, y = offset
-    (x1, y1), (x2, y2) = l1
-    canvas.line(x + x1, y + y1, x + x2, y + y2, "blue")
-    (x1, y1), (x2, y2) = l2
-    canvas.line(x + x1, y + y1, x + x2, y + y2, "green")
+    p1, p2 = l1
+    canvas.line(x + p1.x, y + p1.y, x + p2.x, y + p2.y, "blue")
+    p1, p2 = l2
+    canvas.line(x + p1.x, y + p1.y, x + p2.x, y + p2.y, "green")
     p = line_intersection(l1, l2)
     if p:
-        cx, cy = p
-        canvas.circle(x + cx, y + cy, 3, "red")
+        canvas.circle(x + p.x, y + p.y, 3, "red")
 
 
 def test_is_inside(canvas, offset, l1, points):
     x, y = offset
-    (x1, y1), (x2, y2) = l1
-    canvas.line(x + x1, y + y1, x + x2, y + y2, "blue")
+    p1, p2 = l1
+    canvas.line(x + p1.x, y + p1.y, x + p2.x, y + p2.y, "blue")
     for p in points:
-        cx, cy = p
-        canvas.circle(x + cx, y + cy, 3, "green" if is_inside(p, l1) else "red")
+        canvas.circle(x + p.x, y + p.y, 3, "green" if is_inside(p, l1) else "red")
 
 
 def test_sutherland_hodgman_intuition(canvas, offset, edge, *to_add):
     x, y = offset
-    clip = ((50, 10), (50, 100))
+    clip = (Point(50, 10), Point(50, 100))
     canvas.line(x + 50, y + 10, x + 50, y + 100, "gray")
     canvas.text(x + 40, y + 10, content="in", font_size="12px")
     canvas.text(x + 65, y + 10, content="out", font_size="12px")
-    (x1, y1), (x2, y2) = edge
-    canvas.line(x + x1, y + y1, x + x2, y + y2, "blue")
-    canvas.circle(x + x1, y + y1, 2, "blue")
-    canvas.text(x + x1 + 5, y + y1 - 5, content="p1", font_size="12px")
-    canvas.circle(x + x2, y + y2, 2, "blue")
-    canvas.text(x + x2 + 5, y + y2 + 15, content="p2", font_size="12px")
+    p1, p2 = edge
+    canvas.line(x + p1.x, y + p1.y, x + p2.x, y + p2.y, "blue")
+    canvas.circle(x + p1.x, y + p1.y, 2, "blue")
+    canvas.text(x + p1.x + 5, y + p1.y - 5, content="p1", font_size="12px")
+    canvas.circle(x + p2.x, y + p2.y, 2, "blue")
+    canvas.text(x + p2.x + 5, y + p2.y + 15, content="p2", font_size="12px")
     p3 = line_intersection(edge, clip)
     if p3:
-        x3, y3 = p3
-        canvas.circle(x + x3, y + y3, 2, "blue")
-        canvas.text(x + x3 + 8, y + y3 + 5, content="i", font_size="12px")
+        canvas.circle(x + p3.x, y + p3.y, 2, "blue")
+        canvas.text(x + p3.x + 8, y + p3.y + 5, content="i", font_size="12px")
     for i in to_add:
-        x4, y4 = p3 if i == 3 else (x2, y2) if i == 2 else (x1, y1)
+        x4, y4 = (p3.x, p3.y) if i == 3 else (p2.x, p2.y) if i == 2 else (p1.x, p1.y)
         canvas.circle(x + x4, y + y4, 4, "red", fill="none")
 
 
@@ -92,22 +92,28 @@ def test_cross_product(canvas, offset, v1, v2):
     x, y = offset
     x0, y0 = x + 50, y + 50
 
-    v1 = tuple(c * 70 for c in v1)
-    v2 = tuple(c * 70 for c in v2)
-    v3 = tuple(c * 70 for c in v3)
+    v1 = Point3d(v1.x * 70, v1.y * 70, v1.z * 70)
+    v2 = Point3d(v2.x * 70, v2.y * 70, v2.z * 70)
+    v3 = Point3d(v3.x * 70, v3.y * 70, v3.z * 70)
 
-    x1, y1 = to2d(v1)
-    x2, y2 = to2d(v2)
-    x3, y3 = to2d(v3)
+    p1 = to2d(v1)
+    p2 = to2d(v2)
+    p3 = to2d(v3)
 
-    canvas.polyline("blue", [(x0, y0), (x0 + x1, y0 + y1)])
-    canvas.text(x0 + x1 + 5, y0 + y1, "start", content=f"v1 {l1:.2f}", font_size="12px")
+    canvas.polyline("blue", [Point(x0, y0), Point(x0 + p1.x, y0 + p1.y)])
+    canvas.text(
+        x0 + p1.x + 5, y0 + p1.y, "start", content=f"v1 {l1:.2f}", font_size="12px"
+    )
 
-    canvas.polyline("green", [(x0, y0), (x0 + x2, y0 + y2)])
-    canvas.text(x0 + x2 + 5, y0 + y2, "start", content=f"v2 {l2:.2f}", font_size="12px")
+    canvas.polyline("green", [Point(x0, y0), Point(x0 + p2.x, y0 + p2.y)])
+    canvas.text(
+        x0 + p2.x + 5, y0 + p2.y, "start", content=f"v2 {l2:.2f}", font_size="12px"
+    )
 
-    canvas.polyline("red", [(x0, y0), (x0 + x3, y0 + y3)])
-    canvas.text(x0 + x3 + 5, y0 + y3, "start", content=f"v3 {l3:.2f}", font_size="12px")
+    canvas.polyline("red", [Point(x0, y0), Point(x0 + p3.x, y0 + p3.y)])
+    canvas.text(
+        x0 + p3.x + 5, y0 + p3.y, "start", content=f"v3 {l3:.2f}", font_size="12px"
+    )
 
     canvas.text(x0 + 5, y0 - 15, "start", content=f"dot = {dot:.2f}", font_size="12px")
 
@@ -134,28 +140,28 @@ def geometry_test():
     with print_svg(500, zoom=2) as canvas:
         grid = xy_grid(150)
         for l1, l2 in [
-            (((10, 10), (10, 100)), ((100, 10), (100, 100))),
-            (((100, 10), (10, 100)), ((10, 10), (100, 100))),
-            (((10, 10), (10, 100)), ((10, 10), (100, 100))),
-            (((100, 10), (10, 100)), ((100, 10), (100, 100))),
-            (((100, 100), (10, 10)), ((100, 10), (100, 100))),
-            (((10, 10), (10, 100)), ((100, 10), (10, 100))),
-            (((10, 10), (50, 100)), ((100, 10), (10, 100))),
-            (((10, 10), (100, 50)), ((100, 10), (10, 100))),
-            (((100, 10), (10, 100)), ((10, 10), (100, 50))),
-            (((100, 10), (10, 100)), ((10, 10), (40, 50))),
-            (((10, 10), (50, 40)), ((10, 100), (50, 60))),
+            ((Point(10, 10), Point(10, 100)), (Point(100, 10), Point(100, 100))),
+            ((Point(100, 10), Point(10, 100)), (Point(10, 10), Point(100, 100))),
+            ((Point(10, 10), Point(10, 100)), (Point(10, 10), Point(100, 100))),
+            ((Point(100, 10), Point(10, 100)), (Point(100, 10), Point(100, 100))),
+            ((Point(100, 100), Point(10, 10)), (Point(100, 10), Point(100, 100))),
+            ((Point(10, 10), Point(10, 100)), (Point(100, 10), Point(10, 100))),
+            ((Point(10, 10), Point(50, 100)), (Point(100, 10), Point(10, 100))),
+            ((Point(10, 10), Point(100, 50)), (Point(100, 10), Point(10, 100))),
+            ((Point(100, 10), Point(10, 100)), (Point(10, 10), Point(100, 50))),
+            ((Point(100, 10), Point(10, 100)), (Point(10, 10), Point(40, 50))),
+            ((Point(10, 10), Point(50, 40)), (Point(10, 100), Point(50, 60))),
         ]:
             test_line_intersection(canvas, next(grid), l1, l2)
 
     print("## is_inside")
     with print_svg(500, zoom=2) as canvas:
         grid = xy_grid(150)
-        points = [(x, y) for x in range(10, 100, 10) for y in range(10, 100, 10)]
+        points = [Point(x, y) for x in range(10, 100, 10) for y in range(10, 100, 10)]
         for l1 in [
-            ((0, 0), (100, 100)),
-            ((100, 10), (10, 100)),
-            ((40, 0), (60, 100)),
+            (Point(0, 0), Point(100, 100)),
+            (Point(100, 10), Point(10, 100)),
+            (Point(40, 0), Point(60, 100)),
         ]:
             test_is_inside(canvas, next(grid), l1, points)
 
@@ -164,15 +170,15 @@ def geometry_test():
         grid = xy_grid(150)
         for edge, to_add in [
             # edge leaving clip region, include intersection point
-            (((10, 10), (80, 100)), [3]),
+            ((Point(10, 10), Point(80, 100)), [3]),
             # edge entering clip region, include intersection point and edge end
-            (((80, 10), (10, 100)), [2, 3]),
+            ((Point(80, 10), Point(10, 100)), [2, 3]),
             # edge inside clip region, add edge end
-            (((10, 10), (40, 100)), [2]),
+            ((Point(10, 10), Point(40, 100)), [2]),
             # edge outside clip region
-            (((80, 10), (60, 100)), []),
+            ((Point(80, 10), Point(60, 100)), []),
             # edge coincident with clip region is outside
-            (((50, 20), (50, 90)), []),
+            ((Point(50, 20), Point(50, 90)), []),
         ]:
             test_sutherland_hodgman_intuition(canvas, next(grid), edge, *to_add)
 
@@ -204,22 +210,22 @@ def geometry_test():
         print(title)
         with print_svg(500, zoom=2) as canvas:
             grid = xy_grid(150)
-            poly1 = [(10, 10), (100, 10), (100, 50), (10, 50)]
-            poly2 = [(20, 20), (50, 20), (50, 100), (20, 100)]
+            poly1 = [Point(10, 10), Point(100, 10), Point(100, 50), Point(10, 50)]
+            poly2 = [Point(20, 20), Point(50, 20), Point(50, 100), Point(20, 100)]
             poly3 = [
-                (15, 15),
-                (45, 15),
-                (50, 0),
-                (55, 15),
-                (60, 15),
-                (80, 50),
-                (70, 90),
-                (60, 80),
-                (55, 70),
-                (20, 60),
-                (55, 50),
-                (60, 40),
-                (50, 30),
+                Point(15, 15),
+                Point(45, 15),
+                Point(50, 0),
+                Point(55, 15),
+                Point(60, 15),
+                Point(80, 50),
+                Point(70, 90),
+                Point(60, 80),
+                Point(55, 70),
+                Point(20, 60),
+                Point(55, 50),
+                Point(60, 40),
+                Point(50, 30),
             ]
             test_clip_polygon(canvas, next(grid), poly1, poly2)
             test_clip_polygon(canvas, next(grid), poly2, poly1)
@@ -228,54 +234,59 @@ def geometry_test():
             test_clip_polygon(canvas, next(grid), poly3, poly1)
             test_clip_polygon(canvas, next(grid), poly3, poly2)
 
-            dovetail = [(10 - 1, 25), (30, 20), (30, 50), (10 - 1, 45)]
-            panel = [(10, 10), (100, 10), (100, 100), (10, 100)]
+            dovetail = [
+                Point(10 - 1, 25),
+                Point(30, 20),
+                Point(30, 50),
+                Point(10 - 1, 45),
+            ]
+            panel = [Point(10, 10), Point(100, 10), Point(100, 100), Point(10, 100)]
             test_clip_polygon(canvas, next(grid), dovetail, panel)
 
             dovetail2 = [
-                (10 - 1, 10 - 1),
-                (100 + 1, 10 - 1),
-                (100 + 1, 100 + 1),
-                (10 - 1, 100 + 1),
-                (10 - 1, 45),
-                (30, 50),
-                (30, 20),
-                (10 - 1, 25),
+                Point(10 - 1, 10 - 1),
+                Point(100 + 1, 10 - 1),
+                Point(100 + 1, 100 + 1),
+                Point(10 - 1, 100 + 1),
+                Point(10 - 1, 45),
+                Point(30, 50),
+                Point(30, 20),
+                Point(10 - 1, 25),
             ]
             test_clip_polygon(canvas, next(grid), dovetail2, panel)
             panel2 = [
-                (10, 10),
-                (100, 10),
-                (100, 100),
-                (10, 100),
-                (10, 85),
-                (30, 90),
-                (30, 60),
-                (10, 65),
+                Point(10, 10),
+                Point(100, 10),
+                Point(100, 100),
+                Point(10, 100),
+                Point(10, 85),
+                Point(30, 90),
+                Point(30, 60),
+                Point(10, 65),
             ]
             test_clip_polygon(canvas, next(grid), dovetail2, panel2)
 
             dovetail3 = [
-                (10 + 0.01, 10 + 0.01),
-                (100 + 0.01, 10 + 0.01),
-                (100 + 0.01, 100 + 0.01),
-                (10 + 0.01, 100 + 0.01),
-                (10 + 0.01, 45 + 0.01),
-                (30 + 0.01, 50 + 0.01),
-                (30 + 0.01, 20 + 0.01),
-                (10 + 0.01, 25 + 0.01),
+                Point(10 + 0.01, 10 + 0.01),
+                Point(100 + 0.01, 10 + 0.01),
+                Point(100 + 0.01, 100 + 0.01),
+                Point(10 + 0.01, 100 + 0.01),
+                Point(10 + 0.01, 45 + 0.01),
+                Point(30 + 0.01, 50 + 0.01),
+                Point(30 + 0.01, 20 + 0.01),
+                Point(10 + 0.01, 25 + 0.01),
             ]
             test_clip_polygon(canvas, next(grid), dovetail3, panel2)
 
             # subject polygon
             spoly = [
-                (u * 15, v * 15)
+                Point(u * 15, v * 15)
                 for u, v in [(1.5, 1.3), (7.5, 2.5), (4.0, 3.0), (4.5, 6.5)]
             ]
 
             # clip polygon
             cpoly = [
-                (u * 15, v * 15)
+                Point(u * 15, v * 15)
                 for u, v in [
                     (5.0, 4.5),
                     (3.0, 5.5),
@@ -294,12 +305,12 @@ def geometry_test():
     with print_svg(500, zoom=2) as canvas:
         grid = xy_grid(200, max_width=400)
         for v1, v2 in [
-            ((1, 0, 0), (0, 1, 0)),
-            ((0, 1, 0), (1, 0, 0)),
-            ((0.5, 0.5, 0), (0, 1, 0)),
-            ((0, 1, 0), (0.5, 0.5, 0)),
-            ((0, 1, 0), (0, 0, 1)),
-            ((0, 0, 1), (0, 1, 0)),
+            (Vector3d(1, 0, 0), Vector3d(0, 1, 0)),
+            (Vector3d(0, 1, 0), Vector3d(1, 0, 0)),
+            (Vector3d(0.5, 0.5, 0), Vector3d(0, 1, 0)),
+            (Vector3d(0, 1, 0), Vector3d(0.5, 0.5, 0)),
+            (Vector3d(0, 1, 0), Vector3d(0, 0, 1)),
+            (Vector3d(0, 0, 1), Vector3d(0, 1, 0)),
         ]:
             test_cross_product(canvas, next(grid), v1, v2)
 

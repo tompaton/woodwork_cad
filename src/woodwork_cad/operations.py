@@ -2,7 +2,7 @@ from typing import Any, List
 
 from .board import Board
 from .defects import Defects
-from .geometry import Points, to2d
+from .geometry import Point, Point3d, Points, to2d
 from .shades import Shades
 from .svg import SVGCanvas
 
@@ -11,8 +11,8 @@ def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> P
     points = []
     for board in boards:
         board.draw_board(canvas, x, y)
-        points.append((x, y))
-        y += board.W + to2d((0, 0, board.T))[1] + 20
+        points.append(Point(x, y))
+        y += board.W + to2d(Point3d(0, 0, board.T)).y + 20
     return points
 
 

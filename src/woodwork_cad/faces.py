@@ -3,6 +3,7 @@ from itertools import pairwise
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
 from .geometry import (
+    Point,
     Point3d,
     Points3d,
     Vector3d,
@@ -28,7 +29,7 @@ class Face:
     zorder: int = 0
 
     def __post_init__(self) -> None:
-        self.__centroid: Optional[Vector3d] = None
+        self.__centroid: Optional[Point3d] = None
         self.__normal: Optional[Vector3d] = None
 
     def reverse(self) -> "Face":
@@ -38,7 +39,7 @@ class Face:
 
     def offset(self, dx: float = 0, dy: float = 0, dz: float = 0) -> "Face":
         return Face(
-            [(x + dx, y + dy, z + dz) for x, y, z in self.points],
+            [Point3d(p.x + dx, p.y + dy, p.z + dz) for p in self.points],
             self.colour,
             self.fill,
             self.zorder,
@@ -46,7 +47,7 @@ class Face:
 
     def offset_profile(self, xz: Interpolator) -> "Face":
         return Face(
-            [(x + xz(z), y, z) for x, y, z in self.points],
+            [Point3d(p.x + xz(p.z), p.y, p.z) for p in self.points],
             self.colour,
             self.fill,
             self.zorder,
@@ -59,7 +60,7 @@ class Face:
     def _key(self) -> Tuple[int, float, float, float]:
         # z-order (reversed), then top to bottom, left to right
         center = self.centroid
-        return (self.zorder, -center[2], center[0], center[1])
+        return (self.zorder, -center.z, center.x, center.y)
 
     def draw(self, canvas: SVGCanvas, offset_x: float, offset_y: float) -> None:
         if not self.points:
@@ -80,34 +81,34 @@ class Face:
         )
 
         if DEBUG:
-            x, y, z = self.points[0]
-            dx, dy, dz = normalize(subtract(self.points[1], self.points[0]))
+            x, y, z = self.points[0].x, self.points[0].y, self.points[0].z
+            edge = normalize(subtract(self.points[1], self.points[0]))
             canvas.polyline3d(
                 self.colour or "orange",
                 [
-                    (x, y, z),
-                    (x + 15 * dx, y + 15 * dy, z + 15 * dz),
-                    (x + 10 * dx - 2, y + 15 * dy - 2, z + 15 * dz),
+                    Point3d(x, y, z),
+                    Point3d(x + 15 * edge.x, y + 15 * edge.y, z + 15 * edge.z),
+                    Point3d(x + 10 * edge.x - 2, y + 15 * edge.y - 2, z + 15 * edge.z),
                 ],
                 x=offset_x - 3,
                 y=offset_y - 5,
                 fill="none",
             )
             # draw normal from face centroid
-            x, y, z = self.centroid
+            x, y, z = self.centroid.x, self.centroid.y, self.centroid.z
             canvas.polyline3d(
                 self.colour or "orange",
                 [
-                    (x, y, z),
-                    (
-                        x + 15 * normal[0],
-                        y + 15 * normal[1],
-                        z + 15 * normal[2],
+                    Point3d(x, y, z),
+                    Point3d(
+                        x + 15 * normal.x,
+                        y + 15 * normal.y,
+                        z + 15 * normal.z,
                     ),
-                    (
-                        x + 15 * normal[0] - 2,
-                        y + 15 * normal[1],
-                        z + 10 * normal[2],
+                    Point3d(
+                        x + 15 * normal.x - 2,
+                        y + 15 * normal.y,
+                        z + 10 * normal.z,
                     ),
                 ],
                 x=offset_x,
@@ -146,7 +147,7 @@ class Face:
     @property
     def normal(self) -> Vector3d:
         if not self.points:
-            return (0.0, 0.0, 0.0)
+            return Vector3d(0.0, 0.0, 0.0)
 
         if self.__normal is None:
             # for concave polygons we need to sum all cross products
@@ -155,25 +156,25 @@ class Face:
             sx = sy = sz = 0.0
             for a, b in pairwise(self.points + self.points[:1]):
                 n = cross(subtract(b, C), subtract(a, C))
-                sx += n[0]
-                sy += n[1]
-                sz += n[2]
-            self.__normal = normalize((sx, sy, sz))
+                sx += n.x
+                sy += n.y
+                sz += n.z
+            self.__normal = normalize(Vector3d(sx, sy, sz))
         return self.__normal
 
     @property
-    def centroid(self) -> Vector3d:
+    def centroid(self) -> Point3d:
         if not self.points:
-            return (0.0, 0.0, 0.0)
+            return Point3d(0.0, 0.0, 0.0)
 
         if self.__centroid is None:
-            min_x = min(x for x, y, z in self.points)
-            max_x = max(x for x, y, z in self.points)
-            min_y = min(y for x, y, z in self.points)
-            max_y = max(y for x, y, z in self.points)
-            min_z = min(z for x, y, z in self.points)
-            max_z = max(z for x, y, z in self.points)
-            self.__centroid = (
+            min_x = min(p.x for p in self.points)
+            max_x = max(p.x for p in self.points)
+            min_y = min(p.y for p in self.points)
+            max_y = max(p.y for p in self.points)
+            min_z = min(p.z for p in self.points)
+            max_z = max(p.z for p in self.points)
+            self.__centroid = Point3d(
                 (max_x + min_x) / 2,
                 (max_y + min_y) / 2,
                 (max_z + min_z) / 2,
@@ -182,18 +183,18 @@ class Face:
 
     def remove(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
         # clip the dovetail regions out of the face
-        z = self.points[0][2]
+        z = self.points[0].z
         clipped = False
         result_poly = self.points[:]
         for region in clip_regions(z):
             if result_poly:
                 clipped = True
-                clip_poly = [(x, y) for x, y, z in region.points]
+                clip_poly = [Point(q.x, q.y) for q in region.points]
                 result_poly = [
-                    (x, y, z)
-                    for x, y in clip_polygon2(
+                    Point3d(p.x, p.y, z)
+                    for p in clip_polygon2(
                         clip_poly,
-                        [(x, y) for x, y, z in result_poly],
+                        [Point(q.x, q.y) for q in result_poly],
                     )[0]
                 ]
 
@@ -205,18 +206,18 @@ class Face:
         return self
 
     def remove_side(self, clip_regions: Callable[[float], Iterable["Face"]]) -> "Face":
-        y = self.points[0][1]
+        y = self.points[0].y
         clipped = False
         result_poly = self.points[:]
         for region in clip_regions(y):
             if result_poly:
                 clipped = True
-                clip_poly = [(x, z) for x, y, z in region.points]
+                clip_poly = [Point(q.x, q.z) for q in region.points]
                 result_poly = [
-                    (x, y, z)
-                    for x, z in clip_polygon2(
+                    Point3d(p.x, y, p.y)
+                    for p in clip_polygon2(
                         clip_poly,
-                        [(x, z) for x, y, z in result_poly],
+                        [Point(q.x, q.z) for q in result_poly],
                     )[0]
                 ]
 
@@ -231,11 +232,11 @@ class Face:
         return self.clip_end_ex(clip_region) or self
 
     def clip_end_ex(self, clip_region: "Face") -> Optional["Face"]:
-        clip_poly = [(y, z) for x, y, z in clip_region.points]
+        clip_poly = [Point(q.y, q.z) for q in clip_region.points]
         result_poly = [
-            (0.0, y, z)
-            for y, z in clip_polygon2(
-                clip_poly, [(y, z) for x, y, z in self.points], "intersection"
+            Point3d(0.0, p.x, p.y)
+            for p in clip_polygon2(
+                clip_poly, [Point(q.y, q.z) for q in self.points], "intersection"
             )[0]
         ]
 
@@ -246,12 +247,12 @@ class Face:
         )
 
     def clip_face(self, clip_region: "Face") -> "Face":
-        clip_poly = [(x, y) for x, y, z in clip_region.points]
-        z = self.points[0][2]
+        clip_poly = [Point(q.x, q.y) for q in clip_region.points]
+        z = self.points[0].z
         result_poly = [
-            (x, y, z)
-            for x, y in clip_polygon2(
-                clip_poly, [(x, y) for x, y, z in self.points], "intersection"
+            Point3d(p.x, p.y, z)
+            for p in clip_polygon2(
+                clip_poly, [Point(q.x, q.y) for q in self.points], "intersection"
             )[0]
         ]
 
@@ -277,19 +278,17 @@ def rotate_faces(
     mate: Point3d,
     origin2d_out: List[Point3d],
 ) -> Iterator[Face]:
-    if rotate_y == 0.0 and offset == (0.0, 0.0, 0.0):
+    if rotate_y == 0.0 and (offset.x, offset.y, offset.z) == (0.0, 0.0, 0.0):
         yield from faces
         origin2d_out.append(origin)
         origin2d_out.append(mate)
         return
 
-    dx, dy, dz = offset
-    rotate = point_rotator(rotate_y, origin[0], origin[2], dx, dz)
+    rotate = point_rotator(rotate_y, origin.x, origin.z, offset.x, offset.z)
 
     def rotate3d(point: Point3d) -> Point3d:
-        x, y, z = point
-        x1, z1 = rotate((x, z))
-        return x1, y + dy, z1
+        rotated = rotate(Point(point.x, point.z))
+        return Point3d(rotated.x, point.y + offset.y, rotated.y)
 
     for face in faces:
         yield Face(

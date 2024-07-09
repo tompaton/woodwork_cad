@@ -254,7 +254,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     print("- rebates so groove for base can be smaller?")
     print("   - better to just plane thickness down to 10mm")
 
-    side_length = corners3[2][0] - corners3[3][0]
+    side_length = corners3[2].x - corners3[3].x
     print(f"- lid/base width {hex_W3:.1f}, side length {side_length:.1f}")
 
     half = hex_L3 - (hex_L3 - hex_W3) * 2
@@ -266,8 +266,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         canvas.polyline(
             "green",
             offset_points(
-                lid1_xy[0],
-                lid1_xy[1],
+                lid1_xy.x,
+                lid1_xy.y,
                 hex_top,
             ),
             stroke_dasharray=3,
@@ -276,8 +276,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         canvas.polyline(
             "green",
             offset_points(
-                lid1_xy[0] + half,
-                lid1_xy[1],
+                lid1_xy.x + half,
+                lid1_xy.y,
                 hex_bottom,
             ),
             stroke_dasharray=3,
@@ -287,8 +287,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         canvas.polyline(
             "green",
             offset_points(
-                lid2_xy[0],
-                lid2_xy[1],
+                lid2_xy.x,
+                lid2_xy.y,
                 hex_bottom,
             ),
             stroke_dasharray=3,
@@ -297,8 +297,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         canvas.polyline(
             "green",
             offset_points(
-                lid2_xy[0] + half,
-                lid2_xy[1],
+                lid2_xy.x + half,
+                lid2_xy.y,
                 hex_top,
             ),
             stroke_dasharray=3,

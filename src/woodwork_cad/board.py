@@ -6,7 +6,7 @@ from .cutlist import Cuts
 from .defects import Defects
 from .dovetails import Dovetails, peturb
 from .faces import Face, rotate_faces
-from .geometry import Point3d, Points3d, Vector3d
+from .geometry import Point, Point3d, Points3d, Vector3d
 from .grooves import Grooves, Side
 from .profile import Interpolator, Profile
 from .shades import Shades
@@ -219,7 +219,7 @@ class Board:
         x: float,
         y: float,
         rotate_y: float = 0.0,
-        offset: Vector3d = (0.0, 0.0, 0.0),
+        offset: Vector3d = Vector3d(0.0, 0.0, 0.0),
     ) -> Tuple[Point3d, Point3d]:
         faces: List[Face] = []
         origin, mate = self.rotated_faces(rotate_y, offset, faces)
@@ -302,10 +302,10 @@ class Board:
     ) -> Face:
         return Face(
             [
-                (x1(side.z1), side.y, side.z1),
-                (x2(side.z1), side.y, side.z1),
-                (x2(side.z2), side.y, side.z2),
-                (x1(side.z2), side.y, side.z2),
+                Point3d(x1(side.z1), side.y, side.z1),
+                Point3d(x2(side.z1), side.y, side.z1),
+                Point3d(x2(side.z2), side.y, side.z2),
+                Point3d(x1(side.z2), side.y, side.z2),
             ],
         )
 
@@ -315,16 +315,16 @@ class Board:
         for flat in self.grooves.flats(self.W, self.T, face=True):
             points.extend(
                 [
-                    (xz(flat.z), flat.y1, flat.z),
-                    (xz(flat.z), flat.y2, flat.z),
+                    Point3d(xz(flat.z), flat.y1, flat.z),
+                    Point3d(xz(flat.z), flat.y2, flat.z),
                 ]
             )
 
         for flat in reversed(list(self.grooves.flats(self.W, self.T, face=False))):
             points.extend(
                 [
-                    (xz(flat.z), flat.y2, flat.z),
-                    (xz(flat.z), flat.y1, flat.z),
+                    Point3d(xz(flat.z), flat.y2, flat.z),
+                    Point3d(xz(flat.z), flat.y1, flat.z),
                 ]
             )
 
@@ -342,10 +342,10 @@ class Board:
 
             yield Face(
                 [
-                    (x1(flat.z), flat.y1, flat.z),
-                    (x2(flat.z), flat.y1, flat.z),
-                    (x2(flat.z), flat.y2, flat.z),
-                    (x1(flat.z), flat.y2, flat.z),
+                    Point3d(x1(flat.z), flat.y1, flat.z),
+                    Point3d(x2(flat.z), flat.y1, flat.z),
+                    Point3d(x2(flat.z), flat.y2, flat.z),
+                    Point3d(x1(flat.z), flat.y2, flat.z),
                 ],
             )
 
@@ -363,10 +363,10 @@ class Board:
 
             yield Face(
                 [
-                    (x1(flat.z), flat.y1, flat.z),
-                    (x1(flat.z), flat.y2, flat.z),
-                    (x2(flat.z), flat.y2, flat.z),
-                    (x2(flat.z), flat.y1, flat.z),
+                    Point3d(x1(flat.z), flat.y1, flat.z),
+                    Point3d(x1(flat.z), flat.y2, flat.z),
+                    Point3d(x2(flat.z), flat.y2, flat.z),
+                    Point3d(x2(flat.z), flat.y1, flat.z),
                 ],
             )
 
@@ -380,10 +380,10 @@ class Board:
         for shade in self.shades:
             face_shade = Face(
                 [
-                    (x1(0), shade.y1, 0),
-                    (x2(0), shade.y1, 0),
-                    (x2(0), shade.y2, 0),
-                    (x1(0), shade.y2, 0),
+                    Point3d(x1(0), shade.y1, 0),
+                    Point3d(x2(0), shade.y1, 0),
+                    Point3d(x2(0), shade.y2, 0),
+                    Point3d(x1(0), shade.y2, 0),
                 ],
                 "none",
                 fill=shade.colour,
@@ -398,7 +398,7 @@ class Board:
         if self.dovetails:
             for face_clip in self._get_shade_right_clip(x1, x2):
                 face_clip.points = peturb(face_clip.points)
-                x = face_clip.points[0][0] - x2(0) - x1(0)
+                x = face_clip.points[0].x - x2(0) - x1(0)
                 for shade in self._get_shade_right_face():
                     face2 = shade.clip_end_ex(face_clip)
                     if face2:
@@ -412,10 +412,10 @@ class Board:
         for shade in self.shades:
             yield Face(
                 [
-                    (0.0, shade.y1, 0),
-                    (0.0, shade.y1, self.T),
-                    (0.0, shade.y2, self.T),
-                    (0.0, shade.y2, 0),
+                    Point3d(0.0, shade.y1, 0),
+                    Point3d(0.0, shade.y1, self.T),
+                    Point3d(0.0, shade.y2, self.T),
+                    Point3d(0.0, shade.y2, 0),
                 ],
                 "none",
                 fill=shade.colour,
@@ -430,7 +430,7 @@ class Board:
         )
 
         for face in self.dovetails.faces_R:
-            if len({x for x, y, z in face.points}) == 1:
+            if len({p.x for p in face.points}) == 1:
                 yield face.offset_profile(x2)
 
     def _draw_cuts(self, canvas: SVGCanvas, x: float, y: float) -> None:
@@ -439,20 +439,20 @@ class Board:
             if cut.op:
                 if cut.y2 == self.W:
                     points = [
-                        (cut.x1, cut.y1, 0),
-                        (cut.x2 + 1, cut.y1, 0),
-                        (cut.x2 + 1, cut.y2, 0),
+                        Point3d(cut.x1, cut.y1, 0),
+                        Point3d(cut.x2 + 1, cut.y1, 0),
+                        Point3d(cut.x2 + 1, cut.y2, 0),
                         # continue around edge
-                        (cut.x2 + 1, cut.y2, self.T),
-                        (cut.x1, cut.y2, self.T),
-                        (cut.x1, cut.y2, 0),
+                        Point3d(cut.x2 + 1, cut.y2, self.T),
+                        Point3d(cut.x1, cut.y2, self.T),
+                        Point3d(cut.x1, cut.y2, 0),
                     ]
                 else:
                     points = [
-                        (cut.x1, cut.y1, 0),
-                        (cut.x2 + 1, cut.y1, 0),
-                        (cut.x2 + 1, cut.y2, 0),
-                        (cut.x1, cut.y2, 0),
+                        Point3d(cut.x1, cut.y1, 0),
+                        Point3d(cut.x2 + 1, cut.y1, 0),
+                        Point3d(cut.x2 + 1, cut.y2, 0),
+                        Point3d(cut.x1, cut.y2, 0),
                     ]
 
                 canvas.polyline3d(
@@ -489,7 +489,7 @@ class Board:
         y: float,
         angle: float,
         colour: str = "black",
-    ) -> Tuple[float, float]:
+    ) -> Point:
         rotated = self.profile.plan_points(x, y, angle)
         canvas.polyline(colour, rotated, closed=True)
         return rotated[1]

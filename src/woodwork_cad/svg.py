@@ -3,7 +3,7 @@ from math import sqrt
 from pathlib import Path
 from typing import Any, Iterator, Optional, Tuple
 
-from .geometry import Points, Points3d, get_camera, set_camera, to2d
+from .geometry import Point, Points, Points3d, get_camera, set_camera, to2d
 
 
 class SVGCanvas:
@@ -142,10 +142,10 @@ class SVGCanvas:
             stroke_width=stroke_width,
             stroke_dasharray=stroke_dasharray,
             stroke=colour,
-            points=" ".join("{:.1f},{:.1f}".format(*p) for p in points),
+            points=" ".join(f"{p.x:.1f},{p.y:.1f}" for p in points),
             **attrs,
         )
-        self._min_max_y(*(y for x, y in points))
+        self._min_max_y(*(p.y for p in points))
 
     def polyline3d(
         self,
@@ -211,28 +211,28 @@ class PrintToSVGFiles:
 
 
 def polyline_bounds(corners: Points) -> Tuple[float, float, Points]:
-    min_hex_x = min(x for x, y in corners)
-    min_hex_y = min(y for x, y in corners)
-    hex_L = max(x for x, y in corners) - min_hex_x
-    hex_W = max(y for x, y in corners) - min_hex_y
+    min_hex_x = min(p.x for p in corners)
+    min_hex_y = min(p.y for p in corners)
+    hex_L = max(p.x for p in corners) - min_hex_x
+    hex_W = max(p.y for p in corners) - min_hex_y
     return hex_L, hex_W, offset_points(-min_hex_x, -min_hex_y, corners)
 
 
 def crop_points(points: Points, height: float) -> Points:
-    return [(x, y) for x, y in points if -1 <= y <= height + 1]
+    return [p for p in points if -1 <= p.y <= height + 1]
 
 
 def offset_points(offset_x: float, offset_y: float, points: Points) -> Points:
-    return [(x + offset_x, y + offset_y) for x, y in points]
+    return [Point(p.x + offset_x, p.y + offset_y) for p in points]
 
 
 def shrink_points(corners: Points, delta: float) -> Tuple[float, float, Points]:
     width, height = polyline_bounds(corners)[:2]
     cx, cy = width / 2, height / 2
     corners2: Points = []
-    for x, y in corners:
-        dx, dy = cx - x, cy - y
+    for p in corners:
+        dx, dy = cx - p.x, cy - p.y
         length = sqrt(dx * dx + dy * dy)
         x1, y1 = dx / length, dy / length  # unit vector from corner to center
-        corners2.append((x + x1 * delta, y + y1 * delta))
+        corners2.append(Point(p.x + x1 * delta, p.y + y1 * delta))
     return polyline_bounds(corners2)
