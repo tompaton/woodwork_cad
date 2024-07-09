@@ -6,6 +6,7 @@ from woodwork_cad.operations import (
     cut,
     cut_waste,
     draw_boards,
+    draw_dimension,
     joint,
     process,
     process_all,
@@ -31,13 +32,19 @@ def board_test() -> None:
     print(f" - aspect {board.aspect}")
 
     with print_svg(500, zoom=2) as canvas:
-        draw_boards(canvas, 10, 10, [board])
+        draw_boards(canvas, 20, 20, [board])
+        draw_dimension(canvas, 20, 20, board, "L", "below")
+        draw_dimension(canvas, 20, 20, board, "W", "left")
+        # draw_dimension(canvas, 20, 20, board, "T", "above")
 
     print("mark any defects")
     board.defects.add(Hole(30, 80))
 
     with print_svg(500, zoom=2) as canvas:
-        draw_boards(canvas, 10, 10, [board])
+        draw_boards(canvas, 20, 20, [board])
+        draw_dimension(canvas, 20, 20, board, "L", "above")
+        draw_dimension(canvas, 20, 20, board, "W", "right")
+        # draw_dimension(canvas, 20, 20, board, "T", "below")
 
     print("rip cut")
     boards = process(rip(50))(board)

@@ -1,8 +1,22 @@
-<svg width="1000" viewBox="0.0 0.0 500.0 128.5" xmlns="http://www.w3.org/2000/svg">
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,18.5 18.5,118.5 318.5,118.5 318.5,18.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,110.0 18.5,118.5 18.5,18.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="18.5,18.5 318.5,18.5 310.0,10.0 10.0,10.0" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,110.0 310.0,110.0 318.5,118.5 18.5,118.5" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="318.5,18.5 318.5,118.5 310.0,110.0 310.0,10.0" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,10.0 310.0,10.0 310.0,110.0 10.0,110.0" />
+<svg width="1000" viewBox="0.0 0.0 500.0 143.5" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="28.5,28.5 28.5,128.5 328.5,128.5 328.5,28.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.0,20.0 20.0,120.0 28.5,128.5 28.5,28.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="28.5,28.5 328.5,28.5 320.0,20.0 20.0,20.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="20.0,120.0 320.0,120.0 328.5,128.5 28.5,128.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="328.5,28.5 328.5,128.5 320.0,120.0 320.0,20.0" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="20.0,20.0 320.0,20.0 320.0,120.0 20.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.0,138.5 320.0,138.5" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="24.0,136.5 20.0,138.5 24.0,140.5" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="316.0,136.5 320.0,138.5 316.0,140.5" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="320.0,120.0 320.0,138.5" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="20.0,120.0 20.0,138.5" />
+<rect x="150.0" y="133.48528137423858" width="40" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="170.0" y="141.48528137423858" fill="black">300.0</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,20.0 10.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="8.0,24.0 10.0,20.0 12.0,24.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="8.0,116.0 10.0,120.0 12.0,116.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="20.0,120.0 10.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="20.0,20.0 10.0,20.0" />
+<rect x="5.0" y="50.0" width="10" height="40" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="0" y="0" fill="black" transform="translate(13.0 70.0) rotate(-90)">100.0</text>
 </svg>

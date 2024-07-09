@@ -22,6 +22,9 @@ class Point3d:
     y: float
     z: float
 
+    def offset(self, dx: float = 0.0, dy: float = 0.0, dz: float = 0.0) -> "Point3d":
+        return Point3d(self.x + dx, self.y + dy, self.z + dz)
+
 
 Points3d = List[Point3d]
 
