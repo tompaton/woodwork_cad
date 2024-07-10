@@ -48,116 +48,23 @@ def draw_dimension_ex(
     # TODO: dimension=="T"
 
     if dimension == "W":
-        vertical_arrow(canvas, x, y, start, end, arrow_start, arrow_end)
-        vertical_text(
-            canvas, x, y, arrow_start, arrow_end, text, left=position == "left"
+        canvas.vertical_arrow(
+            x,
+            y,
+            start,
+            end,
+            arrow_start,
+            arrow_end,
+            text,
+            left=position == "left",
         )
 
     elif dimension == "L":
-        horizontal_arrow(canvas, x, y, start, end, arrow_start, arrow_end)
-        horizontal_text(canvas, x, y, arrow_start, arrow_end, text)
+        canvas.horizontal_arrow(x, y, start, end, arrow_start, arrow_end, text)
 
     else:
         msg = f"Unsupported {dimension=} and {position=}"
         raise ValueError(msg)
-
-
-def vertical_arrow(
-    canvas: SVGCanvas,
-    x: float,
-    y: float,
-    corner_top: Point3d,
-    corner_bottom: Point3d,
-    arrow_top: Point3d,
-    arrow_bottom: Point3d,
-) -> None:
-    canvas.polyline3d("gray", [arrow_top, arrow_bottom], x, y, stroke_dasharray=2)
-    canvas.polyline3d(
-        "gray",
-        [arrow_top.offset(dx=-2, dy=4), arrow_top, arrow_top.offset(dx=2, dy=4)],
-        x,
-        y,
-    )
-    canvas.polyline3d(
-        "gray",
-        [
-            arrow_bottom.offset(dx=-2, dy=-4),
-            arrow_bottom,
-            arrow_bottom.offset(dx=2, dy=-4),
-        ],
-        x,
-        y,
-    )
-    canvas.polyline3d("silver", [corner_bottom, arrow_bottom], x, y, stroke_dasharray=2)
-    canvas.polyline3d("silver", [corner_top, arrow_top], x, y, stroke_dasharray=2)
-
-
-def horizontal_arrow(
-    canvas: SVGCanvas,
-    x: float,
-    y: float,
-    corner_left: Point3d,
-    corner_right: Point3d,
-    arrow_left: Point3d,
-    arrow_right: Point3d,
-) -> None:
-    canvas.polyline3d("gray", [arrow_left, arrow_right], x, y, stroke_dasharray=2)
-    canvas.polyline3d(
-        "gray",
-        [arrow_left.offset(dy=-2, dx=4), arrow_left, arrow_left.offset(dy=2, dx=4)],
-        x,
-        y,
-    )
-    canvas.polyline3d(
-        "gray",
-        [
-            arrow_right.offset(dy=-2, dx=-4),
-            arrow_right,
-            arrow_right.offset(dy=2, dx=-4),
-        ],
-        x,
-        y,
-    )
-    canvas.polyline3d("silver", [corner_right, arrow_right], x, y, stroke_dasharray=2)
-    canvas.polyline3d("silver", [corner_left, arrow_left], x, y, stroke_dasharray=2)
-
-
-def horizontal_text(
-    canvas: SVGCanvas, x: float, y: float, left: Point3d, right: Point3d, text: str
-) -> None:
-    left2 = to2d(left, x, y)
-    right2 = to2d(right, x, y)
-    x2 = (left2.x + right2.x) / 2
-    y2 = (left2.y + right2.y) / 2
-    w = 5 * (len(text) + 3)
-    canvas.rect(x2 - w / 2, y2 - 5, w, 10, "none", fill="rgba(255,255,255,0.75)")
-    canvas.text(x2, y2 + 3, content=text, style="font-size:12px")
-
-
-def vertical_text(
-    canvas: SVGCanvas,
-    x: float,
-    y: float,
-    top: Point3d,
-    bottom: Point3d,
-    text: str,
-    left: bool = False,
-) -> None:
-    top2 = to2d(top, x, y)
-    bottom2 = to2d(bottom, x, y)
-    x2 = (top2.x + bottom2.x) / 2
-    y2 = (top2.y + bottom2.y) / 2
-    w = 5 * (len(text) + 3)
-    canvas.rect(x2 - 5, y2 - w / 2, 10, w, "none", fill="rgba(255,255,255,0.75)")
-    canvas.text(
-        0,
-        0,
-        content=text,
-        style="font-size:12px",
-        transform=f"translate({x2+3} {y2}) rotate(-90)"
-        if left
-        else f"translate({x2-3} {y2}) rotate(90)",
-    )
 
 
 def cut(length: float, kerf: float = 5, label: str = ""):

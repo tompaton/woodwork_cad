@@ -3,7 +3,7 @@ from math import sqrt
 from pathlib import Path
 from typing import Any, Iterator, Optional, Tuple
 
-from .geometry import Point, Points, Points3d, get_camera, set_camera, to2d
+from .geometry import Point, Point3d, Points, Points3d, get_camera, set_camera, to2d
 
 
 class SVGCanvas:
@@ -158,6 +158,93 @@ class SVGCanvas:
         return self.polyline(
             colour, [to2d(p, offset_x=x, offset_y=y) for p in points], **kwargs
         )
+
+    def vertical_arrow(
+        self,
+        x: float,
+        y: float,
+        corner_top: Point3d,
+        corner_bottom: Point3d,
+        arrow_top: Point3d,
+        arrow_bottom: Point3d,
+        text: str,
+        left: bool = False,
+    ) -> None:
+        self.polyline3d("gray", [arrow_top, arrow_bottom], x, y, stroke_dasharray=2)
+        self.polyline3d(
+            "gray",
+            [arrow_top.offset(dx=-2, dy=4), arrow_top, arrow_top.offset(dx=2, dy=4)],
+            x,
+            y,
+        )
+        self.polyline3d(
+            "gray",
+            [
+                arrow_bottom.offset(dx=-2, dy=-4),
+                arrow_bottom,
+                arrow_bottom.offset(dx=2, dy=-4),
+            ],
+            x,
+            y,
+        )
+        self.polyline3d(
+            "silver", [corner_bottom, arrow_bottom], x, y, stroke_dasharray=2
+        )
+        self.polyline3d("silver", [corner_top, arrow_top], x, y, stroke_dasharray=2)
+
+        top2 = to2d(arrow_top, x, y)
+        bottom2 = to2d(arrow_bottom, x, y)
+        x2 = (top2.x + bottom2.x) / 2
+        y2 = (top2.y + bottom2.y) / 2
+        w = 5 * (len(text) + 3)
+        self.rect(x2 - 5, y2 - w / 2, 10, w, "none", fill="rgba(255,255,255,0.75)")
+        self.text(
+            0,
+            0,
+            content=text,
+            style="font-size:12px",
+            transform=f"translate({x2+3} {y2}) rotate(-90)"
+            if left
+            else f"translate({x2-3} {y2}) rotate(90)",
+        )
+
+    def horizontal_arrow(
+        self,
+        x: float,
+        y: float,
+        corner_left: Point3d,
+        corner_right: Point3d,
+        arrow_left: Point3d,
+        arrow_right: Point3d,
+        text: str,
+    ) -> None:
+        self.polyline3d("gray", [arrow_left, arrow_right], x, y, stroke_dasharray=2)
+        self.polyline3d(
+            "gray",
+            [arrow_left.offset(dy=-2, dx=4), arrow_left, arrow_left.offset(dy=2, dx=4)],
+            x,
+            y,
+        )
+        self.polyline3d(
+            "gray",
+            [
+                arrow_right.offset(dy=-2, dx=-4),
+                arrow_right,
+                arrow_right.offset(dy=2, dx=-4),
+            ],
+            x,
+            y,
+        )
+        self.polyline3d("silver", [corner_right, arrow_right], x, y, stroke_dasharray=2)
+        self.polyline3d("silver", [corner_left, arrow_left], x, y, stroke_dasharray=2)
+
+        left2 = to2d(arrow_left, x, y)
+        right2 = to2d(arrow_right, x, y)
+        x2 = (left2.x + right2.x) / 2
+        y2 = (left2.y + right2.y) / 2
+        w = 5 * (len(text) + 3)
+        self.rect(x2 - w / 2, y2 - 5, w, 10, "none", fill="rgba(255,255,255,0.75)")
+        self.text(x2, y2 + 3, content=text, style="font-size:12px")
 
 
 @contextmanager
