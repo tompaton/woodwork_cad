@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from math import sqrt
+from math import atan2, cos, degrees, sin, sqrt
 from pathlib import Path
 from typing import Any, Iterator, Optional, Tuple
 
@@ -170,27 +170,15 @@ class SVGCanvas:
         text: str,
         left: bool = False,
     ) -> None:
-        self.polyline3d("gray", [arrow_top, arrow_bottom], x, y, stroke_dasharray=2)
-        self.polyline3d(
-            "gray",
-            [arrow_top.offset(dx=-2, dy=4), arrow_top, arrow_top.offset(dx=2, dy=4)],
-            x,
-            y,
-        )
-        self.polyline3d(
-            "gray",
-            [
-                arrow_bottom.offset(dx=-2, dy=-4),
-                arrow_bottom,
-                arrow_bottom.offset(dx=2, dy=-4),
-            ],
-            x,
-            y,
-        )
         self.polyline3d(
             "silver", [corner_bottom, arrow_bottom], x, y, stroke_dasharray=2
         )
         self.polyline3d("silver", [corner_top, arrow_top], x, y, stroke_dasharray=2)
+        self.polyline3d("gray", [arrow_top, arrow_bottom], x, y, stroke_dasharray=2)
+        p1 = to2d(arrow_top, x, y)
+        p2 = to2d(arrow_bottom, x, y)
+        self.arrow(p1.x, p1.y, p2.x, p2.y)
+        self.arrow(p2.x, p2.y, p1.x, p1.y)
 
         top2 = to2d(arrow_top, x, y)
         bottom2 = to2d(arrow_bottom, x, y)
@@ -218,25 +206,13 @@ class SVGCanvas:
         arrow_right: Point3d,
         text: str,
     ) -> None:
-        self.polyline3d("gray", [arrow_left, arrow_right], x, y, stroke_dasharray=2)
-        self.polyline3d(
-            "gray",
-            [arrow_left.offset(dy=-2, dx=4), arrow_left, arrow_left.offset(dy=2, dx=4)],
-            x,
-            y,
-        )
-        self.polyline3d(
-            "gray",
-            [
-                arrow_right.offset(dy=-2, dx=-4),
-                arrow_right,
-                arrow_right.offset(dy=2, dx=-4),
-            ],
-            x,
-            y,
-        )
         self.polyline3d("silver", [corner_right, arrow_right], x, y, stroke_dasharray=2)
         self.polyline3d("silver", [corner_left, arrow_left], x, y, stroke_dasharray=2)
+        self.polyline3d("gray", [arrow_left, arrow_right], x, y, stroke_dasharray=2)
+        p1 = to2d(arrow_left, x, y)
+        p2 = to2d(arrow_right, x, y)
+        self.arrow(p1.x, p1.y, p2.x, p2.y)
+        self.arrow(p2.x, p2.y, p1.x, p1.y)
 
         left2 = to2d(arrow_left, x, y)
         right2 = to2d(arrow_right, x, y)
@@ -245,6 +221,17 @@ class SVGCanvas:
         w = 5 * (len(text) + 3)
         self.rect(x2 - w / 2, y2 - 5, w, 10, "none", fill="rgba(255,255,255,0.75)")
         self.text(x2, y2 + 3, content=text, style="font-size:12px")
+
+    def arrow(
+        self, x1: float, y1: float, x2: float, y2: float, colour: str = "gray"
+    ) -> None:
+        angle = atan2((y2 - y1), (x2 - x1))
+        dx, dy = cos(angle), sin(angle)
+        self.polyline(
+            colour,
+            [Point(-4, -2), Point(0, 0), Point(-4, 2)],
+            transform=f"translate({x2-dx}, {y2-dy}) rotate({degrees(angle)})",
+        )
 
 
 @contextmanager

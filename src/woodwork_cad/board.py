@@ -491,7 +491,7 @@ class Board:
             arrow_top = corner_top.offset(dx=pad)
             arrow_bottom = corner_bottom.offset(dx=pad)
 
-            return corner_top, corner_bottom, arrow_top, arrow_bottom, f"{self.W:.1f}"
+            return corner_top, corner_bottom, arrow_top, arrow_bottom, f"{self.W:.0f}"
 
         elif dimension == "W" and position == "left":
             corner_top = Point3d(0, 0, 0)
@@ -499,7 +499,7 @@ class Board:
             arrow_top = corner_top.offset(dx=-pad)
             arrow_bottom = corner_bottom.offset(dx=-pad)
 
-            return corner_top, corner_bottom, arrow_top, arrow_bottom, f"{self.W:.1f}"
+            return corner_top, corner_bottom, arrow_top, arrow_bottom, f"{self.W:.0f}"
 
         elif dimension == "L" and position == "below":
             corner_left = Point3d(0, self.W, 0)
@@ -507,7 +507,7 @@ class Board:
             arrow_left = corner_left.offset(dy=pad)
             arrow_right = corner_right.offset(dy=pad)
 
-            return corner_left, corner_right, arrow_left, arrow_right, f"{self.L:.1f}"
+            return corner_left, corner_right, arrow_left, arrow_right, f"{self.L:.0f}"
 
         elif dimension == "L" and position == "above":
             corner_left = Point3d(0, 0, 0)
@@ -515,7 +515,7 @@ class Board:
             arrow_left = corner_left.offset(dy=-pad)
             arrow_right = corner_right.offset(dy=-pad)
 
-            return corner_left, corner_right, arrow_left, arrow_right, f"{self.L:.1f}"
+            return corner_left, corner_right, arrow_left, arrow_right, f"{self.L:.0f}"
 
         elif dimension == "T" and position == "below":
             corner_left = Point3d(0, self.W, 0)
@@ -523,7 +523,7 @@ class Board:
             arrow_left = corner_left.offset(dx=-pad, dy=pad)
             arrow_right = corner_right.offset(dx=-pad, dy=pad)
 
-            return corner_left, corner_right, arrow_left, arrow_right, f"{self.T:.1f}"
+            return corner_left, corner_right, arrow_left, arrow_right, f"{self.T:.0f}"
 
         elif dimension == "T" and position == "above":
             corner_left = Point3d(self.L, 0, 0)
@@ -531,7 +531,7 @@ class Board:
             arrow_left = corner_left.offset(dx=pad, dy=-pad)
             arrow_right = corner_right.offset(dx=pad, dy=-pad)
 
-            return corner_left, corner_right, arrow_left, arrow_right, f"{self.T:.1f}"
+            return corner_left, corner_right, arrow_left, arrow_right, f"{self.T:.0f}"
 
         else:
             msg = f"Unsupported {dimension=} and {position=}"
