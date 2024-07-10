@@ -9,6 +9,7 @@ from woodwork_cad.operations import (
     cut_waste,
     dovetail_boards,
     draw_boards,
+    draw_dimension,
     joint,
     process,
     process_all,
@@ -306,6 +307,9 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("## Till assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:
         till_assembly.draw(canvas, 20, 20)
+        till_assembly.draw_dimension(canvas, 20, 20, 0, "W", "left", pad=20)
+        till_assembly.draw_dimension(canvas, 20, 20, 0, "L", "below", pad=20)
+        till_assembly.draw_dimension(canvas, 20, 20, 1, "L", "below", pad=20)
 
     print("## Box assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:

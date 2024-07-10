@@ -481,3 +481,44 @@ class Board:
                 content=self.label,
                 style="",
             )
+
+    def get_dimension(
+        self, dimension: str, position: str, pad: float = 10
+    ) -> Tuple[Point3d, Point3d, Point3d, Point3d, str]:
+        # TODO: dimension=="T"
+
+        if dimension == "W" and position == "right":
+            corner_top = Point3d(self.L, 0, 0)
+            corner_bottom = Point3d(self.L, self.W, 0)
+            arrow_top = corner_top.offset(dx=pad)
+            arrow_bottom = corner_bottom.offset(dx=pad)
+
+            return corner_top, corner_bottom, arrow_top, arrow_bottom, f"{self.W:.1f}"
+
+        elif dimension == "W" and position == "left":
+            corner_top = Point3d(0, 0, 0)
+            corner_bottom = Point3d(0, self.W, 0)
+            arrow_top = corner_top.offset(dx=-pad)
+            arrow_bottom = corner_bottom.offset(dx=-pad)
+
+            return corner_top, corner_bottom, arrow_top, arrow_bottom, f"{self.W:.1f}"
+
+        elif dimension == "L" and position == "below":
+            corner_left = Point3d(0, self.W, 0)
+            corner_right = Point3d(self.L, self.W, 0)
+            arrow_left = corner_left.offset(dy=pad)
+            arrow_right = corner_right.offset(dy=pad)
+
+            return corner_left, corner_right, arrow_left, arrow_right, f"{self.L:.1f}"
+
+        elif dimension == "L" and position == "above":
+            corner_left = Point3d(0, 0, 0)
+            corner_right = Point3d(self.L, 0, 0)
+            arrow_left = corner_left.offset(dy=-pad)
+            arrow_right = corner_right.offset(dy=-pad)
+
+            return corner_left, corner_right, arrow_left, arrow_right, f"{self.L:.1f}"
+
+        else:
+            msg = f"Unsupported {dimension=} and {position=}"
+            raise ValueError(msg)

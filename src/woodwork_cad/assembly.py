@@ -4,6 +4,7 @@ from typing import Iterator, List
 from .board import Board
 from .faces import Face, rotate_faces
 from .geometry import Point, Point3d, Points, Vector3d
+from .operations import draw_dimension_ex
 from .svg import SVGCanvas
 
 
@@ -53,6 +54,53 @@ class Assembly:
     def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
         for face in sorted(self.faces, key=attrgetter("_key")):
             face.draw(canvas, x, y)
+
+    def draw_dimension(
+        self,
+        canvas: SVGCanvas,
+        x: float,
+        y: float,
+        index: int,
+        dimension: str,
+        position: str,
+        subassembly: int = -1,
+        pad: float = 10,
+    ) -> None:
+        if subassembly >= 0:
+            return self.subassemblies[subassembly].draw_dimension(
+                canvas, x, y, index, dimension, position, pad=pad
+            )
+
+        board = self.boards[index]
+        offset = self.positions[index]
+        rotate_y = self.angles[index]
+
+        start, end, arrow_start, arrow_end, text = board.get_dimension(
+            dimension, position, pad
+        )
+
+        face = Face([start, end, arrow_end, arrow_start])
+
+        face = list(
+            rotate_faces(
+                [face],
+                board.profile.origin,
+                rotate_y,
+                Vector3d(
+                    offset.x + self.origin.x,
+                    offset.y + self.origin.y,
+                    offset.z + self.origin.z,
+                ),
+                board.profile.mate,
+                [],
+            )
+        )[0]
+
+        start, end, arrow_end, arrow_start = face.points
+
+        draw_dimension_ex(
+            canvas, x, y, start, end, arrow_start, arrow_end, text, dimension, position
+        )
 
     @property
     def faces(self) -> Iterator[Face]:

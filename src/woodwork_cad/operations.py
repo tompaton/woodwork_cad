@@ -17,55 +17,45 @@ def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> P
 
 
 def draw_dimension(
-    canvas: SVGCanvas, x: float, y: float, board: Board, dimension: str, position: str
-):
+    canvas: SVGCanvas,
+    x: float,
+    y: float,
+    board: Board,
+    dimension: str,
+    position: str,
+    pad: float = 10,
+) -> None:
+    start, end, arrow_start, arrow_end, text = board.get_dimension(
+        dimension, position, pad
+    )
+    draw_dimension_ex(
+        canvas, x, y, start, end, arrow_start, arrow_end, text, dimension, position
+    )
+
+
+def draw_dimension_ex(
+    canvas: SVGCanvas,
+    x: float,
+    y: float,
+    start: Point3d,
+    end: Point3d,
+    arrow_start: Point3d,
+    arrow_end: Point3d,
+    text: str,
+    dimension: str,
+    position: str,
+) -> None:
     # TODO: dimension=="T"
 
-    if dimension == "W" and position == "right":
-        pad = to2d(Point3d(0, 0, board.T)).x + 10
-        corner_top = Point3d(board.L, 0, 0)
-        corner_bottom = Point3d(board.L, board.W, 0)
-        arrow_top = corner_top.offset(dx=pad)
-        arrow_bottom = corner_bottom.offset(dx=pad)
-
-        vertical_arrow(canvas, x, y, corner_top, corner_bottom, arrow_top, arrow_bottom)
-        vertical_text(canvas, x, y, arrow_top, arrow_bottom, f"{board.W:.1f}")
-
-    elif dimension == "W" and position == "left":
-        pad = 10
-        corner_top = Point3d(0, 0, 0)
-        corner_bottom = Point3d(0, board.W, 0)
-        arrow_top = corner_top.offset(dx=-pad)
-        arrow_bottom = corner_bottom.offset(dx=-pad)
-
-        vertical_arrow(canvas, x, y, corner_top, corner_bottom, arrow_top, arrow_bottom)
+    if dimension == "W":
+        vertical_arrow(canvas, x, y, start, end, arrow_start, arrow_end)
         vertical_text(
-            canvas, x, y, arrow_top, arrow_bottom, f"{board.W:.1f}", left=True
+            canvas, x, y, arrow_start, arrow_end, text, left=position == "left"
         )
 
-    elif dimension == "L" and position == "below":
-        pad = to2d(Point3d(0, 0, board.T)).y + 10
-        corner_left = Point3d(0, board.W, 0)
-        corner_right = Point3d(board.L, board.W, 0)
-        arrow_left = corner_left.offset(dy=pad)
-        arrow_right = corner_right.offset(dy=pad)
-
-        horizontal_arrow(
-            canvas, x, y, corner_left, corner_right, arrow_left, arrow_right
-        )
-        horizontal_text(canvas, x, y, arrow_left, arrow_right, f"{board.L:.1f}")
-
-    elif dimension == "L" and position == "above":
-        pad = 10
-        corner_left = Point3d(0, 0, 0)
-        corner_right = Point3d(board.L, 0, 0)
-        arrow_left = corner_left.offset(dy=-pad)
-        arrow_right = corner_right.offset(dy=-pad)
-
-        horizontal_arrow(
-            canvas, x, y, corner_left, corner_right, arrow_left, arrow_right
-        )
-        horizontal_text(canvas, x, y, arrow_left, arrow_right, f"{board.L:.1f}")
+    elif dimension == "L":
+        horizontal_arrow(canvas, x, y, start, end, arrow_start, arrow_end)
+        horizontal_text(canvas, x, y, arrow_start, arrow_end, text)
 
     else:
         msg = f"Unsupported {dimension=} and {position=}"

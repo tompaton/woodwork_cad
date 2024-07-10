@@ -33,7 +33,7 @@ def board_test() -> None:
 
     with print_svg(500, zoom=2) as canvas:
         draw_boards(canvas, 20, 20, [board])
-        draw_dimension(canvas, 20, 20, board, "L", "below")
+        draw_dimension(canvas, 20, 20, board, "L", "below", pad=20)
         draw_dimension(canvas, 20, 20, board, "W", "left")
         # draw_dimension(canvas, 20, 20, board, "T", "above")
 
@@ -43,7 +43,7 @@ def board_test() -> None:
     with print_svg(500, zoom=2) as canvas:
         draw_boards(canvas, 20, 20, [board])
         draw_dimension(canvas, 20, 20, board, "L", "above")
-        draw_dimension(canvas, 20, 20, board, "W", "right")
+        draw_dimension(canvas, 20, 20, board, "W", "right", pad=20)
         # draw_dimension(canvas, 20, 20, board, "T", "below")
 
     print("rip cut")
