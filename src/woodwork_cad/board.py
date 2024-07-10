@@ -113,8 +113,10 @@ class Board:
         label: str = "",
         lx: float = 0,
         ly: float = 0,
+        L: float = 0,
+        W: float = 0,
     ):
-        self.cuts.add(op, x1, y1, x2, y2, label, lx, ly)
+        self.cuts.add(op, x1, y1, x2, y2, label, lx, ly, L, W)
         if self.parent:
             self.parent.add_cut(
                 op,
@@ -125,10 +127,12 @@ class Board:
                 label,
                 lx + self.offset_x,
                 ly + self.offset_y,
+                L,
+                W,
             )
 
     def cut(self, length: float, kerf: float = 5):
-        self.add_cut("cut", length, 0, length + kerf, self.W)
+        self.add_cut("cut", length, 0, length + kerf, self.W, L=length)
         return [
             Board(
                 length,
@@ -153,7 +157,7 @@ class Board:
         ]
 
     def rip(self, width: float, kerf: float = 5):
-        self.add_cut("rip", 0, width, self.L, width + kerf)
+        self.add_cut("rip", 0, width, self.L, width + kerf, W=width)
         return [
             Board(
                 self.L, width, self.T, self, 0, 0, shades=self.shades.select(0, width)
@@ -536,3 +540,62 @@ class Board:
         else:
             msg = f"Unsupported {dimension=} and {position=}"
             raise ValueError(msg)
+
+    def draw_cut_dimensions(self, canvas: SVGCanvas, x: float, y: float) -> float:
+        from .operations import draw_dimension_ex
+
+        pad = 30.0
+        rip_pad = pad
+        for cut in self.cuts:
+            if cut.op == "rip":
+                corner_top = Point3d(self.L, cut.y1 - cut.W, 0)
+                corner_bottom = Point3d(self.L, cut.y1, 0)
+                arrow_top = corner_top.offset(dx=rip_pad)
+                arrow_bottom = corner_bottom.offset(dx=rip_pad)
+                draw_dimension_ex(
+                    canvas,
+                    x,
+                    y,
+                    corner_top,
+                    corner_bottom,
+                    arrow_top,
+                    arrow_bottom,
+                    f"{cut.W:.0f}",
+                    "W",
+                    "right",
+                )
+
+        # sort and remove duplicates
+        seen = set()
+        cuts = []
+        for cut in self.cuts:
+            if cut.op == "cut":
+                key = (cut.x1, cut.L)
+                if key not in seen:
+                    cuts.append(cut)
+                seen.add(key)
+        cuts = sorted(cuts, key=attrgetter("L"))
+        cut_pad = [pad for cut in cuts]
+
+        for i, cut in enumerate(cuts):
+            corner_left = Point3d(cut.x1 - cut.L, self.W, 0)
+            corner_right = Point3d(cut.x1, self.W, 0)
+            arrow_left = corner_left.offset(dy=cut_pad[i])
+            arrow_right = corner_right.offset(dy=cut_pad[i])
+            draw_dimension_ex(
+                canvas,
+                x,
+                y,
+                corner_left,
+                corner_right,
+                arrow_left,
+                arrow_right,
+                f"{cut.L:.0f}",
+                "L",
+                "below",
+            )
+            for j in range(i + 1, len(cuts)):
+                if cut.x1 > (cuts[j].x1 - cuts[j].L) and (cut.x1 - cut.L) < cuts[j].x1:
+                    cut_pad[j] = max(cut_pad[j], cut_pad[i] + pad)
+
+        return max(cut_pad, default=0.0)

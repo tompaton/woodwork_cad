@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from operator import attrgetter
 from typing import Iterator, List
 
@@ -6,6 +7,15 @@ from .faces import Face, rotate_faces
 from .geometry import Point, Point3d, Points, Vector3d
 from .operations import draw_dimension_ex
 from .svg import SVGCanvas
+
+
+@dataclass
+class Dimension:
+    index: int
+    dimension: str
+    position: str
+    pad: float = 10
+    subassembly: int = -1
 
 
 class Assembly:
@@ -51,9 +61,32 @@ class Assembly:
         assembly.origin = Point3d(offset.x, offset.y, offset.z)
         self.subassemblies.append(assembly)
 
-    def draw(self, canvas: SVGCanvas, x: float, y: float) -> None:
+    def draw(
+        self, canvas: SVGCanvas, x: float, y: float, *dimensions: Dimension
+    ) -> None:
         for face in sorted(self.faces, key=attrgetter("_key")):
             face.draw(canvas, x, y)
+
+        self.draw_dimensions(canvas, x, y, *dimensions)
+
+    def draw_dimensions(
+        self, canvas: SVGCanvas, x: float, y: float, *dimensions: Dimension
+    ) -> None:
+        for dimension in dimensions:
+            if dimension.subassembly == -1:
+                assembly = self
+            else:
+                assembly = self.subassemblies[dimension.subassembly]
+
+            assembly.draw_dimension(
+                canvas,
+                x,
+                y,
+                dimension.index,
+                dimension.dimension,
+                dimension.position,
+                dimension.pad,
+            )
 
     def draw_dimension(
         self,
@@ -63,14 +96,8 @@ class Assembly:
         index: int,
         dimension: str,
         position: str,
-        subassembly: int = -1,
         pad: float = 10,
     ) -> None:
-        if subassembly >= 0:
-            return self.subassemblies[subassembly].draw_dimension(
-                canvas, x, y, index, dimension, position, pad=pad
-            )
-
         board = self.boards[index]
         offset = self.positions[index]
         rotate_y = self.angles[index]

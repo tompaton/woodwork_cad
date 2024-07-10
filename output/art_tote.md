@@ -105,31 +105,27 @@ not too high, but has to have room to easily remove box
   - 400.0 x 30 x 15.0 till back (b-3)
   - 100.0 x 30 x 15.0 till left (b-3)
   - 400.0 x 100.0 x 3 till bottom (ply-1)
-## Plan view
+## Front view
 
 ![Figure 7](art_tote/fig-7.svg)
 
-## Front view
+## Side view
 
 ![Figure 8](art_tote/fig-8.svg)
 
-## Side view
+## Base assembly
 
 ![Figure 9](art_tote/fig-9.svg)
 
-## Base assembly
+## Till assembly
 
 ![Figure 10](art_tote/fig-10.svg)
 
-## Till assembly
+## Box assembly
 
 ![Figure 11](art_tote/fig-11.svg)
 
-## Box assembly
-
-![Figure 12](art_tote/fig-12.svg)
-
 ## Full assembly
 
-![Figure 13](art_tote/fig-13.svg)
+![Figure 12](art_tote/fig-12.svg)
 

@@ -2,7 +2,7 @@ from collections import defaultdict
 from typing import Callable, Dict, List
 
 from .board import Board
-from .operations import process
+from .operations import draw_dimension, process
 from .svg import SVGCanvas
 
 
@@ -45,7 +45,11 @@ class StockPile:
         for key, boards in self.boards.items():
             for i, board in enumerate(self.boards[key]):
                 board.draw_board(canvas, x + i * 20, y + i * 20)
-            y += board.W + 20 * (i + 1)
+            if boards:
+                draw_dimension(canvas, x, y, board, "L", "above")
+                draw_dimension(canvas, x, y, board, "W", "left")
+                draw_dimension(canvas, x, y, board, "T", "above")
+                y += board.W + 20 * (i + 1) + 20
 
     def mark_waste(self) -> None:
         for key, boards in self.offcuts.items():

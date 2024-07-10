@@ -1,7 +1,7 @@
 # ruff: noqa: F401
 import sys
 
-from woodwork_cad.assembly import Assembly
+from woodwork_cad.assembly import Assembly, Dimension
 from woodwork_cad.board import Board, Size
 from woodwork_cad.geometry import Vector3d
 from woodwork_cad.operations import (
@@ -223,16 +223,16 @@ might be better to have a long shallow(ish) removable till for brushes and small
           """)
 
     with print_svg(1000) as canvas:
-        pile.draw(canvas, 10, 10)
+        pile.draw(canvas, 20, 10)
 
     print("## Cut list")
     pile.mark_waste()
     with print_svg(1400) as canvas:
-        draw_boards(canvas, 10, 10, pile.cutlist)
+        draw_boards(canvas, 10, 10, pile.cutlist, dimension_cuts=True)
 
     print("## Jointing")
     with print_svg(1000) as canvas:
-        draw_boards(canvas, 10, 10, [board_j1, board_j2])
+        draw_boards(canvas, 10, 10, [board_j1, board_j2], dimension_cuts=True)
 
     print("## Dimensions")
     print("- base")
@@ -288,32 +288,70 @@ might be better to have a long shallow(ish) removable till for brushes and small
     assembly.add_subassembly(Vector3d(Ta, -s_box.depth + Ta, Ta), box_assembly)
     assembly.add_subassembly(Vector3d(Ta, Ta + 5, Ta + s_till.width), till_assembly)
 
-    print("## Plan view")
-    with print_svg(550, zoom=2, camera="plan") as canvas:
-        assembly.draw(canvas, 20, 20)
+    # NOTE: omit this as it isn't very useful
+    # print("## Plan view")
+    # with print_svg(550, zoom=2, camera="plan") as canvas:
+    #     assembly.draw(canvas, 20, 20)
 
     print("## Front view")
     with print_svg(550, zoom=2, camera="front") as canvas:
-        assembly.draw(canvas, 20, 20)
+        assembly.draw(
+            canvas,
+            20,
+            20,
+            Dimension(0, "L", "below", pad=15, subassembly=0),
+            Dimension(0, "W", "right", pad=30, subassembly=0),
+            Dimension(0, "L", "above", pad=25, subassembly=1),
+            Dimension(0, "W", "right", pad=15, subassembly=1),
+            Dimension(0, "W", "right", pad=30, subassembly=2),
+        )
 
     print("## Side view")
     with print_svg(550, zoom=2, camera="side") as canvas:
-        assembly.draw(canvas, 20, 20)
+        assembly.draw(
+            canvas,
+            20,
+            20,
+            Dimension(1, "L", "below", pad=15, subassembly=0),
+            Dimension(1, "W", "right", pad=15, subassembly=0),
+            Dimension(1, "L", "above", pad=25, subassembly=1),
+            Dimension(1, "W", "right", pad=15, subassembly=1),
+            Dimension(1, "L", "below", pad=15, subassembly=2),
+            Dimension(1, "W", "left", pad=15, subassembly=2),
+        )
 
     print("## Base assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:
-        base_assembly.draw(canvas, 20, 20)
+        base_assembly.draw(
+            canvas,
+            40,
+            20,
+            Dimension(0, "W", "left", pad=20),
+            Dimension(0, "L", "below", pad=20),
+            Dimension(1, "L", "below", pad=20),
+        )
 
     print("## Till assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:
-        till_assembly.draw(canvas, 20, 20)
-        till_assembly.draw_dimension(canvas, 20, 20, 0, "W", "left", pad=20)
-        till_assembly.draw_dimension(canvas, 20, 20, 0, "L", "below", pad=20)
-        till_assembly.draw_dimension(canvas, 20, 20, 1, "L", "below", pad=20)
+        till_assembly.draw(
+            canvas,
+            20,
+            20,
+            Dimension(0, "W", "left", pad=20),
+            Dimension(0, "L", "below", pad=20),
+            Dimension(1, "L", "below", pad=20),
+        )
 
     print("## Box assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:
-        box_assembly.draw(canvas, 20, 20)
+        box_assembly.draw(
+            canvas,
+            20,
+            20,
+            Dimension(0, "W", "left", pad=20),
+            Dimension(0, "L", "below", pad=20),
+            Dimension(1, "L", "below", pad=20),
+        )
 
     print("## Full assembly")
     with print_svg(800, zoom=2, camera="above") as canvas:

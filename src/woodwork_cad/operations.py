@@ -7,11 +7,19 @@ from .shades import Shades
 from .svg import SVGCanvas
 
 
-def draw_boards(canvas: SVGCanvas, x: float, y: float, boards: list[Board]) -> Points:
+def draw_boards(
+    canvas: SVGCanvas,
+    x: float,
+    y: float,
+    boards: list[Board],
+    dimension_cuts: bool = False,
+) -> Points:
     points = []
     for board in boards:
         board.draw_board(canvas, x, y)
         points.append(Point(x, y))
+        if dimension_cuts:
+            y += board.draw_cut_dimensions(canvas, x, y)
         y += board.W + to2d(Point3d(0, 0, board.T)).y + 20
     return points
 

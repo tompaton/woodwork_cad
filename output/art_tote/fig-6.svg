@@ -1,4 +1,4 @@
-<svg width="1000" viewBox="0.0 0.0 1000.0 766.2" xmlns="http://www.w3.org/2000/svg">
+<svg width="1000" viewBox="0.0 -2.0 1000.0 758.2" xmlns="http://www.w3.org/2000/svg">
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,20.6 20.6,290.6 396.6,290.6 396.6,20.6" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,10.0 10.0,280.0 20.6,290.6 20.6,20.6" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,20.6 396.6,20.6 386.0,10.0 10.0,10.0" />
@@ -9,6 +9,13 @@
 <text style="" text-anchor="left" x="20" y="196.0" fill="black">1</text>
 <text style="" text-anchor="start" x="198.0" y="98.0" fill="black">box lid</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,191.0 387.0,191.0 387.0,280.0 397.6,290.6 20.6,290.6 10.0,280.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="386.0,186.0 416.0,186.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="386.0,10.0 416.0,10.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="416.0,10.0 416.0,186.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(416.0, 185.0) rotate(90.0)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(416.0, 11.0) rotate(-90.0)" />
+<rect x="411.0" y="83.0" width="10" height="30" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="0" y="0" fill="black" transform="translate(413.0 98.0) rotate(90)">176</text>
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,321.2 20.6,756.2 244.6,756.2 244.6,321.2" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,310.6 10.0,745.6 20.6,756.2 20.6,321.2" />
 <polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.6,321.2 244.6,321.2 234.0,310.6 10.0,310.6" />
@@ -19,4 +26,11 @@
 <text style="" text-anchor="left" x="20" y="744.6066017177982" fill="black">1</text>
 <text style="" text-anchor="start" x="122.0" y="522.6066017177982" fill="black">base bottom</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,739.6 235.0,739.6 235.0,745.6 245.6,756.2 20.6,756.2 10.0,745.6" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="234.0,734.6 264.0,734.6" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="234.0,310.6 264.0,310.6" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="264.0,310.6 264.0,734.6" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(264.0, 733.6066017177982) rotate(90.0)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(264.0, 311.6066017177982) rotate(-90.0)" />
+<rect x="259.0" y="507.6066017177982" width="10" height="30" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="0" y="0" fill="black" transform="translate(261.0 522.6066017177982) rotate(90)">424</text>
 </svg>

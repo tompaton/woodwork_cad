@@ -23,7 +23,6 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 * mitred cuts
 * shading of left side (visible when mitred/rotated)
 * better dovetail pin/tail sizing
-* indicate specific dimensions on board/plan/3d views
 * exploded view
 
 * bugs:
