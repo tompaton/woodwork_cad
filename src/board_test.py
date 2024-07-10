@@ -35,7 +35,7 @@ def board_test() -> None:
         draw_boards(canvas, 20, 20, [board])
         draw_dimension(canvas, 20, 20, board, "L", "below", pad=20)
         draw_dimension(canvas, 20, 20, board, "W", "left")
-        # draw_dimension(canvas, 20, 20, board, "T", "above")
+        draw_dimension(canvas, 20, 20, board, "T", "above")
 
     print("mark any defects")
     board.defects.add(Hole(30, 80))
@@ -44,7 +44,7 @@ def board_test() -> None:
         draw_boards(canvas, 20, 20, [board])
         draw_dimension(canvas, 20, 20, board, "L", "above")
         draw_dimension(canvas, 20, 20, board, "W", "right", pad=20)
-        # draw_dimension(canvas, 20, 20, board, "T", "below")
+        draw_dimension(canvas, 20, 20, board, "T", "below")
 
     print("rip cut")
     boards = process(rip(50))(board)

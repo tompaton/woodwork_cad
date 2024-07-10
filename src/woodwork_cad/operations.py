@@ -45,8 +45,6 @@ def draw_dimension_ex(
     dimension: str,
     position: str,
 ) -> None:
-    # TODO: dimension=="T"
-
     if dimension == "W":
         canvas.vertical_arrow(
             x,
@@ -60,6 +58,9 @@ def draw_dimension_ex(
         )
 
     elif dimension == "L":
+        canvas.horizontal_arrow(x, y, start, end, arrow_start, arrow_end, text)
+
+    elif dimension == "T":
         canvas.horizontal_arrow(x, y, start, end, arrow_start, arrow_end, text)
 
     else:
