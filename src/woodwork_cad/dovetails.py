@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from math import radians, sin
-from typing import Callable, Iterable, List, Optional
+from typing import Callable, Iterable, List, Optional, Tuple
 
 from .faces import Face
 from .geometry import Point3d, Points3d
@@ -86,6 +86,9 @@ class Dovetails:
         self._ends: List[End] = []
         self.faces_L: List[Face] = []
         self.faces_R: List[Face] = []
+
+        self.pin_ratio: float = 1.0
+        self.pin1_ratio: float = 0.5
 
     def __bool__(self) -> bool:
         return bool(self._ends)
@@ -319,7 +322,6 @@ class Dovetails:
         W: float,
         T: float,
         base: float,
-        pin_width: float,
         angle: float,
         right: bool,
     ) -> None:
@@ -327,9 +329,7 @@ class Dovetails:
         base = -base if right else base
         y = 0.0
 
-        # pin_width = height / (tails * 2 + 1)
-        pin_width0 = 2 * pin_width
-        tail_width = (W - 2 * pin_width0 - pin_width * (tails - 1)) / tails
+        tail_width, pin_width, pin_width0 = self.get_widths(W, tails)
 
         flare = abs(base) * sin(radians(angle))
 
@@ -351,7 +351,6 @@ class Dovetails:
         W: float,
         T: float,
         base: float,
-        pin_width: float,
         angle: float,
         right: bool,
     ) -> None:
@@ -359,9 +358,7 @@ class Dovetails:
         base = -base if right else base
         y = 0.0
 
-        # pin_width = height / (tails * 2 + 1)
-        pin_width0 = 2 * pin_width
-        tail_width = (W - 2 * pin_width0 - pin_width * (tails - 1)) / tails
+        tail_width, pin_width, pin_width0 = self.get_widths(W, tails)
 
         flare = abs(base) * sin(radians(angle))
 
@@ -376,3 +373,12 @@ class Dovetails:
         y -= pin_width
 
         y += self.add_pin(right, x, y, base, pin_width0, flare, 0, T)
+
+    def get_widths(self, height: float, tails: int) -> Tuple[float, float, float]:
+        tail_width = height / (
+            tails + 2 * self.pin1_ratio * self.pin_ratio + (tails - 1) * self.pin_ratio
+        )
+        pin_width = tail_width * self.pin_ratio
+        pin1_width = pin_width * self.pin1_ratio
+
+        return tail_width, pin_width, pin1_width

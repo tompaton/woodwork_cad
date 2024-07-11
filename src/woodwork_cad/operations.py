@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
 from .board import Board
 from .defects import Defects
@@ -225,11 +225,22 @@ def cube_net(
     return Board(boards[top].L, boards[top].W, boards[front].W)
 
 
-def dovetail_boards(sides: List[Board], ends: List[Board], **kwargs: Any) -> None:
+def dovetail_boards(
+    sides: List[Board],
+    ends: List[Board],
+    pin1_ratio: Optional[float] = None,
+    **kwargs: Any,
+) -> None:
     for side in sides:
+        if pin1_ratio is not None:
+            side.dovetails.pin1_ratio = pin1_ratio
+
         side.dovetail_tails(base=ends[0].T, right=False, **kwargs)
         side.dovetail_tails(base=ends[0].T, right=True, **kwargs)
 
     for end in ends:
+        if pin1_ratio is not None:
+            end.dovetails.pin1_ratio = pin1_ratio
+
         end.dovetail_pins(base=sides[0].T, right=False, **kwargs)
         end.dovetail_pins(base=sides[0].T, right=True, **kwargs)

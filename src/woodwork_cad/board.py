@@ -197,25 +197,19 @@ class Board:
         self,
         tails: int = 3,
         base: float = 10.0,
-        width: float = 20.0,
         angle: float = 15.0,
         right: bool = False,
     ) -> None:
-        self.dovetails.add_tails(
-            tails, self.L, self.W, self.T, base, width, angle, right
-        )
+        self.dovetails.add_tails(tails, self.L, self.W, self.T, base, angle, right)
 
     def dovetail_pins(
         self,
         tails: int = 3,
         base: float = 10.0,
-        width: float = 20.0,
         angle: float = 15.0,
         right: bool = False,
     ) -> None:
-        self.dovetails.add_pins(
-            tails, self.L, self.W, self.T, base, width, angle, right
-        )
+        self.dovetails.add_pins(tails, self.L, self.W, self.T, base, angle, right)
 
     def draw_board(
         self,

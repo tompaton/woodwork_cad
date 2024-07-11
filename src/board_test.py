@@ -88,8 +88,8 @@ def board_test() -> None:
         draw_boards(canvas, 200, 10, [board1a])
 
     print("dovetails")
-    board3.dovetail_pins(right=False, width=20, tails=3, base=12)
-    board3.dovetail_tails(right=True, width=20, tails=3, base=12)
+    board3.dovetail_pins(right=False, tails=3, base=12)
+    board3.dovetail_tails(right=True, tails=3, base=12)
     with print_svg(500, zoom=2) as canvas:
         draw_boards(canvas, 10, 10, [board3])
         board3.mitre(45, 45)
@@ -97,8 +97,10 @@ def board_test() -> None:
 
     print("dovetails (from above)")
     board3 = joint(*boards3)
-    board3.dovetail_pins(right=False, width=20, tails=3, base=12)
-    board3.dovetail_tails(right=True, width=20, tails=3, base=12)
+    board3.dovetails.pin_ratio = 0.5
+    board3.dovetails.pin1_ratio = 1.0
+    board3.dovetail_pins(right=False, tails=3, base=12)
+    board3.dovetail_tails(right=True, tails=3, base=12)
     with print_svg(500, zoom=2, camera="above") as canvas:
         draw_boards(canvas, 10, 10, [board3])
         board3.mitre(45, 45)

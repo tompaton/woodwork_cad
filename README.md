@@ -22,7 +22,6 @@ Run `make` to rebuild all projects and generate markdown files in `output/`.
 * mortises & tennons
 * mitred cuts
 * shading of left side (visible when mitred/rotated)
-* better dovetail pin/tail sizing
 * exploded view
 
 * bugs:

@@ -133,7 +133,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
         waste,
     )(board_a2_1)
 
-    dovetail_boards(base_boards[0:4:2], base_boards[1:4:2], tails=2, width=15)
+    dovetail_boards(base_boards[0:4:2], base_boards[1:4:2], tails=2, pin1_ratio=1.0)
 
     base_boards.append(
         process(rip(s_base.length, label="base bottom"), waste)(board_j2)[0]
@@ -146,7 +146,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("- 30mm deep, 1/2 width")
     print("- will sit/ride on small rails set into grooves in base end walls")
 
-    dovetail_boards(till_boards[0:4:2], till_boards[1:4:2], tails=1, width=5)
+    dovetail_boards(till_boards[0:4:2], till_boards[1:4:2], tails=1, pin1_ratio=1.0)
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, till_boards)
@@ -197,7 +197,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     box_brace = process(cut(s_inside.width, label="bottom brace"), waste)(board_a2_2)[0]
     box_boards.append(box_brace)
 
-    dovetail_boards(box_boards[0:4:2], box_boards[1:4:2], tails=2, width=5)
+    dovetail_boards(box_boards[0:4:2], box_boards[1:4:2], tails=2, pin1_ratio=1.0)
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, box_boards)

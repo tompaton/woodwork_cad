@@ -209,8 +209,9 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
     print(f"- baseline is {dovetail_base:.1f} from end")
 
     for side in sides:
-        side.dovetail_pins(tails=3, base=dovetail_base, width=15, angle=15, right=False)
-        side.dovetail_tails(tails=3, base=dovetail_base, width=15, angle=15, right=True)
+        side.dovetails.pin1_ratio = 1.0
+        side.dovetail_pins(tails=3, base=dovetail_base, angle=15, right=False)
+        side.dovetail_tails(tails=3, base=dovetail_base, angle=15, right=True)
 
     with print_svg(550, zoom=2) as canvas:
         draw_boards(canvas, 10, 20, [sides[0]])
