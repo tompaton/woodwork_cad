@@ -1,29 +1,76 @@
-<svg width="1000" viewBox="0.0 -2.0 500.0 147.0" xmlns="http://www.w3.org/2000/svg">
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="28.5,28.5 28.5,128.5 328.5,128.5 328.5,28.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.0,20.0 20.0,120.0 28.5,128.5 28.5,28.5" />
-<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="28.5,28.5 328.5,28.5 320.0,20.0 20.0,20.0" />
-<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="20.0,120.0 320.0,120.0 328.5,128.5 28.5,128.5" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="328.5,28.5 328.5,128.5 320.0,120.0 320.0,20.0" />
-<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="20.0,20.0 320.0,20.0 320.0,120.0 20.0,120.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="320.0,120.0 320.0,140.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="20.0,120.0 20.0,140.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.0,140.0 320.0,140.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(319.0, 140.0) rotate(0.0)" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(21.0, 140.0) rotate(180.0)" />
-<rect x="155.0" y="135.0" width="30" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
-<text style="font-size:12px" text-anchor="middle" x="170.0" y="143.0" fill="black">300</text>
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="20.0,120.0 10.0,120.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="20.0,20.0 10.0,20.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="10.0,20.0 10.0,120.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(10.0, 119.0) rotate(90.0)" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(10.0, 21.0) rotate(-90.0)" />
-<rect x="5.0" y="55.0" width="10" height="30" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
-<text style="font-size:12px" text-anchor="middle" x="0" y="0" fill="black" transform="translate(13.0 70.0) rotate(-90)">100</text>
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="328.5,28.5 338.5,18.5" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="320.0,20.0 330.0,10.0" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="330.0,10.0 338.5,18.5" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(337.77817459305203, 17.77817459305202) rotate(44.99999999999996)" />
-<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(330.70710678118655, 10.707106781186546) rotate(-135.00000000000006)" />
-<rect x="321.7426406871193" y="9.242640687119284" width="25" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
-<text style="font-size:12px" text-anchor="middle" x="334.2426406871193" y="17.242640687119284" fill="black">12</text>
+<svg width="1000" viewBox="0.0 -5.0 500.0 182.1" xmlns="http://www.w3.org/2000/svg">
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="90.0,70.0 90.0,170.0 190.0,170.0 190.0,70.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="40.0,20.0 40.0,120.0 90.0,170.0 90.0,70.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="90.0,70.0 190.0,70.0 140.0,20.0 40.0,20.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="40.0,120.0 140.0,120.0 190.0,170.0 90.0,170.0" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="190.0,70.0 190.0,170.0 140.0,120.0 140.0,20.0" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="40.0,20.0 140.0,20.0 140.0,120.0 40.0,120.0" />
+<text style="" text-anchor="middle" x="90.0" y="70.0" fill="black">Board</text>
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="472.1,77.1 362.1,77.1 362.1,177.1 472.1,177.1" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="silver" points="363.5,73.5 363.5,173.5 362.1,177.1 362.1,77.1" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="silver" points="362.1,77.1 362.1,177.1 363.5,173.5 363.5,73.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="463.5,73.5 363.5,73.5 362.1,77.1 472.1,77.1" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="472.1,177.1 362.1,177.1 363.5,173.5 463.5,173.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="463.5,73.5 463.5,173.5 472.1,177.1 472.1,77.1" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="472.1,77.1 472.1,177.1 463.5,173.5 463.5,73.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="463.5,73.5 463.5,173.5 363.5,173.5 363.5,73.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="362.1,77.1 305.0,20.0 305.0,120.0 362.1,177.1" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="363.5,73.5 313.5,23.5 305.0,20.0 362.1,77.1" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="362.1,177.1 305.0,120.0 313.5,123.5 363.5,173.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="363.5,73.5 363.5,173.5 313.5,123.5 313.5,23.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="413.5,23.5 413.5,123.5 463.5,173.5 463.5,73.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="413.5,23.5 463.5,73.5 472.1,77.1 415.0,20.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="415.0,120.0 472.1,177.1 463.5,173.5 413.5,123.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="415.0,20.0 472.1,77.1 472.1,177.1 415.0,120.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="313.5,23.5 313.5,123.5 413.5,123.5 413.5,23.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="313.5,23.5 313.5,123.5 305.0,120.0 305.0,20.0" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="415.0,20.0 415.0,120.0 413.5,123.5 413.5,23.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="305.0,20.0 305.0,120.0 313.5,123.5 313.5,23.5" />
+<polygon fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="313.5,23.5 413.5,23.5 415.0,20.0 305.0,20.0" />
+<polygon fill="rgba(192,192,192,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="305.0,120.0 415.0,120.0 413.5,123.5 313.5,123.5" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="silver" points="413.5,23.5 413.5,123.5 415.0,120.0 415.0,20.0" />
+<polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="305.0,20.0 415.0,20.0 415.0,120.0 305.0,120.0" />
+<text style="" text-anchor="middle" x="350.0" y="70.0" fill="black">Assembly</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="140.0,20.0 140.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="40.0,20.0 40.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="40.0,0.0 140.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(139.0, 0.0) rotate(0.0)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(41.0, -1.2246467991473532e-16) rotate(180.0)" />
+<rect x="52.5" y="-5.0" width="75" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="90.0" y="3.0" fill="black">L, length, x</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="400.0,20.0 400.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="300.0,20.0 300.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="300.0,0.0 400.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(399.0, 0.0) rotate(0.0)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(301.0, -1.2246467991473532e-16) rotate(180.0)" />
+<rect x="327.5" y="-5.0" width="45" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="350.0" y="3.0" fill="black">length</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="40.0,120.0 20.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="40.0,20.0 20.0,20.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="20.0,20.0 20.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(20.0, 119.0) rotate(90.0)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(20.0, 21.0) rotate(-90.0)" />
+<rect x="15.0" y="35.0" width="10" height="70" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="0" y="0" fill="black" transform="translate(23.0 70.0) rotate(-90)">W, width, y</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="300.0,120.0 280.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="300.0,20.0 280.0,20.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="280.0,20.0 280.0,120.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(280.0, 119.0) rotate(90.0)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(280.0, 21.0) rotate(-90.0)" />
+<rect x="275.0" y="50.0" width="10" height="40" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="0" y="0" fill="black" transform="translate(283.0 70.0) rotate(-90)">depth</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="190.0,70.0 210.0,50.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="140.0,20.0 160.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="160.0,0.0 210.0,50.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(209.29289321881345, 49.29289321881344) rotate(44.99999999999999)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(160.70710678118655, 0.7071067811865472) rotate(-135.00000000000003)" />
+<rect x="140.0" y="19.999999999999993" width="90" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="185.0" y="27.999999999999993" fill="black">T, thickness, z</text>
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="450.0,70.0 470.0,50.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="silver" points="400.0,20.0 420.0,0.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="2" stroke="gray" points="420.0,0.0 470.0,50.0" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(469.29289321881345, 49.29289321881344) rotate(44.99999999999999)" />
+<polyline fill="none" stroke-width="1" stroke-dasharray="" stroke="gray" points="-4.0,-2.0 0.0,0.0 -4.0,2.0" transform="translate(420.70710678118655, 0.7071067811865472) rotate(-135.00000000000003)" />
+<rect x="425.0" y="19.999999999999993" width="40" height="10" style="fill: rgba(255,255,255,0.75); stroke: none; stroke-width: 1;" />
+<text style="font-size:12px" text-anchor="middle" x="445.0" y="27.999999999999993" fill="black">width</text>
 </svg>

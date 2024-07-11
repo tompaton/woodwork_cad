@@ -183,8 +183,9 @@ class Board:
             Board(self.L - length, self.W, self.T, self, length, 0),
         ]
 
-    def mitre(self, left: float, right: float) -> None:
+    def mitre(self, left: float, right: float) -> "Board":
         self.profile.mitre(self.T, left, right)
+        return self
 
     def flip_profile(self) -> None:
         self.profile.flip()

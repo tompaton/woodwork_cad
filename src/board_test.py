@@ -1,4 +1,7 @@
 # ruff: noqa: F401
+from math import sqrt
+
+from woodwork_cad.assembly import Assembly
 from woodwork_cad.board import Board
 from woodwork_cad.defects import Hole, Notch
 from woodwork_cad.geometry import Vector3d, to2d
@@ -7,6 +10,7 @@ from woodwork_cad.operations import (
     cut_waste,
     draw_boards,
     draw_dimension,
+    draw_dimension_ex,
     joint,
     process,
     process_all,
@@ -21,6 +25,39 @@ def board_test() -> None:
     print_svg = PrintToSVGFiles("board_test")
 
     print("# Basic Operations")
+
+    print("## Orientation")
+    board = Board(100, 100, 100 / sqrt(2))
+    board.label = "Board"
+    assembly = Assembly()
+    assembly.add_walls(
+        90,
+        [
+            Board(100, 100, 5).mitre(-45, -45),
+            Board(100 / sqrt(2), 100, 5).mitre(-45, -45),
+            Board(100, 100, 5).mitre(-45, -45),
+            Board(100 / sqrt(2), 100, 5).mitre(-45, -45),
+        ],
+    )
+    with print_svg(500, zoom=2) as canvas:
+        draw_boards(canvas, 40, 20, [board])
+        assembly.draw(canvas, 300, 20)
+
+        # HACK: use board to do dimensions for both board and assembly
+        board.label = "Assembly"
+        board._draw_cuts(canvas, 300, 20)
+
+        arrow = board.get_dimension("L", "above", 20)[:4]
+        draw_dimension_ex(canvas, 40, 20, *arrow, "L, length, x", "L", "above")
+        draw_dimension_ex(canvas, 300, 20, *arrow, "length", "L", "above")
+
+        arrow = board.get_dimension("W", "left", 20)[:4]
+        draw_dimension_ex(canvas, 40, 20, *arrow, "W, width, y", "W", "left")
+        draw_dimension_ex(canvas, 300, 20, *arrow, "depth", "W", "left")
+
+        arrow = board.get_dimension("T", "above", 20)[:4]
+        draw_dimension_ex(canvas, 40, 20, *arrow, "T, thickness, z", "T", "above")
+        draw_dimension_ex(canvas, 300, 20, *arrow, "width", "T", "above")
 
     print("## Stock")
 
