@@ -5,6 +5,31 @@ from typing import Callable, List, Optional, Tuple
 
 from .polygon import clip_polygon as _clip_polygon
 
+"""
+Notes re clipping algorithms
+
+sutherland-hodgman algorithm doesn't handle non-convex polygons.
+
+greiner-hormann works better, but doesn't handle "degenerate" polygons where
+edges are coincident.
+
+improved algorithms are more complicated.
+
+peturbing the clip polygons by a small amount is a reasonable workaround though.
+
+### references
+
+https://sean.cm/a/polygon-clipping-pt2/
+
+https://www.sciencedirect.com/science/article/abs/pii/S0965997813000379
+
+https://github.com/lycantropos/martinez/blob/master/martinez/boolean.py
+
+https://www.sciencedirect.com/science/article/pii/S259014861930007X#sec0012
+https://www.inf.usi.ch/hormann/papers/Foster.2019.CSP.pdf
+
+"""
+
 
 @dataclass
 class Point:

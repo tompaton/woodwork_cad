@@ -54,6 +54,8 @@ class Face:
         )
 
     def __lt__(self, other: Any) -> bool:
+        # this is pretty slow, make sure sorted() is used with key= to avoid
+        # repeated centroid computations
         return self._key < other._key
 
     @property
@@ -149,6 +151,10 @@ class Face:
         if not self.points:
             return Vector3d(0.0, 0.0, 0.0)
 
+        # normal is called a lot, but we can cache it as any change to the
+        # original points won't actually change the normal, except we do need
+        # to recalculate when the points are reversed.
+
         if self.__normal is None:
             # for concave polygons we need to sum all cross products
             # between centroid and each pair of points
@@ -166,6 +172,10 @@ class Face:
     def centroid(self) -> Point3d:
         if not self.points:
             return Point3d(0.0, 0.0, 0.0)
+
+        # centroid is called a lot.  but we can cache it as it doesn't need to
+        # be all that accurate so we can use the original points.
+        # even reversing the points won't change it...
 
         if self.__centroid is None:
             min_x = min(p.x for p in self.points)

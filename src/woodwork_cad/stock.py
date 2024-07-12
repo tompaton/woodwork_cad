@@ -23,6 +23,9 @@ class StockPile:
             msg = f"Can't put back offcut with {key} (used by boards already)"
             raise ValueError(msg)
 
+        # NOTE: once an offcut is used, it doesn't need to be tracked/drawn
+        # beyond the original board
+
         self.offcuts[key].append(board)
 
     def take(self, key: str) -> Board:
