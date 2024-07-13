@@ -4,7 +4,7 @@ from typing import Callable, Iterator, List, Optional, Tuple
 
 from .geometry import Point3d, line_length
 
-Interpolator = Callable[[float], float]
+Interpolator = Callable[[float, float], float]
 
 
 @dataclass
@@ -66,10 +66,10 @@ class Profile:
 
     def interpolate(self, T: float) -> Tuple[Interpolator, Interpolator]:
         # interpolate x along profile
-        def x1(z: float) -> float:
+        def x1(y: float, z: float) -> float:
             return self._points[0].x + z * (self._points[3].x - self._points[0].x) / T
 
-        def x2(z: float) -> float:
+        def x2(y: float, z: float) -> float:
             return self._points[1].x + z * (self._points[2].x - self._points[1].x) / T
 
         return x1, x2

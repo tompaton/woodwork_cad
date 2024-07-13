@@ -47,7 +47,7 @@ class Face:
 
     def offset_profile(self, xz: Interpolator) -> "Face":
         return Face(
-            [Point3d(p.x + xz(p.z), p.y, p.z) for p in self.points],
+            [Point3d(p.x + xz(p.y, p.z), p.y, p.z) for p in self.points],
             self.colour,
             self.fill,
             self.zorder,

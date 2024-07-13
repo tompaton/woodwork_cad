@@ -301,10 +301,10 @@ class Board:
     ) -> Face:
         return Face(
             [
-                Point3d(x1(side.z1), side.y, side.z1),
-                Point3d(x2(side.z1), side.y, side.z1),
-                Point3d(x2(side.z2), side.y, side.z2),
-                Point3d(x1(side.z2), side.y, side.z2),
+                Point3d(x1(side.y, side.z1), side.y, side.z1),
+                Point3d(x2(side.y, side.z1), side.y, side.z1),
+                Point3d(x2(side.y, side.z2), side.y, side.z2),
+                Point3d(x1(side.y, side.z2), side.y, side.z2),
             ],
         )
 
@@ -314,16 +314,16 @@ class Board:
         for flat in self.grooves.flats(self.W, self.T, face=True):
             points.extend(
                 [
-                    Point3d(xz(flat.z), flat.y1, flat.z),
-                    Point3d(xz(flat.z), flat.y2, flat.z),
+                    Point3d(xz(flat.y1, flat.z), flat.y1, flat.z),
+                    Point3d(xz(flat.y2, flat.z), flat.y2, flat.z),
                 ]
             )
 
         for flat in reversed(list(self.grooves.flats(self.W, self.T, face=False))):
             points.extend(
                 [
-                    Point3d(xz(flat.z), flat.y2, flat.z),
-                    Point3d(xz(flat.z), flat.y1, flat.z),
+                    Point3d(xz(flat.y2, flat.z), flat.y2, flat.z),
+                    Point3d(xz(flat.y1, flat.z), flat.y1, flat.z),
                 ]
             )
 
@@ -341,10 +341,10 @@ class Board:
 
             yield Face(
                 [
-                    Point3d(x1(flat.z), flat.y1, flat.z),
-                    Point3d(x2(flat.z), flat.y1, flat.z),
-                    Point3d(x2(flat.z), flat.y2, flat.z),
-                    Point3d(x1(flat.z), flat.y2, flat.z),
+                    Point3d(x1(flat.y1, flat.z), flat.y1, flat.z),
+                    Point3d(x2(flat.y1, flat.z), flat.y1, flat.z),
+                    Point3d(x2(flat.y2, flat.z), flat.y2, flat.z),
+                    Point3d(x1(flat.y2, flat.z), flat.y2, flat.z),
                 ],
             )
 
@@ -362,10 +362,10 @@ class Board:
 
             yield Face(
                 [
-                    Point3d(x1(flat.z), flat.y1, flat.z),
-                    Point3d(x1(flat.z), flat.y2, flat.z),
-                    Point3d(x2(flat.z), flat.y2, flat.z),
-                    Point3d(x2(flat.z), flat.y1, flat.z),
+                    Point3d(x1(flat.y1, flat.z), flat.y1, flat.z),
+                    Point3d(x1(flat.y2, flat.z), flat.y2, flat.z),
+                    Point3d(x2(flat.y2, flat.z), flat.y2, flat.z),
+                    Point3d(x2(flat.y1, flat.z), flat.y1, flat.z),
                 ],
             )
 
@@ -379,10 +379,10 @@ class Board:
         for shade in self.shades:
             face_shade = Face(
                 [
-                    Point3d(x1(0), shade.y1, 0),
-                    Point3d(x2(0), shade.y1, 0),
-                    Point3d(x2(0), shade.y2, 0),
-                    Point3d(x1(0), shade.y2, 0),
+                    Point3d(x1(shade.y1, 0), shade.y1, 0),
+                    Point3d(x2(shade.y1, 0), shade.y1, 0),
+                    Point3d(x2(shade.y2, 0), shade.y2, 0),
+                    Point3d(x1(shade.y2, 0), shade.y2, 0),
                 ],
                 "none",
                 fill=shade.colour,
@@ -397,7 +397,11 @@ class Board:
         if self.dovetails:
             for face_clip in self._get_shade_right_clip(x1, x2):
                 face_clip.points = peturb(face_clip.points)
-                x = face_clip.points[0].x - x2(0) - x1(0)
+                x = (
+                    face_clip.points[0].x
+                    - x2(face_clip.points[0].y, 0)
+                    - x1(face_clip.points[0].y, 0)
+                )
                 for shade in self._get_shade_right_face():
                     face2 = shade.clip_end_ex(face_clip)
                     if face2:

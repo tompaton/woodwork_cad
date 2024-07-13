@@ -41,7 +41,9 @@ class PinX:
 
     def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
         xz = x2 if self.right else x1
-        return Face([Point3d(p.x + xz(z), p.y, z) for p in self.points_f], colour="red")
+        return Face(
+            [Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_f], colour="red"
+        )
 
     def get_side(self, x1: Interpolator, x2: Interpolator, y: float) -> Optional[Face]:
         min_y = min(p.y for p in self.points_f)
@@ -50,7 +52,7 @@ class PinX:
         if min_y <= y <= max_y:
             xz = x2 if self.right else x1
             return Face(
-                [Point3d(p.x + xz(p.z), y, p.z) for p in self.points_s], colour="red"
+                [Point3d(p.x + xz(y, p.z), y, p.z) for p in self.points_s], colour="red"
             )
 
         return None
@@ -66,11 +68,11 @@ class TailX:
         xz = x2 if self.right else x1
         if z:
             return Face(
-                [Point3d(p.x + xz(z), p.y, z) for p in self.points_b], colour="red"
+                [Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_b], colour="red"
             )
         else:
             return Face(
-                [Point3d(p.x + xz(z), p.y, z) for p in self.points_f], colour="red"
+                [Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_f], colour="red"
             )
 
     def get_side(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
