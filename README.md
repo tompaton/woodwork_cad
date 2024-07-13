@@ -55,9 +55,10 @@ gprof2dot -f pstats profile.pstats | dot -Tsvg -o art_tote.svg
 
 ## To do
 
-* dadoes/rebates
-* mortises & tennons
-* mitred cuts
+* more cut/joint types
+  * dadoes/rebates
+  * mortises & tenons https://en.wikipedia.org/wiki/Mortise_and_tenon
+  * blind dovetail etc. https://en.wikipedia.org/wiki/Dovetail_joint
 * shading of left side (visible when mitred/rotated)
 * exploded view
 

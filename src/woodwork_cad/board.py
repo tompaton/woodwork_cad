@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from math import cos, radians
 from operator import attrgetter
 from typing import Iterable, Iterator, List, Optional, Tuple
 
@@ -11,6 +12,13 @@ from .grooves import Grooves, Side
 from .profile import Interpolator, Profile
 from .shades import Shades
 from .svg import SVGCanvas
+
+
+def sign(n: float) -> float:
+    if n >= 0:
+        return 1.0
+    else:
+        return -1.0
 
 
 @dataclass
@@ -96,7 +104,7 @@ class Board:
     @property
     def profile(self) -> Profile:
         if not self._profile:
-            self._profile = Profile.default(self.L, self.T)
+            self._profile = Profile.default(self.L, self.W, self.T)
         return self._profile
 
     def shade(self, colour: str) -> "Board":
@@ -115,8 +123,9 @@ class Board:
         ly: float = 0,
         L: float = 0,
         W: float = 0,
+        angle: float = 90,
     ):
-        self.cuts.add(op, x1, y1, x2, y2, label, lx, ly, L, W)
+        self.cuts.add(op, x1, y1, x2, y2, label, lx, ly, L, W, angle)
         if self.parent:
             self.parent.add_cut(
                 op,
@@ -129,10 +138,14 @@ class Board:
                 ly + self.offset_y,
                 L,
                 W,
+                angle,
             )
 
-    def cut(self, length: float, kerf: float = 5):
-        self.add_cut("cut", length, 0, length + kerf, self.W, L=length)
+    def cut(self, length: float, kerf: float = 5, angle: float = 90):
+        dx = self.W * cos(radians(angle)) * sign(angle)
+        self.add_cut(
+            "cut", length, 0, length + kerf + dx, self.W, L=length, angle=angle
+        )
         return [
             Board(
                 length,
@@ -143,6 +156,9 @@ class Board:
                 0,
                 shades=self.shades.select(0, self.W),
                 grooves=self.grooves.select(0, self.W),
+                _profile=self.profile.cut(
+                    length, 0, length + dx, self.W, False, length, self.T
+                ),
             ),
             Board(
                 self.L - length - kerf,
@@ -153,14 +169,36 @@ class Board:
                 0,
                 shades=self.shades.select(0, self.W),
                 grooves=self.grooves.select(0, self.W),
+                _profile=self.profile.cut(
+                    length + kerf,
+                    0,
+                    length + kerf + dx,
+                    self.W,
+                    True,
+                    self.L - length - kerf,
+                    self.T,
+                ),
             ),
         ]
 
     def rip(self, width: float, kerf: float = 5):
-        self.add_cut("rip", 0, width, self.L, width + kerf, W=width)
+        x1, x2 = self.profile.interpolate(self.T)
+
+        self.add_cut(
+            "rip", x1(width, 0), width, x2(width + kerf, 0), width + kerf, W=width
+        )
         return [
             Board(
-                self.L, width, self.T, self, 0, 0, shades=self.shades.select(0, width)
+                self.L,
+                width,
+                self.T,
+                self,
+                0,
+                0,
+                shades=self.shades.select(0, width),
+                _profile=self.profile.rip(
+                    0, width, self.L, width, False, self.L, self.T
+                ),
             ),
             Board(
                 self.L,
@@ -170,6 +208,9 @@ class Board:
                 0,
                 width + kerf,
                 shades=self.shades.select(width + kerf, self.W),
+                _profile=self.profile.rip(
+                    0, width + kerf, self.L, width + kerf, True, self.L, self.T
+                ),
             ),
         ]
 
@@ -231,6 +272,17 @@ class Board:
             defect.draw(canvas, x, y)
 
         self._draw_cuts(canvas, x, y)
+
+        if False:
+            canvas.polyline3d(
+                "magenta",
+                [Point3d(p.x, p.y, 0) for p in self.profile._shape],
+                x,
+                y,
+                closed=True,
+            )
+            for p in self.profile._shape:
+                canvas.circle(x + p.x, y + p.y, 2, "magenta")
 
         return origin, mate
 
@@ -440,22 +492,24 @@ class Board:
         order = 0
         for cut in self.cuts:
             if cut.op:
+                dx = (cut.y2 - cut.y1) * cos(radians(cut.angle)) * sign(cut.angle)
+
                 if cut.y2 == self.W:
                     points = [
                         Point3d(cut.x1, cut.y1, 0),
-                        Point3d(cut.x2 + 1, cut.y1, 0),
+                        Point3d(cut.x2 + 1 - dx, cut.y1, 0),
                         Point3d(cut.x2 + 1, cut.y2, 0),
                         # continue around edge
                         Point3d(cut.x2 + 1, cut.y2, self.T),
-                        Point3d(cut.x1, cut.y2, self.T),
-                        Point3d(cut.x1, cut.y2, 0),
+                        Point3d(cut.x1 + dx, cut.y2, self.T),
+                        Point3d(cut.x1 + dx, cut.y2, 0),
                     ]
                 else:
                     points = [
                         Point3d(cut.x1, cut.y1, 0),
-                        Point3d(cut.x2 + 1, cut.y1, 0),
+                        Point3d(cut.x2 + 1 - dx, cut.y1, 0),
                         Point3d(cut.x2 + 1, cut.y2, 0),
-                        Point3d(cut.x1, cut.y2, 0),
+                        Point3d(cut.x1 + dx, cut.y2, 0),
                     ]
 
                 canvas.polyline3d(

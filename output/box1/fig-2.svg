@@ -8,12 +8,12 @@
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="155.0,20.0 156.0,20.0 156.0,120.0 161.7,125.7 160.7,125.7 155.0,120.0" />
 <text style="" text-anchor="left" x="165" y="30" fill="black">1</text>
 <polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,75.0 156.0,75.0 156.0,80.0 10.0,80.0" />
-<text style="" text-anchor="left" x="20" y="85" fill="black">2</text>
+<text style="" text-anchor="left" x="20.0" y="85" fill="black">2</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,80.0 156.0,80.0 156.0,120.0 161.7,125.7 15.7,125.7 10.0,120.0" />
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="357.5,20.0 358.5,20.0 358.5,120.0 364.2,125.7 363.2,125.7 357.5,120.0" />
 <text style="" text-anchor="left" x="367.5" y="30" fill="black">3</text>
 <polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="155.0,75.0 358.5,75.0 358.5,75.0 155.0,75.0" />
-<text style="" text-anchor="left" x="165" y="85" fill="black">4</text>
+<text style="" text-anchor="left" x="165.0" y="85" fill="black">4</text>
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="560.0,20.0 561.0,20.0 561.0,120.0 566.7,125.7 565.7,125.7 560.0,120.0" />
 <text style="" text-anchor="left" x="570.0" y="30" fill="black">5</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="560.0,20.0 561.0,20.0 561.0,120.0 566.7,125.7 565.7,125.7 560.0,120.0" />
@@ -30,12 +30,12 @@
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="155.0,170.0 156.0,170.0 156.0,270.0 161.7,275.7 160.7,275.7 155.0,270.0" />
 <text style="" text-anchor="left" x="165" y="180" fill="black">1</text>
 <polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,225.0 156.0,225.0 156.0,230.0 10.0,230.0" />
-<text style="" text-anchor="left" x="20" y="235" fill="black">2</text>
+<text style="" text-anchor="left" x="20.0" y="235" fill="black">2</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="10.0,230.0 156.0,230.0 156.0,270.0 161.7,275.7 15.7,275.7 10.0,270.0" />
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="357.5,170.0 358.5,170.0 358.5,270.0 364.2,275.7 363.2,275.7 357.5,270.0" />
 <text style="" text-anchor="left" x="367.5" y="180" fill="black">3</text>
 <polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="155.0,225.0 358.5,225.0 358.5,225.0 155.0,225.0" />
-<text style="" text-anchor="left" x="165" y="235" fill="black">4</text>
+<text style="" text-anchor="left" x="165.0" y="235" fill="black">4</text>
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="560.0,170.0 561.0,170.0 561.0,270.0 566.7,275.7 565.7,275.7 560.0,270.0" />
 <text style="" text-anchor="left" x="570.0" y="180" fill="black">5</text>
 <polygon fill="rgba(255,0,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="rgba(255,0,0,0.25)" points="560.0,170.0 561.0,170.0 561.0,270.0 566.7,275.7 565.7,275.7 560.0,270.0" />

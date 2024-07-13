@@ -76,9 +76,9 @@ def draw_dimension_ex(
         raise ValueError(msg)
 
 
-def cut(length: float, kerf: float = 5, label: str = ""):
+def cut(length: float, kerf: float = 5, label: str = "", angle: float = 90):
     def operation(board: Board):
-        return label_all(board.cut(length, kerf), label)
+        return label_all(board.cut(length, kerf, angle), label)
 
     return operation
 
@@ -103,6 +103,7 @@ def cut_waste(length: float):
 
 def joint(*boards: Board, label: str = ""):
     if not all(
+        # round(board1.profile.length2()[1]) == round(board2.profile.length2()[0])
         board1.L == board2.L and board1.T == board2.T
         for board1, board2 in zip(boards, boards[1:])
     ):

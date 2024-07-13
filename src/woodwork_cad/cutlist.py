@@ -16,6 +16,7 @@ class Cut:
     fill: str
     L: float = 0.0
     W: float = 0.0
+    angle: float = 90.0
 
 
 class Cuts:
@@ -37,6 +38,7 @@ class Cuts:
         ly: float = 0,
         L: float = 0,
         W: float = 0,
+        angle: float = 90,
     ):
         if op == "cut":
             colour = "green"
@@ -52,4 +54,6 @@ class Cuts:
         else:
             fill = "rgba(255,0,0,0.25)"
 
-        self._cuts.append(Cut(op, x1, y1, x2, y2, label, lx, ly, colour, fill, L, W))
+        self._cuts.append(
+            Cut(op, x1, y1, x2, y2, label, lx, ly, colour, fill, L, W, angle)
+        )

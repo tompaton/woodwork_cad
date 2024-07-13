@@ -46,6 +46,7 @@
 - rebates so groove for base can be smaller?
    - better to just plane thickness down to 10mm
 - lid/base width 237.3, side length 137.0
+### NOTE: not sure why these angles aren't lining up yet...
 
 ![Figure 6](hex_box1-strips-mitre/fig-6.svg)
 

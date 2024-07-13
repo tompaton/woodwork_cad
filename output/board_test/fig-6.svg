@@ -7,7 +7,7 @@
 <polygon fill="rgba(255,255,255,0.75)" stroke-width="1" stroke-dasharray="" stroke="black" points="10.0,10.0 310.0,10.0 310.0,110.0 10.0,110.0" />
 <circle cx="40" cy="90" r="5" stroke="orange" fill="white" stroke-width="1" />
 <polygon fill="rgba(0,0,255,0.25)" stroke-width="1" stroke-dasharray="" stroke="blue" points="10.0,60.0 311.0,60.0 311.0,65.0 10.0,65.0" />
-<text style="" text-anchor="left" x="20" y="70" fill="black">1</text>
+<text style="" text-anchor="left" x="20.0" y="70" fill="black">1</text>
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="110.0,10.0 116.0,10.0 116.0,60.0 110.0,60.0" />
 <text style="" text-anchor="left" x="120" y="20" fill="black">2</text>
 <polygon fill="rgba(0,255,0,0.25)" stroke-width="1" stroke-dasharray="" stroke="green" points="160.0,65.0 166.0,65.0 166.0,110.0 174.5,118.5 168.5,118.5 160.0,110.0" />

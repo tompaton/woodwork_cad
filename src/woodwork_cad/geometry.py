@@ -36,6 +36,9 @@ class Point:
     x: float
     y: float
 
+    def offset(self, dx: float = 0.0, dy: float = 0.0) -> "Point":
+        return Point(self.x + dx, self.y + dy)
+
 
 Points = List[Point]
 Line = Tuple[Point, Point]

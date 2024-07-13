@@ -35,39 +35,43 @@ mitre
 
 ![Figure 8](board_test/fig-8.svg)
 
-dovetails
+mitred cut
 
 ![Figure 9](board_test/fig-9.svg)
 
-dovetails (from above)
+dovetails
 
 ![Figure 10](board_test/fig-10.svg)
 
-grooves
+dovetails (from above)
 
 ![Figure 11](board_test/fig-11.svg)
 
-grooves (from above)
+grooves
 
 ![Figure 12](board_test/fig-12.svg)
 
-rotation
+grooves (from above)
 
 ![Figure 13](board_test/fig-13.svg)
 
-rotation (from above)
+rotation
 
 ![Figure 14](board_test/fig-14.svg)
 
-plan view
+rotation (from above)
 
 ![Figure 15](board_test/fig-15.svg)
 
-front view
+plan view
 
 ![Figure 16](board_test/fig-16.svg)
 
-side view
+front view
 
 ![Figure 17](board_test/fig-17.svg)
+
+side view
+
+![Figure 18](board_test/fig-18.svg)
 

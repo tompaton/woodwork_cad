@@ -264,8 +264,29 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
 
     half = hex_L3 - (hex_L3 - hex_W3) * 2
 
-    with print_svg(550, zoom=2) as canvas:
+    print("### NOTE: not sure why these angles aren't lining up yet...")
+
+    lid1a = process(
+        cut(65, kerf=0, angle=-60),
+        cut(half - 65, kerf=0, angle=60),
+        cut(half + 65, kerf=0, angle=-60),
+    )(lid1)
+    lid2a = process(
+        cut(0, kerf=0, angle=60),
+        cut(half + 65, kerf=0, angle=-60),
+        cut(half - 65, kerf=0, angle=60),
+    )(lid2)
+
+    with print_svg(750, zoom=2) as canvas:
         lid1_xy, lid2_xy = draw_boards(canvas, 10, 20, [lid1, lid2])
+        draw_boards(canvas, 10, lid2_xy.y + lid1.W + 20, lid1a[:1])
+        draw_boards(canvas, 30, lid2_xy.y + lid1.W + 20, lid1a[1:2])
+        draw_boards(canvas, 230, lid2_xy.y + lid1.W + 20, lid1a[2:3])
+        draw_boards(canvas, 450, lid2_xy.y + lid1.W + 20, lid1a[3:])
+        draw_boards(canvas, 10, lid2_xy.y + 2 * (lid1.W + 20), lid2a[:1])
+        draw_boards(canvas, 20, lid2_xy.y + 2 * (lid1.W + 20), lid2a[1:2])
+        draw_boards(canvas, 240, lid2_xy.y + 2 * (lid1.W + 20), lid2a[2:3])
+        draw_boards(canvas, 450, lid2_xy.y + 2 * (lid1.W + 20), lid2a[3:])
 
         # draw hex over panel
         canvas.polyline(
