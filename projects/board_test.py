@@ -44,8 +44,9 @@ def board_test() -> None:
         assembly.draw(canvas, 300, 20)
 
         # HACK: use board to do dimensions for both board and assembly
+        # (doesn't quite work as the board thickness means the assembly is bigger)
         board.label = "Assembly"
-        board._draw_cuts(canvas, 300, 20)
+        board._draw_cuts(canvas, 300, 20)  # noqa: SLF001
 
         arrow = board.get_dimension("L", "above", 20)[:4]
         draw_dimension_ex(canvas, 40, 20, *arrow, "L, length, x", "L", "above")
@@ -195,9 +196,7 @@ def board_test() -> None:
 
     with print_svg(500, zoom=2) as canvas:
         _draw_rotated(canvas, board4, 10, 10, 0)
-        _draw_rotated(
-            canvas, board4, 250, 10, 180, offset=Vector3d(board4.L, 0, board4.T)
-        )
+        _draw_rotated(canvas, board4, 250, 10, 180, offset=Vector3d(board4.L, 0, board4.T))
         _draw_rotated(canvas, board4, 10, 150, 90, offset=Vector3d(2 * board4.T, 0, 0))
         _draw_rotated(canvas, board4, 250, 150, 45)
 
@@ -205,9 +204,7 @@ def board_test() -> None:
 
     with print_svg(500, zoom=2, camera="above") as canvas:
         _draw_rotated(canvas, board4, 10, 10, 0)
-        _draw_rotated(
-            canvas, board4, 250, 10, 180, offset=Vector3d(board4.L, 0, board4.T)
-        )
+        _draw_rotated(canvas, board4, 250, 10, 180, offset=Vector3d(board4.L, 0, board4.T))
         _draw_rotated(canvas, board4, 10, 250, 90, offset=Vector3d(2 * board4.T, 0, 0))
         _draw_rotated(canvas, board4, 250, 250, 45)
 

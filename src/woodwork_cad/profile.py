@@ -1,6 +1,6 @@
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass, replace
 from math import cos, radians, sin
-from typing import Callable, Iterator, List, Optional, Tuple
 
 from woodwork_cad.geometry import Point, Point3d, Points, clip_polygon, line_length
 
@@ -16,10 +16,10 @@ class ProfilePoint:
 class Profile:
     def __init__(
         self,
-        points: Optional[List[ProfilePoint]] = None,
-        shape: Optional[Points] = None,
+        points: list[ProfilePoint] | None = None,
+        shape: Points | None = None,
     ) -> None:
-        self._points: List[ProfilePoint] = points or []
+        self._points: list[ProfilePoint] = points or []
         self._shape: Points = shape or []
 
     def __iter__(self) -> Iterator[ProfilePoint]:
@@ -29,8 +29,8 @@ class Profile:
         return bool(self._points)
 
     @classmethod
-    def default(self, L: float, W: float, T: float) -> "Profile":
-        return Profile(
+    def default(cls, L: float, W: float, T: float) -> "Profile":
+        return cls(
             [
                 ProfilePoint(0, 0),
                 ProfilePoint(L, 0),
@@ -51,9 +51,10 @@ class Profile:
         y1: float,
         x2: float,
         y2: float,
-        right: bool,
         L: float,
         T: float,
+        *,
+        right: bool,
     ) -> "Profile":
         if right:
             # clip bottom left
@@ -83,8 +84,8 @@ class Profile:
                 ],
                 [p2.offset(dx=-min_x) for p2 in shape2],
             )
-        else:
-            return Profile()
+
+        return Profile()
 
     def rip(
         self,
@@ -92,9 +93,10 @@ class Profile:
         y1: float,
         x2: float,
         y2: float,
-        bottom: bool,
         L: float,
         T: float,
+        *,
+        bottom: bool,
     ) -> "Profile":
         if bottom:
             # clip bottom
@@ -126,8 +128,8 @@ class Profile:
                 ],
                 [p2.offset(dy=-min_y) for p2 in shape2],
             )
-        else:
-            return Profile()
+
+        return Profile()
 
     def mitre(self, T: float, left: float, right: float) -> None:
         # offset the point of rotation
@@ -152,21 +154,17 @@ class Profile:
             ProfilePoint(a.x, d.z),
         ]
 
-    def length(self) -> Tuple[float, float]:
-        return line_length(
-            self._points[0].x, self._points[0].z, self._points[1].x, self._points[1].z
-        ), line_length(
+    def length(self) -> tuple[float, float]:
+        return line_length(self._points[0].x, self._points[0].z, self._points[1].x, self._points[1].z), line_length(
             self._points[2].x, self._points[2].z, self._points[3].x, self._points[3].z
         )
 
-    def length2(self) -> Tuple[float, float]:
-        return line_length(
-            self._shape[0].x, self._shape[0].y, self._shape[1].x, self._shape[1].y
-        ), line_length(
+    def length2(self) -> tuple[float, float]:
+        return line_length(self._shape[0].x, self._shape[0].y, self._shape[1].x, self._shape[1].y), line_length(
             self._shape[2].x, self._shape[2].y, self._shape[3].x, self._shape[3].y
         )
 
-    def interpolate(self, T: float) -> Tuple[Interpolator, Interpolator]:
+    def interpolate(self, T: float) -> tuple[Interpolator, Interpolator]:
         # interpolate x along profile or shape (not both for now...)
 
         def x1(y: float, z: float) -> float:
@@ -178,8 +176,8 @@ class Profile:
                     self._shape[0].y,
                     self._shape[3].y,
                 )
-            else:
-                return interpolate(z, self._points[0].x, self._points[3].x, 0.0, T)
+
+            return interpolate(z, self._points[0].x, self._points[3].x, 0.0, T)
 
         def x2(y: float, z: float) -> float:
             if self._points[1].x == self._points[2].x and len(self._shape) >= 4:
@@ -190,8 +188,8 @@ class Profile:
                     self._shape[1].y,
                     self._shape[2].y,
                 )
-            else:
-                return interpolate(z, self._points[1].x, self._points[2].x, 0.0, T)
+
+            return interpolate(z, self._points[1].x, self._points[2].x, 0.0, T)
 
         return x1, x2
 
@@ -209,5 +207,5 @@ class Profile:
 def interpolate(z: float, x1: float, x2: float, z1: float, z2: float) -> float:
     if z2 - z1:
         return x1 + z * (x2 - x1) / (z2 - z1)
-    else:
-        return x1
+
+    return x1

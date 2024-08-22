@@ -66,9 +66,7 @@ def box1(boxL, boxW, boxH):
         waste,
     )
 
-    label_all(
-        panels, "left", "front", "top2", "top1", "right", "back", "bottom2", "bottom1"
-    )
+    label_all(panels, "left", "front", "top2", "top1", "right", "back", "bottom2", "bottom1")
 
     joint2(panels, 6, 7, label="top")
     joint2(panels, 2, 3, label="bottom")

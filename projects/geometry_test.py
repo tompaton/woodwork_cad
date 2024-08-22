@@ -101,19 +101,13 @@ def test_cross_product(canvas, offset, v1, v2):
     p3 = to2d(v3)
 
     canvas.polyline("blue", [Point(x0, y0), Point(x0 + p1.x, y0 + p1.y)])
-    canvas.text(
-        x0 + p1.x + 5, y0 + p1.y, "start", content=f"v1 {l1:.2f}", font_size="12px"
-    )
+    canvas.text(x0 + p1.x + 5, y0 + p1.y, "start", content=f"v1 {l1:.2f}", font_size="12px")
 
     canvas.polyline("green", [Point(x0, y0), Point(x0 + p2.x, y0 + p2.y)])
-    canvas.text(
-        x0 + p2.x + 5, y0 + p2.y, "start", content=f"v2 {l2:.2f}", font_size="12px"
-    )
+    canvas.text(x0 + p2.x + 5, y0 + p2.y, "start", content=f"v2 {l2:.2f}", font_size="12px")
 
     canvas.polyline("red", [Point(x0, y0), Point(x0 + p3.x, y0 + p3.y)])
-    canvas.text(
-        x0 + p3.x + 5, y0 + p3.y, "start", content=f"v3 {l3:.2f}", font_size="12px"
-    )
+    canvas.text(x0 + p3.x + 5, y0 + p3.y, "start", content=f"v3 {l3:.2f}", font_size="12px")
 
     canvas.text(x0 + 5, y0 - 15, "start", content=f"dot = {dot:.2f}", font_size="12px")
 
@@ -184,8 +178,7 @@ def geometry_test():
 
     for title, test_clip_polygon in [
         (
-            "## clip_polygon (sutherland-hodgman)\n"
-            "this fails when the clip polygon is not convex",
+            "## clip_polygon (sutherland-hodgman)\n" "this fails when the clip polygon is not convex",
             test_clip_polygon1,
         ),
         (
@@ -279,10 +272,7 @@ def geometry_test():
             test_clip_polygon(canvas, next(grid), dovetail3, panel2)
 
             # subject polygon
-            spoly = [
-                Point(u * 15, v * 15)
-                for u, v in [(1.5, 1.3), (7.5, 2.5), (4.0, 3.0), (4.5, 6.5)]
-            ]
+            spoly = [Point(u * 15, v * 15) for u, v in [(1.5, 1.3), (7.5, 2.5), (4.0, 3.0), (4.5, 6.5)]]
 
             # clip polygon
             cpoly = [

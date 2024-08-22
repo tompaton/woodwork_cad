@@ -1,4 +1,5 @@
-from typing import Any, List, Optional
+from itertools import pairwise
+from typing import Any
 
 from woodwork_cad.board import Board
 from woodwork_cad.defects import Defects
@@ -12,6 +13,7 @@ def draw_boards(
     x: float,
     y: float,
     boards: list[Board],
+    *,
     dimension_cuts: bool = False,
 ) -> Points:
     points = []
@@ -33,12 +35,8 @@ def draw_dimension(
     position: str,
     pad: float = 10,
 ) -> None:
-    start, end, arrow_start, arrow_end, text = board.get_dimension(
-        dimension, position, pad
-    )
-    draw_dimension_ex(
-        canvas, x, y, start, end, arrow_start, arrow_end, text, dimension, position
-    )
+    start, end, arrow_start, arrow_end, text = board.get_dimension(dimension, position, pad)
+    draw_dimension_ex(canvas, x, y, start, end, arrow_start, arrow_end, text, dimension, position)
 
 
 def draw_dimension_ex(
@@ -65,10 +63,7 @@ def draw_dimension_ex(
             left=position == "left",
         )
 
-    elif dimension == "L":
-        canvas.horizontal_arrow(x, y, start, end, arrow_start, arrow_end, text)
-
-    elif dimension == "T":
+    elif dimension in {"L", "T"}:
         canvas.horizontal_arrow(x, y, start, end, arrow_start, arrow_end, text)
 
     else:
@@ -105,9 +100,10 @@ def joint(*boards: Board, label: str = ""):
     if not all(
         # round(board1.profile.length2()[1]) == round(board2.profile.length2()[0])
         board1.L == board2.L and board1.T == board2.T
-        for board1, board2 in zip(boards, boards[1:])
+        for board1, board2 in pairwise(boards)
     ):
-        raise ValueError("Board length and thickness must match to be joined")
+        msg = "Board length and thickness must match to be joined"
+        raise ValueError(msg)
 
     defects = Defects()
     shade = Shades()
@@ -141,7 +137,7 @@ def process(*operations):
 def process_first(*operations):
     def inner(board: Board):
         result, remainder = process(operations[0])(board)
-        return process(*operations[1:])(result) + [remainder]
+        return [*process(*operations[1:])(result), remainder]
 
     return inner
 
@@ -155,17 +151,17 @@ def process_all(boards: list[Board], *operations):
 
 def joint2(boards: list[Board], *indexes: int, label: str = ""):
     if len(indexes) < 2:
-        raise ValueError("Need 2 or more boards to join")
-    if not all(index2 > index1 for index1, index2 in zip(indexes, indexes[1:])):
-        raise ValueError("Boards must be joined in order")
-    boards2 = []
-    for index in reversed(indexes):
-        boards2.append(boards.pop(index))
+        msg = "Need 2 or more boards to join"
+        raise ValueError(msg)
+    if not all(index2 > index1 for index1, index2 in pairwise(indexes)):
+        msg = "Boards must be joined in order"
+        raise ValueError(msg)
+    boards2 = [boards.pop(index) for index in reversed(indexes)]
     boards.append(joint(*boards2, label=label))
 
 
 def label_all(boards: list[Board], *labels):
-    for board, label in zip(boards, labels):
+    for board, label in zip(boards, labels, strict=False):
         if label:
             board.label = label
             if board.parent:
@@ -192,32 +188,47 @@ def cube_net(
     bottom: int,
 ):
     all_sides = [top, left, front, right, back, bottom]
-    if not len({boards[side].T for side in all_sides}) == 1:
-        raise ValueError("Cube sides must have equal thickness")
+    if len({boards[side].T for side in all_sides}) != 1:
+        msg = "Cube sides must have equal thickness"
+        raise ValueError(msg)
 
     if not boards[top].L == boards[front].L == boards[bottom].L == boards[back].L:
-        raise ValueError("Cube top, front, bottom and back must be the same length")
+        msg = "Cube top, front, bottom and back must be the same length"
+        raise ValueError(msg)
     if not boards[top].W == boards[left].L == boards[bottom].W == boards[right].L:
-        raise ValueError("Cube top, bottom width must match left and right length")
+        msg = "Cube top, bottom width must match left and right length"
+        raise ValueError(msg)
     if not boards[left].W == boards[front].W == boards[right].W == boards[back].W:
-        raise ValueError("Cube left, front, right and back must be the same width")
+        msg = "Cube left, front, right and back must be the same width"
+        raise ValueError(msg)
 
-    if not boards[top].label == "top":
-        raise ValueError(f"top label invalid: {boards[top].label}")
-    if not boards[left].label == "left":
-        raise ValueError(f"left label invalid: {boards[left].label}")
-    if not boards[front].label == "front":
-        raise ValueError(f"front label invalid: {boards[front].label}")
-    if not boards[right].label == "right":
-        raise ValueError(f"right label invalid: {boards[right].label}")
-    if not boards[back].label == "back":
-        raise ValueError(f"back label invalid: {boards[back].label}")
-    if not boards[bottom].label == "bottom":
-        raise ValueError(f"bottom label invalid: {boards[bottom].label}")
+    if boards[top].label != "top":
+        msg = f"top label invalid: {boards[top].label}"
+        raise ValueError(msg)
+
+    if boards[left].label != "left":
+        msg = f"left label invalid: {boards[left].label}"
+        raise ValueError(msg)
+
+    if boards[front].label != "front":
+        msg = f"front label invalid: {boards[front].label}"
+        raise ValueError(msg)
+
+    if boards[right].label != "right":
+        msg = f"right label invalid: {boards[right].label}"
+        raise ValueError(msg)
+
+    if boards[back].label != "back":
+        msg = f"back label invalid: {boards[back].label}"
+        raise ValueError(msg)
+
+    if boards[bottom].label != "bottom":
+        msg = f"bottom label invalid: {boards[bottom].label}"
+        raise ValueError(msg)
 
     area = sum(boards[side].area for side in all_sides)
     volume = boards[top].area * boards[front].W
-    print(
+    print(  # noqa
         f"cube {boards[top].L :.1f} x {boards[top].W :.1f} x {boards[front].W :.1f} "
         f"area = {area / 100 :.2f} volume = {volume / 1000 :.2f} "
         f"aspect = {boards[top].aspect :.2f}"
@@ -227,9 +238,9 @@ def cube_net(
 
 
 def dovetail_boards(
-    sides: List[Board],
-    ends: List[Board],
-    pin1_ratio: Optional[float] = None,
+    sides: list[Board],
+    ends: list[Board],
+    pin1_ratio: float | None = None,
     **kwargs: Any,
 ) -> None:
     for side in sides:

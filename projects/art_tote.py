@@ -96,9 +96,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
         rip(s_till.depth, label="till back"),
         rip(s_till.depth),
     )(pile.take_part("b", cut(s_inside.length), "b3"))
-    board_j2_4 = process(cut(s_base.width, label="base bottom d"), waste)(board_j2_4a)[
-        0
-    ]
+    board_j2_4 = process(cut(s_base.width, label="base bottom d"), waste)(board_j2_4a)[0]
 
     till_left, till_right = process(
         cut(s_till.width, label="till left"),
@@ -135,9 +133,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
 
     dovetail_boards(base_boards[0:4:2], base_boards[1:4:2], tails=2, pin1_ratio=1.0)
 
-    base_boards.append(
-        process(rip(s_base.length, label="base bottom"), waste)(board_j2)[0]
-    )
+    base_boards.append(process(rip(s_base.length, label="base bottom"), waste)(board_j2)[0])
 
     with print_svg(550, zoom=2.0) as canvas:
         draw_boards(canvas, 10, 10, base_boards)
@@ -158,9 +154,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     print("- 60mm deep inside")
     print("- sits on small rails set into grooves in base font/back walls")
 
-    board_a3_1, board_a3_2 = process(rip(s_box.depth), rip(s_box.depth), waste)(
-        pile.take("a")
-    )
+    board_a3_1, board_a3_2 = process(rip(s_box.depth), rip(s_box.depth), waste)(pile.take("a"))
 
     box_boards = process(
         cut(s_inside.length, label="box front"),
@@ -172,9 +166,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
         waste,
     )(board_a3_2)
 
-    box_wedge = process(cut(s_inside.width, label="wedge"), waste)(pile.take("stick"))[
-        0
-    ]
+    box_wedge = process(cut(s_inside.width, label="wedge"), waste)(pile.take("stick"))[0]
 
     box_boards.extend(
         [
@@ -261,9 +253,7 @@ might be better to have a long shallow(ish) removable till for brushes and small
     box_bottom.rotate(rotate_x=90.0)
     box_assembly.add_board(box_bottom, Vector3d(0.0, s_box.depth, 0.0), 0.0)
     box_lid.rotate(rotate_x=90.0)
-    box_assembly.add_board(
-        box_lid, Vector3d(box_boards[0].T, 0.0, box_boards[0].T), 0.0
-    )
+    box_assembly.add_board(box_lid, Vector3d(box_boards[0].T, 0.0, box_boards[0].T), 0.0)
     batten = box_battens[0]
     batten.rotate(rotate_x=90)
     batten.rotate(rotate_y=90)
@@ -271,17 +261,13 @@ might be better to have a long shallow(ish) removable till for brushes and small
     box_wedge.rotate(rotate_y=90)
     box_assembly.add_board(batten, Vector3d(0.0, -batten.W, 0.0), 0.0)
     box_assembly.add_board(batten, Vector3d(batten.L, -batten.W, 0.0), 0.0)
-    box_assembly.add_board(
-        batten, Vector3d(s_box.length - batten.L, -batten.W, 0.0), 0.0
-    )
+    box_assembly.add_board(batten, Vector3d(s_box.length - batten.L, -batten.W, 0.0), 0.0)
     box_assembly.add_board(
         box_wedge,
         Vector3d(s_box.length - batten.L - box_wedge.L, -box_wedge.W, 0.0),
         0.0,
     )
-    box_assembly.add_board(
-        batten, Vector3d(s_box.length - 2 * batten.L - box_wedge.L, -batten.W, 0.0), 0.0
-    )
+    box_assembly.add_board(batten, Vector3d(s_box.length - 2 * batten.L - box_wedge.L, -batten.W, 0.0), 0.0)
 
     assembly = Assembly()
     assembly.add_subassembly(Vector3d(0.0, 0.0, 0.0), base_assembly)

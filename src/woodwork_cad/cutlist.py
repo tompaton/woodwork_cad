@@ -1,5 +1,5 @@
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator, List, Optional
 
 
 @dataclass
@@ -20,8 +20,8 @@ class Cut:
 
 
 class Cuts:
-    def __init__(self, cuts: Optional[List[Cut]] = None) -> None:
-        self._cuts: List[Cut] = cuts or []
+    def __init__(self, cuts: list[Cut] | None = None) -> None:
+        self._cuts: list[Cut] = cuts or []
 
     def __iter__(self) -> Iterator[Cut]:
         yield from self._cuts
@@ -54,6 +54,4 @@ class Cuts:
         else:
             fill = "rgba(255,0,0,0.25)"
 
-        self._cuts.append(
-            Cut(op, x1, y1, x2, y2, label, lx, ly, colour, fill, L, W, angle)
-        )
+        self._cuts.append(Cut(op, x1, y1, x2, y2, label, lx, ly, colour, fill, L, W, angle))

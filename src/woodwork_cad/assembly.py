@@ -1,6 +1,6 @@
+from collections.abc import Iterator
 from dataclasses import dataclass
 from operator import attrgetter
-from typing import Iterator, List
 
 from woodwork_cad.board import Board
 from woodwork_cad.faces import Face, rotate_faces
@@ -21,18 +21,18 @@ class Dimension:
 class Assembly:
     def __init__(self) -> None:
         self.origin: Point3d = Point3d(0.0, 0.0, 0.0)
-        self.boards: List[Board] = []
-        self.positions: List[Vector3d] = []
-        self.angles: List[float] = []
+        self.boards: list[Board] = []
+        self.positions: list[Vector3d] = []
+        self.angles: list[float] = []
 
-        self.subassemblies: List["Assembly"] = []
+        self.subassemblies: list[Assembly] = []
 
     def add_board(self, board: Board, position: Vector3d, angle: float) -> None:
         self.boards.append(board)
         self.positions.append(position)
         self.angles.append(angle)
 
-    def add_walls(self, angle: float, sides: List[Board]) -> None:
+    def add_walls(self, angle: float, sides: list[Board]) -> None:
         rotate_y = 0.0
         o = sides[0].profile.origin
         offset = Vector3d(-o.x, -o.y, -o.z)
@@ -41,7 +41,7 @@ class Assembly:
 
             # don't actually want to rotate any faces at this point, so pass in
             # empty list, but we want the rotated mate point as the next offset
-            origin2d: List[Point3d] = []  # set in rotate_faces
+            origin2d: list[Point3d] = []  # set in rotate_faces
             list(
                 rotate_faces(
                     [],
@@ -61,17 +61,13 @@ class Assembly:
         assembly.origin = Point3d(offset.x, offset.y, offset.z)
         self.subassemblies.append(assembly)
 
-    def draw(
-        self, canvas: SVGCanvas, x: float, y: float, *dimensions: Dimension
-    ) -> None:
+    def draw(self, canvas: SVGCanvas, x: float, y: float, *dimensions: Dimension) -> None:
         for face in sorted(self.faces, key=attrgetter("_key")):
             face.draw(canvas, x, y)
 
         self.draw_dimensions(canvas, x, y, *dimensions)
 
-    def draw_dimensions(
-        self, canvas: SVGCanvas, x: float, y: float, *dimensions: Dimension
-    ) -> None:
+    def draw_dimensions(self, canvas: SVGCanvas, x: float, y: float, *dimensions: Dimension) -> None:
         for dimension in dimensions:
             if dimension.subassembly == -1:
                 assembly = self
@@ -102,13 +98,11 @@ class Assembly:
         offset = self.positions[index]
         rotate_y = self.angles[index]
 
-        start, end, arrow_start, arrow_end, text = board.get_dimension(
-            dimension, position, pad
-        )
+        start, end, arrow_start, arrow_end, text = board.get_dimension(dimension, position, pad)
 
         face = Face([start, end, arrow_end, arrow_start])
 
-        face = list(
+        face = next(
             rotate_faces(
                 [face],
                 board.profile.origin,
@@ -121,20 +115,18 @@ class Assembly:
                 board.profile.mate,
                 [],
             )
-        )[0]
+        )
 
         start, end, arrow_end, arrow_start = face.points
 
-        draw_dimension_ex(
-            canvas, x, y, start, end, arrow_start, arrow_end, text, dimension, position
-        )
+        draw_dimension_ex(canvas, x, y, start, end, arrow_start, arrow_end, text, dimension, position)
 
     @property
     def faces(self) -> Iterator[Face]:
-        for side, offset, rotate_y in zip(self.boards, self.positions, self.angles):
+        for side, offset, rotate_y in zip(self.boards, self.positions, self.angles, strict=False):
             x1, x2 = side.profile.interpolate(side.T)
             yield from rotate_faces(
-                side._get_faces(x1, x2),
+                side.get_faces(x1, x2),
                 side.profile.origin,
                 rotate_y,
                 Vector3d(
@@ -150,6 +142,4 @@ class Assembly:
             yield from assembly.faces
 
     def get_corners(self, x: float, y: float) -> Points:
-        return [
-            Point(p.x + x, y - p.z) for p in self.positions[1:] + self.positions[:1]
-        ]
+        return [Point(p.x + x, y - p.z) for p in self.positions[1:] + self.positions[:1]]

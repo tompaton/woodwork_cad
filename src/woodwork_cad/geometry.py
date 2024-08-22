@@ -1,7 +1,7 @@
+from collections.abc import Callable
 from dataclasses import dataclass
 from itertools import pairwise
 from math import cos, radians, sin, sqrt
-from typing import Callable, List, Optional, Tuple
 
 from woodwork_cad.polygon import clip_polygon as _clip_polygon
 
@@ -40,8 +40,8 @@ class Point:
         return Point(self.x + dx, self.y + dy)
 
 
-Points = List[Point]
-Line = Tuple[Point, Point]
+Points = list[Point]
+Line = tuple[Point, Point]
 
 
 @dataclass
@@ -54,7 +54,7 @@ class Point3d:
         return Point3d(self.x + dx, self.y + dy, self.z + dz)
 
 
-Points3d = List[Point3d]
+Points3d = list[Point3d]
 
 
 @dataclass
@@ -100,7 +100,7 @@ def to2d(p: Point3d, offset_x: float = 0.0, offset_y: float = 0.0) -> Point:
 
 
 def set_camera(mode: str) -> None:
-    global _to2d, _get_lighting, CAMERA, LIGHT
+    global _to2d, _get_lighting, CAMERA, LIGHT  # noqa: PLW0603
     if mode == "above":
         _to2d = to2d_isometric_above
         _get_lighting = get_3d_lighting
@@ -128,17 +128,17 @@ def set_camera(mode: str) -> None:
 def get_camera() -> str:
     if _to2d == to2d_isometric_above:
         return "above"
-    elif _to2d == to2d_isometric_below:
+    if _to2d == to2d_isometric_below:
         return "below"
-    elif _to2d == to2d_plan:
+    if _to2d == to2d_plan:
         return "plan"
-    elif _to2d == to2d_front:
+    if _to2d == to2d_front:
         return "front"
-    elif _to2d == to2d_side:
+    if _to2d == to2d_side:
         return "side"
-    else:
-        msg = f"Unknown camera mode '{_to2d}'"
-        raise ValueError(msg)
+
+    msg = f"Unknown camera mode '{_to2d}'"
+    raise ValueError(msg)
 
 
 def length(a: Vector3d) -> float:
@@ -181,11 +181,11 @@ def is_inside(p: Point, line: Line) -> bool:
     return (b.x - a.x) * (p.y - a.y) > (b.y - a.y) * (p.x - a.x)
 
 
-def get_edges(polygon: Points) -> List[Line]:
+def get_edges(polygon: Points) -> list[Line]:
     return list(pairwise(polygon[-1:] + polygon))
 
 
-def line_intersection(line0: Line, line1: Line) -> Optional[Point]:
+def line_intersection(line0: Line, line1: Line) -> Point | None:
     """
     calculate the point of intersection between two lines
     see {@link https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line|Wikipedia}
@@ -198,12 +198,8 @@ def line_intersection(line0: Line, line1: Line) -> Optional[Point]:
     if abs(denominator) < 0.0001:
         return None  # parallel lines
 
-    numerator_x = (p1.x * p2.y - p1.y * p2.x) * (p3.x - p4.x) - (p1.x - p2.x) * (
-        p3.x * p4.y - p3.y * p4.x
-    )
-    numerator_y = (p1.x * p2.y - p1.y * p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (
-        p3.x * p4.y - p3.y * p4.x
-    )
+    numerator_x = (p1.x * p2.y - p1.y * p2.x) * (p3.x - p4.x) - (p1.x - p2.x) * (p3.x * p4.y - p3.y * p4.x)
+    numerator_y = (p1.x * p2.y - p1.y * p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x * p4.y - p3.y * p4.x)
 
     x = numerator_x / denominator
     y = numerator_y / denominator
@@ -213,7 +209,7 @@ def line_intersection(line0: Line, line1: Line) -> Optional[Point]:
 
 def clip_polygon(clipping_polygon: Points, subject_polygon: Points) -> Points:
     """
-    @see {@link https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm|Sutherland–Hodgman algorithm}
+    @see {@link https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm algorithm}
     """
     result = subject_polygon
     for clip_edge in get_edges(clipping_polygon):
@@ -235,9 +231,7 @@ def clip_polygon(clipping_polygon: Points, subject_polygon: Points) -> Points:
     return result
 
 
-def clip_polygon2(
-    clipping_polygon: Points, subject_polygon: Points, operation: str = "difference"
-) -> List[Points]:
+def clip_polygon2(clipping_polygon: Points, subject_polygon: Points, operation: str = "difference") -> list[Points]:
     result = _clip_polygon(subject_polygon, clipping_polygon, operation)
     return [[Point(x, y) for x, y in poly.points] for poly in result]
 
@@ -247,20 +241,20 @@ CAMERA: Vector3d = normalize(Vector3d(-1.0, -1.0, 1.0))
 LIGHT: Vector3d = normalize(Vector3d(-1.0, 1.0, 1.0))
 
 
-def get_3d_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
+def get_3d_lighting(normal: Vector3d) -> tuple[float, float, bool]:
     camera = dotproduct(normal, CAMERA)
     light = dotproduct(normal, LIGHT)
     return camera, light, False
 
 
-def get_plan_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
+def get_plan_lighting(normal: Vector3d) -> tuple[float, float, bool]:  # noqa: ARG001
     return 0.0, 0.0, True
 
 
 _get_lighting = get_3d_lighting
 
 
-def get_lighting(normal: Vector3d) -> Tuple[float, float, bool]:
+def get_lighting(normal: Vector3d) -> tuple[float, float, bool]:
     return _get_lighting(normal)
 
 

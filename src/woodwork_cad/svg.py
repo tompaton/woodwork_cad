@@ -1,16 +1,25 @@
+from collections.abc import Iterator
 from contextlib import contextmanager
 from math import atan2, cos, degrees, sin, sqrt
 from pathlib import Path
-from typing import Any, Iterator, Optional, Tuple
+from typing import Any
 
-from woodwork_cad.geometry import Point, Point3d, Points, Points3d, get_camera, set_camera, to2d
+from woodwork_cad.geometry import (
+    Point,
+    Point3d,
+    Points,
+    Points3d,
+    get_camera,
+    set_camera,
+    to2d,
+)
 
 
 class SVGCanvas:
     def __init__(self) -> None:
         self.result = ""
-        self.min_y: Optional[float] = None
-        self.max_y: Optional[float] = None
+        self.min_y: float | None = None
+        self.max_y: float | None = None
 
     def _min_max_y(self, *ys) -> None:
         if ys:
@@ -18,9 +27,7 @@ class SVGCanvas:
             self.max_y = max(self.max_y or ys[0], *ys)
 
     def write(self, tag: str, content: str = "", **attrs: Any) -> None:
-        attrs_str = " ".join(
-            '{}="{}"'.format(k.replace("_", "-"), v) for k, v in attrs.items()
-        )
+        attrs_str = " ".join('{}="{}"'.format(k.replace("_", "-"), v) for k, v in attrs.items())
         if content:
             self.result += f"<{tag} {attrs_str}>{content}</{tag}>\n"
         else:
@@ -130,6 +137,7 @@ class SVGCanvas:
         self,
         colour: str,
         points: Points,
+        *,
         stroke_width: float = 1,
         stroke_dasharray: Any = "",
         fill: str = "none",
@@ -155,9 +163,7 @@ class SVGCanvas:
         y: float = 0.0,
         **kwargs: Any,
     ) -> None:
-        return self.polyline(
-            colour, [to2d(p, offset_x=x, offset_y=y) for p in points], **kwargs
-        )
+        return self.polyline(colour, [to2d(p, offset_x=x, offset_y=y) for p in points], **kwargs)
 
     def vertical_arrow(
         self,
@@ -168,11 +174,10 @@ class SVGCanvas:
         arrow_top: Point3d,
         arrow_bottom: Point3d,
         text: str,
+        *,
         left: bool = False,
     ) -> None:
-        self.polyline3d(
-            "silver", [corner_bottom, arrow_bottom], x, y, stroke_dasharray=2
-        )
+        self.polyline3d("silver", [corner_bottom, arrow_bottom], x, y, stroke_dasharray=2)
         self.polyline3d("silver", [corner_top, arrow_top], x, y, stroke_dasharray=2)
         self.polyline3d("gray", [arrow_top, arrow_bottom], x, y, stroke_dasharray=2)
         p1 = to2d(arrow_top, x, y)
@@ -191,9 +196,7 @@ class SVGCanvas:
             0,
             content=text,
             style="font-size:12px",
-            transform=f"translate({x2+3} {y2}) rotate(-90)"
-            if left
-            else f"translate({x2-3} {y2}) rotate(90)",
+            transform=f"translate({x2+3} {y2}) rotate(-90)" if left else f"translate({x2-3} {y2}) rotate(90)",
         )
 
     def horizontal_arrow(
@@ -222,9 +225,7 @@ class SVGCanvas:
         self.rect(x2 - w / 2, y2 - 5, w, 10, "none", fill="rgba(255,255,255,0.75)")
         self.text(x2, y2 + 3, content=text, style="font-size:12px")
 
-    def arrow(
-        self, x1: float, y1: float, x2: float, y2: float, colour: str = "gray"
-    ) -> None:
+    def arrow(self, x1: float, y1: float, x2: float, y2: float, colour: str = "gray") -> None:
         angle = atan2((y2 - y1), (x2 - x1))
         dx, dy = cos(angle), sin(angle)
         self.polyline(
@@ -247,7 +248,7 @@ class PrintToSVGFiles:
     def __init__(self, prefix: str) -> None:
         self.prefix = prefix
         self.figure = 0
-        self.canvas: Optional[SVGCanvas] = None
+        self.canvas: SVGCanvas | None = None
         self.width: int = 0
         self.height: int = 0
         self.zoom: float = 1.0
@@ -255,9 +256,7 @@ class PrintToSVGFiles:
         self.camera: str = "below"
         self.old_camera: str = "below"
 
-    def __call__(
-        self, width: int, height: int = 0, zoom: float = 1.0, camera: str = ""
-    ) -> "PrintToSVGFiles":
+    def __call__(self, width: int, height: int = 0, zoom: float = 1.0, camera: str = "") -> "PrintToSVGFiles":
         self.width = width
         self.height = height
         self.zoom = zoom
@@ -273,7 +272,9 @@ class PrintToSVGFiles:
         return self.canvas
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
-        assert self.canvas is not None
+        if self.canvas is None:
+            raise AssertionError
+
         set_camera(self.old_camera)
         f = Path(f"projects/output/{self.prefix}/fig-{self.figure}.svg")
         f.parent.mkdir(parents=True, exist_ok=True)
@@ -284,7 +285,7 @@ class PrintToSVGFiles:
         self.canvas = None
 
 
-def polyline_bounds(corners: Points) -> Tuple[float, float, Points]:
+def polyline_bounds(corners: Points) -> tuple[float, float, Points]:
     min_hex_x = min(p.x for p in corners)
     min_hex_y = min(p.y for p in corners)
     hex_L = max(p.x for p in corners) - min_hex_x
@@ -300,7 +301,7 @@ def offset_points(offset_x: float, offset_y: float, points: Points) -> Points:
     return [Point(p.x + offset_x, p.y + offset_y) for p in points]
 
 
-def shrink_points(corners: Points, delta: float) -> Tuple[float, float, Points]:
+def shrink_points(corners: Points, delta: float) -> tuple[float, float, Points]:
     width, height = polyline_bounds(corners)[:2]
     cx, cy = width / 2, height / 2
     corners2: Points = []

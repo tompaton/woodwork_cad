@@ -1,6 +1,6 @@
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from math import radians, sin
-from typing import Callable, Iterable, List, Optional, Tuple
 
 from woodwork_cad.faces import Face
 from woodwork_cad.geometry import Point3d, Points3d
@@ -17,13 +17,10 @@ def peturb(points: Points3d) -> Points3d:
     def e(v: float, mid_v: float) -> float:
         if v < mid_v:
             return -0.01
-        else:
-            return 0.01
 
-    return [
-        Point3d(p.x + e(p.x, mid_x), p.y + e(p.y, mid_y), p.z + e(p.z, mid_z))
-        for p in points
-    ]
+        return 0.01
+
+    return [Point3d(p.x + e(p.x, mid_x), p.y + e(p.y, mid_y), p.z + e(p.z, mid_z)) for p in points]
 
 
 @dataclass
@@ -39,21 +36,17 @@ class PinX:
     points_f: Points3d = field(default_factory=list)
     points_s: Points3d = field(default_factory=list)
 
-    def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
+    def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Face | None:
         xz = x2 if self.right else x1
-        return Face(
-            [Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_f], colour="red"
-        )
+        return Face([Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_f], colour="red")
 
-    def get_side(self, x1: Interpolator, x2: Interpolator, y: float) -> Optional[Face]:
+    def get_side(self, x1: Interpolator, x2: Interpolator, y: float) -> Face | None:
         min_y = min(p.y for p in self.points_f)
         max_y = max(p.y for p in self.points_f)
 
         if min_y <= y <= max_y:
             xz = x2 if self.right else x1
-            return Face(
-                [Point3d(p.x + xz(y, p.z), y, p.z) for p in self.points_s], colour="red"
-            )
+            return Face([Point3d(p.x + xz(y, p.z), y, p.z) for p in self.points_s], colour="red")
 
         return None
 
@@ -64,18 +57,14 @@ class TailX:
     points_f: Points3d = field(default_factory=list)
     points_b: Points3d = field(default_factory=list)
 
-    def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
+    def get_face(self, x1: Interpolator, x2: Interpolator, z: float) -> Face | None:
         xz = x2 if self.right else x1
         if z:
-            return Face(
-                [Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_b], colour="red"
-            )
-        else:
-            return Face(
-                [Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_f], colour="red"
-            )
+            return Face([Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_b], colour="red")
 
-    def get_side(self, x1: Interpolator, x2: Interpolator, z: float) -> Optional[Face]:
+        return Face([Point3d(p.x + xz(p.y, z), p.y, z) for p in self.points_f], colour="red")
+
+    def get_side(self, x1: Interpolator, x2: Interpolator, z: float) -> Face | None:  # noqa: ARG002
         # can ignore this for now as pins don't extend to sides and we'll
         # assume any grooves are near the edge
         return None
@@ -83,11 +72,11 @@ class TailX:
 
 class Dovetails:
     def __init__(self) -> None:
-        self._pin_x: List[PinX] = []
-        self._tail_x: List[TailX] = []
-        self._ends: List[End] = []
-        self.faces_L: List[Face] = []
-        self.faces_R: List[Face] = []
+        self._pin_x: list[PinX] = []
+        self._tail_x: list[TailX] = []
+        self._ends: list[End] = []
+        self.faces_L: list[Face] = []
+        self.faces_R: list[Face] = []
 
         self.pin_ratio: float = 1.0
         self.pin1_ratio: float = 0.5
@@ -97,28 +86,28 @@ class Dovetails:
 
     def add_pin(
         self,
-        right: bool,
         x: float,
         y: float,
-        base: float,
+        base: float,  # noqa: ARG002
         pin_width: float,
         flare1: float,
         flare2: float,
         T: float,
+        *,
+        right: bool,
     ) -> float:
         self.add_end(
-            right,
             x,
             y,
             0,
             [0, -flare1, pin_width + flare2, pin_width],
             T,
+            right=right,
         )
         return pin_width
 
     def add_pinx(
         self,
-        right: bool,
         x: float,
         y: float,
         base: float,
@@ -126,6 +115,8 @@ class Dovetails:
         flare1: float,
         flare2: float,
         T: float,
+        *,
+        right: bool,
     ) -> float:
         self._pin_x.append(
             PinX(
@@ -152,51 +143,59 @@ class Dovetails:
         )
         if flare1:
             self.add_face(
-                right, 0, y, [0, base, base, 0], [0, -flare1, -flare1, 0], T, False
+                0,
+                y,
+                [0, base, base, 0],
+                [0, -flare1, -flare1, 0],
+                T,
+                right=right,
+                reverse=False,
             )
         self.add_end(
-            right,
             x,
             y,
             base,
             [-flare1, -flare1, pin_width + flare2, pin_width + flare2],
             T,
+            right=right,
         )
         if flare2:
             self.add_face(
-                right,
                 0,
                 y + pin_width,
                 [0, base, base, 0],
                 [0, flare2, flare2, 0],
                 T,
-                True,
+                right=right,
+                reverse=True,
             )
         return pin_width
 
     def add_tail(
         self,
-        right: bool,
         x: float,
         y: float,
-        base: float,
+        base: float,  # noqa: ARG002
         tail_width: float,
-        flare: float,
+        flare: float,  # noqa: ARG002
         T: float,
+        *,
+        right: bool,
     ) -> float:
-        self.add_end(right, x, y, 0, [0, 0, tail_width, tail_width], T)
+        self.add_end(x, y, 0, [0, 0, tail_width, tail_width], T, right=right)
 
         return tail_width
 
     def add_tailx(
         self,
-        right: bool,
         x: float,
         y: float,
         base: float,
         tail_width: float,
         flare: float,
         T: float,
+        *,
+        right: bool,
     ) -> float:
         self._tail_x.append(
             TailX(
@@ -221,22 +220,28 @@ class Dovetails:
                 ),
             )
         )
-        self.add_face(right, 0, y, [0, base, base, 0], [0, 0, flare, flare], T, False)
-        self.add_end(right, x, y, base, [tail_width, tail_width - flare, flare, 0], T)
         self.add_face(
-            right,
+            0,
+            y,
+            [0, base, base, 0],
+            [0, 0, flare, flare],
+            T,
+            right=right,
+            reverse=False,
+        )
+        self.add_end(x, y, base, [tail_width, tail_width - flare, flare, 0], T, right=right)
+        self.add_face(
             0,
             y + tail_width,
             [0, base, base, 0],
             [0, 0, -flare, -flare],
             T,
-            True,
+            right=right,
+            reverse=True,
         )
         return tail_width
 
-    def add_end(
-        self, right: bool, x: float, y: float, dx: float, dy: List[float], dz: float
-    ) -> None:
+    def add_end(self, x: float, y: float, dx: float, dy: list[float], dz: float, *, right: bool) -> None:
         points = peturb(
             [
                 Point3d(x, y + dy[0], 0),
@@ -249,12 +254,13 @@ class Dovetails:
 
     def add_face(
         self,
-        right: bool,
         x: float,
         y: float,
-        dx: List[float],
-        dy: List[float],
+        dx: list[float],
+        dy: list[float],
         dz: float,
+        *,
+        right: bool,
         reverse: bool,
         colour: str = "",
     ) -> None:
@@ -272,9 +278,7 @@ class Dovetails:
             face.points.reverse()
         faces.append(face)
 
-    def faces(
-        self, x1: Interpolator, x2: Interpolator
-    ) -> Callable[[float], Iterable[Face]]:
+    def faces(self, x1: Interpolator, x2: Interpolator) -> Callable[[float], Iterable[Face]]:
         def inner(z: float) -> Iterable[Face]:
             for pin in self._pin_x:
                 if face := pin.get_face(x1, x2, z):
@@ -285,9 +289,7 @@ class Dovetails:
 
         return inner
 
-    def sides(
-        self, x1: Interpolator, x2: Interpolator
-    ) -> Callable[[float], Iterable[Face]]:
+    def sides(self, x1: Interpolator, x2: Interpolator) -> Callable[[float], Iterable[Face]]:
         def inner(y: float) -> Iterable[Face]:
             for pin in self._pin_x:
                 if face := pin.get_side(x1, x2, y):
@@ -298,21 +300,14 @@ class Dovetails:
 
         return inner
 
-    def left_right(
-        self, xz: Interpolator, side: Face, right: bool = False
-    ) -> Iterable[Face]:
+    def left_right(self, xz: Interpolator, side: Face, *, right: bool = False) -> Iterable[Face]:
         clipped = False
 
         for end in self._ends:
             if end.right == right:
                 clipped = True
                 # yield Face(end.points, "red").offset(dx=end.dx)
-                yield (
-                    side.clip_end(Face(end.points, "red"))
-                    .offset(dx=end.dx)
-                    .offset_profile(xz)
-                    .check_normal(side)
-                )
+                yield (side.clip_end(Face(end.points, "red")).offset(dx=end.dx).offset_profile(xz).check_normal(side))
 
         if not clipped:
             yield side
@@ -325,6 +320,7 @@ class Dovetails:
         T: float,
         base: float,
         angle: float,
+        *,
         right: bool,
     ) -> None:
         x = L if right else 0
@@ -335,16 +331,16 @@ class Dovetails:
 
         flare = abs(base) * sin(radians(angle))
 
-        y += self.add_pinx(right, x, y, base, pin_width0, 0, flare, T)
+        y += self.add_pinx(x, y, base, pin_width0, 0, flare, T, right=right)
 
-        y += self.add_tail(right, x, y, base, tail_width, flare, T)
+        y += self.add_tail(x, y, base, tail_width, flare, T, right=right)
 
-        for i in range(tails - 1):
-            y += self.add_pinx(right, x, y, base, pin_width, flare, flare, T)
+        for _i in range(tails - 1):
+            y += self.add_pinx(x, y, base, pin_width, flare, flare, T, right=right)
 
-            y += self.add_tail(right, x, y, base, tail_width, flare, T)
+            y += self.add_tail(x, y, base, tail_width, flare, T, right=right)
 
-        self.add_pinx(right, x, y, base, pin_width0, flare, 0, T)
+        self.add_pinx(x, y, base, pin_width0, flare, 0, T, right=right)
 
     def add_pins(
         self,
@@ -354,6 +350,7 @@ class Dovetails:
         T: float,
         base: float,
         angle: float,
+        *,
         right: bool,
     ) -> None:
         x = L if right else 0.0
@@ -364,22 +361,20 @@ class Dovetails:
 
         flare = abs(base) * sin(radians(angle))
 
-        y += self.add_pin(right, x, y, base, pin_width0, 0, flare, T)
+        y += self.add_pin(x, y, base, pin_width0, 0, flare, T, right=right)
 
-        for i in range(tails):
-            y += self.add_tailx(right, x, y, base, tail_width, flare, T)
+        for _i in range(tails):
+            y += self.add_tailx(x, y, base, tail_width, flare, T, right=right)
 
-            y += self.add_pin(right, x, y, base, pin_width, flare, flare, T)
+            y += self.add_pin(x, y, base, pin_width, flare, flare, T, right=right)
 
         self._ends.pop()
         y -= pin_width
 
-        y += self.add_pin(right, x, y, base, pin_width0, flare, 0, T)
+        y += self.add_pin(x, y, base, pin_width0, flare, 0, T, right=right)
 
-    def get_widths(self, height: float, tails: int) -> Tuple[float, float, float]:
-        tail_width = height / (
-            tails + 2 * self.pin1_ratio * self.pin_ratio + (tails - 1) * self.pin_ratio
-        )
+    def get_widths(self, height: float, tails: int) -> tuple[float, float, float]:
+        tail_width = height / (tails + 2 * self.pin1_ratio * self.pin_ratio + (tails - 1) * self.pin_ratio)
         pin_width = tail_width * self.pin_ratio
         pin1_width = pin_width * self.pin1_ratio
 

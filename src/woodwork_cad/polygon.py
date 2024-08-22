@@ -31,13 +31,13 @@ If not, see <https://github.com/helderco/polyclip>
 """
 
 
-class Vertex(object):
+class Vertex:
     """Node in a circular doubly linked list.
 
     This class is almost exactly as described in the paper by Günther/Greiner.
     """
 
-    def __init__(self, vertex, alpha=0.0, intersect=False, entry=True, checked=False):
+    def __init__(self, vertex, *, alpha=0.0, intersect=False, entry=True, checked=False):
         if isinstance(vertex, Vertex):
             vertex = (vertex.x, vertex.y)
             # checked = True
@@ -50,13 +50,11 @@ class Vertex(object):
         self.prev = None  # reference to the previous vertex of the polygon
         self.neighbour = None  # reference to the corresponding intersection vertex in the other polygon
         self.entry = entry  # True if intersection is an entry point, False if exit
-        self.alpha = (
-            alpha  # intersection point's relative distance from previous vertex
-        )
+        self.alpha = alpha  # intersection point's relative distance from previous vertex
         self.intersect = intersect  # True if vertex is an intersection
         self.checked = checked  # True if the vertex has been checked (last phase)
 
-    def isInside(self, poly):
+    def is_inside(self, poly):
         """Test if a vertex lies inside a polygon (odd-even rule).
 
         This function calculates the "winding" number for a point, which
@@ -74,14 +72,14 @@ class Vertex(object):
 
         return (winding_number % 2) != 0
 
-    def setChecked(self):
+    def set_checked(self):
         self.checked = True
         if self.neighbour and not self.neighbour.checked:
-            self.neighbour.setChecked()
+            self.neighbour.set_checked()
 
     def __repr__(self):
         """String representation of the vertex for debugging purposes."""
-        return "(%.2f, %.2f) <-> %s(%.2f, %.2f)%s <-> (%.2f, %.2f) %s" % (
+        return "({:.2f}, {:.2f}) <-> {}({:.2f}, {:.2f}){} <-> ({:.2f}, {:.2f}) {}".format(
             self.prev.x,
             self.prev.y,
             "i" if self.intersect else " ",
@@ -94,7 +92,7 @@ class Vertex(object):
         )
 
 
-class Polygon(object):
+class Polygon:
     """Manages a circular doubly linked list of Vertex objects that represents a polygon."""
 
     first = None
@@ -106,10 +104,10 @@ class Polygon(object):
             self.first.next = vertex
             self.first.prev = vertex
         else:
-            next = self.first
-            prev = next.prev
-            next.prev = vertex
-            vertex.next = next
+            nxt = self.first
+            prev = nxt.prev
+            nxt.prev = vertex
+            vertex.next = nxt
             vertex.prev = prev
             prev.next = vertex
 
@@ -141,11 +139,6 @@ class Polygon(object):
         return c
 
     @property
-    def nextPoly(self):
-        """Return the next polygon (pointed by the first vertex)."""
-        return self.first.nextPoly
-
-    @property
     def first_intersect(self):
         """Return the first unchecked intersection point in the polygon."""
         for v in self.iter():
@@ -156,17 +149,11 @@ class Polygon(object):
     @property
     def points(self):
         """Return the polygon's points as a list of tuples (ordered coordinates pair)."""
-        p = []
-        for v in self.iter():
-            p.append((v.x, v.y))
-        return p
+        return [(v.x, v.y) for v in self.iter()]
 
     def unprocessed(self):
         """Check if any unchecked intersections remain in the polygon."""
-        for v in self.iter():
-            if v.intersect and not v.checked:
-                return True
-        return False
+        return any(v.intersect and not v.checked for v in self.iter())
 
     def union(self, clip):
         return self.clip(clip, False, False)
@@ -178,7 +165,7 @@ class Polygon(object):
         return self.clip(clip, False, True)
 
     def clip(self, clip, s_entry, c_entry):
-        """Clip this polygon using another one as a clipper.
+        r"""Clip this polygon using another one as a clipper.
 
         This is where the algorithm is executed. It allows you to make
         a UNION, INTERSECT or DIFFERENCE operation between two polygons.
@@ -211,11 +198,9 @@ class Polygon(object):
                 for c in clip.iter():  # for each vertex Cj of clip polygon do
                     if not c.intersect:
                         try:
-                            i, alphaS, alphaC = intersect(
-                                s, self.next(s.next), c, clip.next(c.next)
-                            )
-                            iS = Vertex(i, alphaS, intersect=True, entry=False)
-                            iC = Vertex(i, alphaC, intersect=True, entry=False)
+                            i, alphaS, alphaC = intersect(s, self.next(s.next), c, clip.next(c.next))
+                            iS = Vertex(i, alpha=alphaS, intersect=True, entry=False)
+                            iC = Vertex(i, alpha=alphaC, intersect=True, entry=False)
                             iS.neighbour = iC
                             iC.neighbour = iS
 
@@ -225,26 +210,26 @@ class Polygon(object):
                             pass  # this simply means intersect() returned None
 
         # phase two - identify entry/exit points
-        s_entry ^= self.first.isInside(clip)
+        s_entry ^= self.first.is_inside(clip)
         for s in self.iter():
             if s.intersect:
                 s.entry = s_entry
                 s_entry = not s_entry
 
-        c_entry ^= clip.first.isInside(self)
+        c_entry ^= clip.first.is_inside(self)
         for c in clip.iter():
             if c.intersect:
                 c.entry = c_entry
                 c_entry = not c_entry
 
         # phase three - construct a list of clipped polygons
-        list = []
+        lst = []
         while self.unprocessed():
             current = self.first_intersect
             clipped = Polygon()
             clipped.add(Vertex(current))
             while True:
-                current.setChecked()
+                current.set_checked()
                 if current.entry:
                     while True:
                         current = current.next
@@ -262,12 +247,12 @@ class Polygon(object):
                 if current.checked:
                     break
 
-            list.append(clipped)
+            lst.append(clipped)
 
-        if not list:
-            list.append(Polygon())
+        if not lst:
+            lst.append(Polygon())
 
-        return list
+        return lst
 
     def __repr__(self):
         """String representation of the polygon for debugging purposes."""
@@ -305,15 +290,15 @@ def intersect(s1, s2, c1, c2):
     uc = ((s2.x - s1.x) * (s1.y - c1.y) - (s2.y - s1.y) * (s1.x - c1.x)) / den
 
     if (
-        (us == 0 or us == 1)
+        (us == 0 or us == 1)  # noqa: PLR1714
         and (0 <= uc <= 1)
-        or (uc == 0 or uc == 1)
+        or (uc == 0 or uc == 1)  # noqa: PLR1714
         and (0 <= us <= 1)
     ):
         # print("whoops! degenerate case!")
         return None
 
-    elif (0 < us < 1) and (0 < uc < 1):
+    if (0 < us < 1) and (0 < uc < 1):
         x = s1.x + us * (s2.x - s1.x)
         y = s1.y + us * (s2.y - s1.y)
         return (x, y), us, uc
@@ -353,13 +338,7 @@ def clip_polygon(subject, clipper, operation="difference"):
     for c in clipper:
         Clipper.add(Vertex(c))
 
-    clipped = (
-        Clipper.difference(Subject)
-        if operation == "reversed-diff"
-        else Subject.__getattribute__(operation)(Clipper)
-    )
-
-    return clipped
+    return Clipper.difference(Subject) if operation == "reversed-diff" else Subject.__getattribute__(operation)(Clipper)
 
 
 def parse_polygon(input_str):
@@ -373,7 +352,8 @@ def parse_polygon(input_str):
             x, y = vertex.split(",", 2)
             poly.append((float(x), float(y)))
 
-        return poly
-
     except ValueError:
         return None
+
+    else:
+        return poly

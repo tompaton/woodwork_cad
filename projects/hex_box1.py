@@ -29,10 +29,8 @@ from woodwork_cad.svg import (
 # flags for design options
 # STRIPS: alternate contrasting strips in panels
 # MITRE: overlapping mitres
-def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
-    print_svg = PrintToSVGFiles(
-        f"hex_box1{'-strips' if STRIPS else ''}{'-mitre' if MITRE else ''}"
-    )
+def draw_hex_box1(*, STRIPS: bool = True, MITRE: bool = True) -> None:
+    print_svg = PrintToSVGFiles(f"hex_box1{'-strips' if STRIPS else ''}{'-mitre' if MITRE else ''}")
 
     print("# Hexagonal box")
 
@@ -67,9 +65,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         rawboard.defects.add(Hole(655, 12))
         rawboard.defects.add(Hole(690, W - 12))
 
-    cut_boards = process_all(
-        rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=0), waste
-    )
+    cut_boards = process_all(rawboards, cut_waste(raw_waste), cut(L2a), cut(L2b, kerf=0), waste)
 
     with print_svg(1100) as canvas:
         if STRIPS:
@@ -119,10 +115,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
             ),
         ]
 
-        assert not long_boards
-        assert not short_boards
-        assert not short_strips
-        assert not long_strips
+        if any(long_boards) or any(short_boards) or any(short_strips) or any(long_strips):
+            raise AssertionError
 
     else:
         lid1 = joint(*long_boards[:3])
@@ -148,8 +142,8 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         sides = process_all(panels[2:], cut(R), cut(R))
 
     # show the grooves on the panel face for better visibility
-    panels[2].grooves._grooves.clear()
-    panels[3].grooves._grooves.clear()
+    panels[2].grooves._grooves.clear()  # noqa: SLF001
+    panels[3].grooves._grooves.clear()  # noqa: SLF001
     panels[2].grooves.add(5, T, 5, face=True)
     panels[2].grooves.add(panels[2].W - T - 5, T, 5, face=True)
     panels[3].grooves.add(5, T, 5, face=True)
@@ -250,9 +244,7 @@ def draw_hex_box1(STRIPS: bool = True, MITRE: bool = True) -> None:
         )
 
     print(f"- Final width = {hex_L:.1f}, Final height = {hex_W:.1f}")
-    print(
-        f"- Inside length = {length_inside:.1f}, Outside length = {length_outside:.1f}"
-    )
+    print(f"- Inside length = {length_inside:.1f}, Outside length = {length_outside:.1f}")
 
     print("## Base and Lid")
     print("- Cut base and lid out of boards in 2 halves and join")

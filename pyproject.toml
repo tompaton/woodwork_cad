@@ -56,8 +56,12 @@ exclude_lines = [
   "if TYPE_CHECKING:",
 ]
 
+[tool.ruff.lint]
+ignore = ["N806", "N803", "SIM102", "SIM108", "PLR2004"]
+
 [tool.ruff.lint.per-file-ignores]
-"projects/*" = ["T201", "N806", "N803"]
+"src/woodwork_cad/svg.py" = ["T201"]
+"projects/*" = ["T201"]
 
 [tool.hatch.scripts]
 make = "make"

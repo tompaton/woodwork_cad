@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Callable, Dict, List
+from collections.abc import Callable
 
 from woodwork_cad.board import Board
 from woodwork_cad.operations import draw_dimension, process
@@ -8,9 +8,9 @@ from woodwork_cad.svg import SVGCanvas
 
 class StockPile:
     def __init__(self) -> None:
-        self.boards: Dict[str, List[Board]] = defaultdict(list)
-        self.cutlist: List[Board] = []
-        self.offcuts: Dict[str, List[Board]] = defaultdict(list)
+        self.boards: dict[str, list[Board]] = defaultdict(list)
+        self.cutlist: list[Board] = []
+        self.offcuts: dict[str, list[Board]] = defaultdict(list)
 
     def add(self, key: str, count: int, board: Board) -> None:
         for i in range(count):
@@ -55,7 +55,7 @@ class StockPile:
                 y += board.W + 20 * (i + 1) + 20
 
     def mark_waste(self) -> None:
-        for key, boards in self.offcuts.items():
+        for boards in self.offcuts.values():
             for board in boards:
                 board.waste()
 

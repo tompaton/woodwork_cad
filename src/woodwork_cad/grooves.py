@@ -1,5 +1,5 @@
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable, List, Optional
 
 
 @dataclass
@@ -25,10 +25,10 @@ class Side:
 
 
 class Grooves:
-    def __init__(self, grooves: Optional[List[Groove]] = None) -> None:
-        self._grooves: List[Groove] = grooves or []
+    def __init__(self, grooves: list[Groove] | None = None) -> None:
+        self._grooves: list[Groove] = grooves or []
 
-    def add(self, y: float, height: float, depth: float, face: bool = True) -> None:
+    def add(self, y: float, height: float, depth: float, *, face: bool = True) -> None:
         self._grooves.append(Groove(y, y + height, depth, face))
 
     def select(self, min_y: float, max_y: float, offset_y: float = 0) -> "Grooves":
@@ -45,7 +45,7 @@ class Grooves:
             ]
         )
 
-    def flats(self, W: float, T: float, face: bool) -> Iterable[Flat]:
+    def flats(self, W: float, T: float, *, face: bool) -> Iterable[Flat]:
         y0 = 0.0
         for groove in self._grooves:
             if groove.face == face:
@@ -58,7 +58,7 @@ class Grooves:
                 y0 = groove.y2
         yield Flat(0.0 if face else T, y0, W)
 
-    def sides(self, T: float, top: bool, face: bool) -> Iterable[Side]:
+    def sides(self, T: float, *, top: bool, face: bool) -> Iterable[Side]:
         for groove in self._grooves:
             if top:
                 if groove.face and face:

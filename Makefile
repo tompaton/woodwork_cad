@@ -5,9 +5,9 @@ all: woodwork_cad projects
 projects:
 	python projects/box1.py > projects/output/box1.md
 
-	python projects/hex-box1.py > projects/output/hex-box1.md
-	python projects/hex-box1.py --strips > projects/output/hex-box1-strips.md
-	python projects/hex-box1.py --strips --mitre > projects/output/hex-box1-strips-overlap-mitre.md
+	python projects/hex_box1.py > projects/output/hex-box1.md
+	python projects/hex_box1.py --strips > projects/output/hex-box1-strips.md
+	python projects/hex_box1.py --strips --mitre > projects/output/hex-box1-strips-overlap-mitre.md
 
 	python projects/art_tote.py > projects/output/art_tote.md
 

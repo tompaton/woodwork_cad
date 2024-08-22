@@ -1,6 +1,7 @@
+from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
+from typing import Any, Optional
 
 from woodwork_cad.geometry import (
     Point,
@@ -29,8 +30,8 @@ class Face:
     zorder: int = 0
 
     def __post_init__(self) -> None:
-        self.__centroid: Optional[Point3d] = None
-        self.__normal: Optional[Vector3d] = None
+        self.__centroid: Point3d | None = None
+        self.__normal: Vector3d | None = None
 
     def reverse(self) -> "Face":
         self.points.reverse()
@@ -59,7 +60,7 @@ class Face:
         return self._key < other._key
 
     @property
-    def _key(self) -> Tuple[int, float, float, float]:
+    def _key(self) -> tuple[int, float, float, float]:
         # z-order (reversed), then top to bottom, left to right
         center = self.centroid
         return (self.zorder, -center.z, center.x, center.y)
@@ -72,15 +73,13 @@ class Face:
 
         if self.colour:
             colour = self.colour
-            styles: Dict[str, Any] = {}
+            styles: dict[str, Any] = {}
             if self.fill:
                 styles["fill"] = self.fill
         else:
             colour, styles = self.get_style(normal)
 
-        canvas.polyline3d(
-            colour, self.points, x=offset_x, y=offset_y, closed=True, **styles
-        )
+        canvas.polyline3d(colour, self.points, x=offset_x, y=offset_y, closed=True, **styles)
 
         if DEBUG:
             x, y, z = self.points[0].x, self.points[0].y, self.points[0].z
@@ -118,7 +117,7 @@ class Face:
                 fill="none",
             )
 
-    def get_style(self, normal: Vector3d) -> Tuple[str, Dict[str, Any]]:
+    def get_style(self, normal: Vector3d) -> tuple[str, dict[str, Any]]:
         dash = ""
 
         camera, light, plan = get_lighting(normal)
@@ -144,7 +143,7 @@ class Face:
             else:
                 fill = "rgba(192,192,192,0.75)"
 
-        return colour, dict(stroke_dasharray=dash, fill=fill)
+        return colour, {"stroke_dasharray": dash, "fill": fill}
 
     @property
     def normal(self) -> Vector3d:
@@ -209,9 +208,7 @@ class Face:
                 ]
 
         if clipped:
-            return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(
-                self
-            )
+            return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(self)
 
         return self
 
@@ -232,9 +229,7 @@ class Face:
                 ]
 
         if clipped:
-            return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(
-                self
-            )
+            return Face(result_poly, self.colour, self.fill, self.zorder).check_normal(self)
 
         return self
 
@@ -245,39 +240,27 @@ class Face:
         clip_poly = [Point(q.y, q.z) for q in clip_region.points]
         result_poly = [
             Point3d(0.0, p.x, p.y)
-            for p in clip_polygon2(
-                clip_poly, [Point(q.y, q.z) for q in self.points], "intersection"
-            )[0]
+            for p in clip_polygon2(clip_poly, [Point(q.y, q.z) for q in self.points], "intersection")[0]
         ]
 
-        return (
-            Face(result_poly, self.colour, self.fill, self.zorder)
-            if result_poly
-            else None
-        )
+        return Face(result_poly, self.colour, self.fill, self.zorder) if result_poly else None
 
     def clip_face(self, clip_region: "Face") -> "Face":
         clip_poly = [Point(q.x, q.y) for q in clip_region.points]
         z = self.points[0].z
         result_poly = [
             Point3d(p.x, p.y, z)
-            for p in clip_polygon2(
-                clip_poly, [Point(q.x, q.y) for q in self.points], "intersection"
-            )[0]
+            for p in clip_polygon2(clip_poly, [Point(q.x, q.y) for q in self.points], "intersection")[0]
         ]
 
-        return (
-            Face(result_poly, self.colour, self.fill, self.zorder)
-            if result_poly
-            else self
-        )
+        return Face(result_poly, self.colour, self.fill, self.zorder) if result_poly else self
 
     def check_normal(self, original: "Face") -> "Face":
         # make sure normal isn't altered
         if not equal_vectors(self.normal, original.normal):
             return self.reverse()
-        else:
-            return self
+
+        return self
 
 
 def rotate_faces(
@@ -286,7 +269,7 @@ def rotate_faces(
     rotate_y: float,
     offset: Vector3d,
     mate: Point3d,
-    origin2d_out: List[Point3d],
+    origin2d_out: list[Point3d],
 ) -> Iterator[Face]:
     if rotate_y == 0.0 and (offset.x, offset.y, offset.z) == (0.0, 0.0, 0.0):
         yield from faces
@@ -301,9 +284,7 @@ def rotate_faces(
         return Point3d(rotated.x, point.y + offset.y, rotated.y)
 
     for face in faces:
-        yield Face(
-            [rotate3d(p) for p in face.points], face.colour, face.fill, face.zorder
-        )
+        yield Face([rotate3d(p) for p in face.points], face.colour, face.fill, face.zorder)
 
     origin2d_out.append(rotate3d(origin))
     origin2d_out.append(rotate3d(mate))
