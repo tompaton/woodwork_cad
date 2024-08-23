@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Iterator, List, Optional
 
 
-from .svg import SVGCanvas
+from woodwork_cad.svg import SVGCanvas
 
 
 class Defect:

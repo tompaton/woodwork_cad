@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from itertools import pairwise
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple
 
-from .geometry import (
+from woodwork_cad.geometry import (
     Point,
     Point3d,
     Points3d,
@@ -15,8 +15,8 @@ from .geometry import (
     point_rotator,
     subtract,
 )
-from .profile import Interpolator
-from .svg import SVGCanvas
+from woodwork_cad.profile import Interpolator
+from woodwork_cad.svg import SVGCanvas
 
 DEBUG = False
 

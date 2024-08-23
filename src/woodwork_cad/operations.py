@@ -1,10 +1,10 @@
 from typing import Any, List, Optional
 
-from .board import Board
-from .defects import Defects
-from .geometry import Point, Point3d, Points, to2d
-from .shades import Shades
-from .svg import SVGCanvas
+from woodwork_cad.board import Board
+from woodwork_cad.defects import Defects
+from woodwork_cad.geometry import Point, Point3d, Points, to2d
+from woodwork_cad.shades import Shades
+from woodwork_cad.svg import SVGCanvas
 
 
 def draw_boards(

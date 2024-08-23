@@ -1,8 +1,21 @@
 # Woodwork CAD
 
+[![PyPI - Version](https://img.shields.io/pypi/v/woodwork-cad.svg)](https://pypi.org/project/woodwork-cad)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/woodwork-cad.svg)](https://pypi.org/project/woodwork-cad)
+
+-----
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [License](#license)
+
+## Overview
+
 Procedural cad for my woodwork projects.
 
-see [output/board_test.md](output/board_test.md) for basic operations.
+see [projects/output/board_test.md](projects/output/board_test.md) for basic operations.
 
 The goal is to have a python script to perform woodwork operations (cut, rip, 
 resaw) on inputs (boards) to create outputs (smaller boards) which can then be 
@@ -18,16 +31,20 @@ The code should be object oriented (literally) and represent real world
 operations and use type checking to avoid errors where units are mixed up 
 (adding pixels to lengths etc.)
 
-## Usage
 
-Create virtual environment and install dependencies
-```bash
-python -m venv venv
-source venv/bin/activate
-pip install mypy ruff
+## Installation & usage
+
+```console
+pip install woodwork-cad
 ```
 
-Run `make` to rebuild all projects and generate markdown files in `output/`.
+Or use `hatch` to create virtual environment and install dependencies
+
+```bash
+hatch env create
+```
+
+Run `hatch run make` to rebuild all projects and generate markdown files in `projects/output/`.
 
 
 ## Unit testing
@@ -39,9 +56,9 @@ regressions can be detected.
 
 Comparing svg file changes visually
 ```bash
-git show main:output/art_tote/fig-1.svg > output/art_tote/fig-1~main.svg
-xdg-open output/art_tote/fig-1~main.svg & disown
-xdg-open output/art_tote/fig-1.svg & disown
+git show main:projects/output/art_tote/fig-1.svg > projects/output/art_tote/fig-1~main.svg
+xdg-open projects/output/art_tote/fig-1~main.svg & disown
+xdg-open projects/output/art_tote/fig-1.svg & disown
 ```
 
 ## Performance profiling / optimization
@@ -49,7 +66,7 @@ xdg-open output/art_tote/fig-1.svg & disown
 ```bash
 pip install gprof2dot
 
-python -m cProfile -o profile.pstats src/art_tote.py
+python -m cProfile -o profile.pstats projects/art_tote.py
 gprof2dot -f pstats profile.pstats | dot -Tsvg -o art_tote.svg
 ```
 
@@ -68,3 +85,8 @@ gprof2dot -f pstats profile.pstats | dot -Tsvg -o art_tote.svg
   - (not exactly a bug) painters z-order algorithm makes for some weird overlaps
     in assemblies
   - Assembly.add_walls isn't working for first side with mitred profiles?
+
+
+## License
+
+`woodwork-cad` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.

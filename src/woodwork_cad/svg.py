@@ -3,7 +3,7 @@ from math import atan2, cos, degrees, sin, sqrt
 from pathlib import Path
 from typing import Any, Iterator, Optional, Tuple
 
-from .geometry import Point, Point3d, Points, Points3d, get_camera, set_camera, to2d
+from woodwork_cad.geometry import Point, Point3d, Points, Points3d, get_camera, set_camera, to2d
 
 
 class SVGCanvas:
@@ -275,11 +275,11 @@ class PrintToSVGFiles:
     def __exit__(self, exc_type, exc_value, traceback) -> None:
         assert self.canvas is not None
         set_camera(self.old_camera)
-        f = Path(f"output/{self.prefix}/fig-{self.figure}.svg")
+        f = Path(f"projects/output/{self.prefix}/fig-{self.figure}.svg")
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(self.canvas.svg_document(self.width, self.height, self.zoom))
         print()
-        print(f"![Figure {self.figure}]({f.relative_to('output/')})")
+        print(f"![Figure {self.figure}]({f.relative_to('projects/output/')})")
         print()
         self.canvas = None
 

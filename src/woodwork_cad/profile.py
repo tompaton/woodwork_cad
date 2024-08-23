@@ -2,7 +2,7 @@ from dataclasses import dataclass, replace
 from math import cos, radians, sin
 from typing import Callable, Iterator, List, Optional, Tuple
 
-from .geometry import Point, Point3d, Points, clip_polygon, line_length
+from woodwork_cad.geometry import Point, Point3d, Points, clip_polygon, line_length
 
 Interpolator = Callable[[float, float], float]
 

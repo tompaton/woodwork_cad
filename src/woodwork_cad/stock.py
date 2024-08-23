@@ -1,9 +1,9 @@
 from collections import defaultdict
 from typing import Callable, Dict, List
 
-from .board import Board
-from .operations import draw_dimension, process
-from .svg import SVGCanvas
+from woodwork_cad.board import Board
+from woodwork_cad.operations import draw_dimension, process
+from woodwork_cad.svg import SVGCanvas
 
 
 class StockPile:

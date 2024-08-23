@@ -2,9 +2,9 @@ from dataclasses import dataclass, field
 from math import radians, sin
 from typing import Callable, Iterable, List, Optional, Tuple
 
-from .faces import Face
-from .geometry import Point3d, Points3d
-from .profile import Interpolator
+from woodwork_cad.faces import Face
+from woodwork_cad.geometry import Point3d, Points3d
+from woodwork_cad.profile import Interpolator
 
 
 # clip polygon needs to be offset from board by a tiny amount to avoid

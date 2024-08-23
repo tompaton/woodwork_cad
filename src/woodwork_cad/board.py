@@ -3,15 +3,15 @@ from math import cos, radians
 from operator import attrgetter
 from typing import Iterable, Iterator, List, Optional, Tuple
 
-from .cutlist import Cuts
-from .defects import Defects
-from .dovetails import Dovetails, peturb
-from .faces import Face, rotate_faces
-from .geometry import Point3d, Points3d, Vector3d
-from .grooves import Grooves, Side
-from .profile import Interpolator, Profile
-from .shades import Shades
-from .svg import SVGCanvas
+from woodwork_cad.cutlist import Cuts
+from woodwork_cad.defects import Defects
+from woodwork_cad.dovetails import Dovetails, peturb
+from woodwork_cad.faces import Face, rotate_faces
+from woodwork_cad.geometry import Point3d, Points3d, Vector3d
+from woodwork_cad.grooves import Grooves, Side
+from woodwork_cad.profile import Interpolator, Profile
+from woodwork_cad.shades import Shades
+from woodwork_cad.svg import SVGCanvas
 
 
 def sign(n: float) -> float:
@@ -595,7 +595,7 @@ class Board:
             raise ValueError(msg)
 
     def draw_cut_dimensions(self, canvas: SVGCanvas, x: float, y: float) -> float:
-        from .operations import draw_dimension_ex
+        from woodwork_cad.operations import draw_dimension_ex
 
         pad = 30.0
         rip_pad = pad

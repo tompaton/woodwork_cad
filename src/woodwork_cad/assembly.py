@@ -2,11 +2,11 @@ from dataclasses import dataclass
 from operator import attrgetter
 from typing import Iterator, List
 
-from .board import Board
-from .faces import Face, rotate_faces
-from .geometry import Point, Point3d, Points, Vector3d
-from .operations import draw_dimension_ex
-from .svg import SVGCanvas
+from woodwork_cad.board import Board
+from woodwork_cad.faces import Face, rotate_faces
+from woodwork_cad.geometry import Point, Point3d, Points, Vector3d
+from woodwork_cad.operations import draw_dimension_ex
+from woodwork_cad.svg import SVGCanvas
 
 
 @dataclass

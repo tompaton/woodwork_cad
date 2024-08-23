@@ -3,7 +3,7 @@ from itertools import pairwise
 from math import cos, radians, sin, sqrt
 from typing import Callable, List, Optional, Tuple
 
-from .polygon import clip_polygon as _clip_polygon
+from woodwork_cad.polygon import clip_polygon as _clip_polygon
 
 """
 Notes re clipping algorithms

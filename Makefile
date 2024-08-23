@@ -3,16 +3,15 @@
 all: woodwork_cad projects
 
 projects:
-	python src/box1.py > output/box1.md
+	python projects/box1.py > projects/output/box1.md
 
-	python src/hex-box1.py > output/hex-box1.md
-	python src/hex-box1.py --strips > output/hex-box1-strips.md
-	python src/hex-box1.py --strips --mitre > output/hex-box1-strips-overlap-mitre.md
+	python projects/hex-box1.py > projects/output/hex-box1.md
+	python projects/hex-box1.py --strips > projects/output/hex-box1-strips.md
+	python projects/hex-box1.py --strips --mitre > projects/output/hex-box1-strips-overlap-mitre.md
 
-	python src/art_tote.py > output/art_tote.md
+	python projects/art_tote.py > projects/output/art_tote.md
 
 woodwork_cad:
-	ruff check . && mypy .
-	python src/geometry_test.py > output/geometry_test.md
-	python src/board_test.py > output/board_test.md
+	python projects/geometry_test.py > projects/output/geometry_test.md
+	python projects/board_test.py > projects/output/board_test.md
 
